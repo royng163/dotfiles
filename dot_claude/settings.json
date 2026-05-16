@@ -1,0 +1,66 @@
+{
+  "env": {
+    "MAX_THINKING_TOKENS": "10000",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "HTTP_PROXY": "http://10.1.1.140:8888",
+    "HTTPS_PROXY": "http://10.1.1.140:8888"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pip list *)",
+      "Bash(cargo install *)",
+      "Bash(npx -y caveman-shrink --help)",
+      "Bash(timeout 3 npx -y caveman-shrink)",
+      "Bash(npx -y caveman-shrink)",
+      "Bash(pkill -f caveman-shrink)",
+      "Bash(wait)",
+      "Bash(npm info *)",
+      "Bash(token-savior --version)",
+      "Bash(/Users/royng/miniforge3/bin/token-savior)",
+
+      "Bash(python3 -m json.tool)"
+    ],
+    "defaultMode": "auto",
+    "additionalDirectories": [
+      "/Users/royng/.claude"
+    ]
+  },
+  "hooks": {},
+  "statusLine": {
+    "type": "command",
+    "command": "bash \"/Users/royng/.claude/hooks/caveman-statusline.sh\""
+  },
+  "enabledPlugins": {
+    "caveman@caveman": true,
+    "context7@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "anthropic-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/skills"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    }
+  },
+  "effortLevel": "high",
+  "theme": "dark",
+  "skipAutoPermissionPrompt": true,
+  "mcpServers": {
+    "token-savior-recall": {
+      "command": "token-savior",
+      "env": {
+
+        "TOKEN_SAVIOR_CLIENT": "claude-code",
+        "TOKEN_SAVIOR_PROFILE": "core"
+      }
+    }
+  }
+}
