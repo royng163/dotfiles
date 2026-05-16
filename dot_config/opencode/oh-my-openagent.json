@@ -11,10 +11,10 @@
       "model": "github-copilot/gemini-3.1-pro-preview"
     },
     "explore": {
-      "model": "opencode/gpt-5-nano"
+      "model": "github-copilot/claude-haiku-4-5"
     },
     "multimodal-looker": {
-      "model": "opencode/gpt-5-nano"
+      "model": "github-copilot/gpt-5.4-mini", "variant": "xhigh"
     },
     "prometheus": {
       "model": "github-copilot/gemini-3.1-pro-preview"
