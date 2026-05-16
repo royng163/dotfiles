@@ -11,7 +11,7 @@
       "model": "github-copilot/gemini-3.1-pro-preview"
     },
     "explore": {
-      "model": "github-copilot/claude-haiku-4-5"
+      "model": "github-copilot/claude-haiku-4.5"
     },
     "multimodal-looker": {
       "model": "github-copilot/gpt-5.4-mini", "variant": "xhigh"
@@ -32,7 +32,7 @@
       "model": "opencode/big-pickle"
     },
     "librarian": {
-      "model": "github-copilot/claude-haiku-4-5"
+      "model": "github-copilot/claude-haiku-4.5"
     }
   },
   "categories": {
