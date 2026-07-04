@@ -2,18 +2,12 @@
   "env": {
     "MAX_THINKING_TOKENS": "10000",
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
-    "HTTP_PROXY": "http://10.1.1.140:8888",
-    "HTTPS_PROXY": "http://10.1.1.140:8888"
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
   },
   "permissions": {
     "allow": [
       "Bash(pip list *)",
       "Bash(cargo install *)",
-      "Bash(npx -y caveman-shrink --help)",
-      "Bash(timeout 3 npx -y caveman-shrink)",
-      "Bash(npx -y caveman-shrink)",
-      "Bash(pkill -f caveman-shrink)",
       "Bash(wait)",
       "Bash(npm info *)",
       "Bash(token-savior --version)",
@@ -26,14 +20,15 @@
       "/Users/royng/.claude"
     ]
   },
+  "model": "claude-fable-5[1m]",
   "hooks": {},
   "statusLine": {
     "type": "command",
-    "command": "bash \"/Users/royng/.claude/hooks/caveman-statusline.sh\""
+    "command": "bash \"/Users/royng/.claude/hooks/statusline.sh\""
   },
   "enabledPlugins": {
-    "caveman@caveman": true,
-    "context7@claude-plugins-official": true
+    "context7@claude-plugins-official": true,
+    "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
     "anthropic-agent-skills": {
@@ -42,14 +37,15 @@
         "repo": "anthropics/skills"
       }
     },
-    "caveman": {
+    "ponytail": {
       "source": {
         "source": "github",
-        "repo": "JuliusBrussee/caveman"
+        "repo": "DietrichGebert/ponytail"
       }
     }
   },
   "effortLevel": "high",
+  "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "skipAutoPermissionPrompt": true,
   "mcpServers": {
