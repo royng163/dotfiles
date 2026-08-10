@@ -13,3 +13,5 @@
 - Only add a comment when the code is non-obvious; do not annotate self-evident code.
 - Never write `ponytail:`-style or persona/assumption-narrating comments (comments that justify a simplification, shortcut, or default, or that flag an assumption to revisit) even when a skill or persona suggests them. State present behavior plainly or omit.
 - Keep comments short: at most 1-2 lines. Prefer fewer comments overall; don't explain how the code works step by step. If a comment needs a paragraph, the code or naming should carry it instead.
+
+<!-- launchd sync probe -->
