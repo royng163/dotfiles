@@ -1,0 +1,4 @@
+# cmux/Ghostty terminal appearance.
+theme = One Dark Two
+clipboard-read = allow
+window-save-state = always
