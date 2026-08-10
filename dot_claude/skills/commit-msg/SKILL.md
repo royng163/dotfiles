@@ -2,7 +2,7 @@
 name: commit-msg
 description: >
   Generate a conventional commit message for staged (or unstaged) changes without committing.
-  Follows https://gist.github.com/qoomon/5dfcdf8eec66a051ecd85625518cfd13.
+  Follows the Conventional Commits v1.0.0 spec (https://www.conventionalcommits.org/en/v1.0.0/).
   Trigger: "commit message", "write commit", /commit-msg.
 ---
 
@@ -26,24 +26,43 @@ Generate a conventional commit message. Do NOT commit.
 
 ## Types
 
-- `feat` — adds, adjusts, or removes a feature visible to the API or UI
-- `fix` — fixes a bug in a preceding feat
-- `refactor` — restructures code without changing API/UI behaviour
-- `perf` — refactor that specifically improves performance
-- `style` — whitespace, formatting, missing semicolons; no behaviour change
-- `test` — adds or corrects tests only
+The only types `config-conventional` allows (`type-enum`); use no others:
+
+- `feat` — a new feature
+- `fix` — a bug fix
+- `build` — build system or external dependencies (e.g. deps, project version)
+- `chore` — housekeeping; no src or test behaviour change
+- `ci` — CI configuration files and scripts (e.g. `.gitlab-ci.yml`, pipelines)
 - `docs` — documentation only
-- `build` — build tools, dependencies, project version
-- `ops` — CI/CD, infra, deployment, monitoring
-- `chore` — gitignore, init commit, housekeeping
+- `perf` — a code change that improves performance
+- `refactor` — a code change that neither fixes a bug nor adds a feature
+- `revert` — reverts a previous commit
+- `style` — formatting/whitespace; no change to code meaning
+- `test` — adds or corrects tests
+
+Behavior gate: before choosing `style`, `chore`, `docs`, `ci`, or `build`, confirm runtime behavior is
+unchanged. If any user-observable behavior changes (e.g. new options, altered defaults, different output),
+it must be `feat` / `fix` / `refactor` / `perf` instead. Test the change against the type's stated
+criterion — do not pick a type from the edit's surface appearance.
 
 ## Rules
 
-- Scope: optional, lowercase, noun (e.g. `payment`, `booking`, `auth`). Never use issue IDs.
-- Breaking change: append `!` before `:` in subject line (e.g. `feat(api)!: remove endpoint`). Add `BREAKING CHANGE:` in footer.
-- Description: imperative present tense ("add" not "added"). Lowercase first letter. No trailing period. Max ~72 chars.
-- Body: optional. Imperative tense. Explain WHY, not what.
-- Footer: optional. Issue refs (`Closes #123`) or breaking change detail.
+Enforced by `config-conventional` — a message that breaks any of these fails lint:
+
+- Type: required and lower-case, exactly one from the list above (`type-empty`, `type-case`, `type-enum`).
+- Scope: optional; when present, lower-case (`scope-case`). Noun (e.g. `payment`, `auth`). Never use issue IDs.
+- Description: required (`subject-empty`); must NOT be Sentence-case, Start-Case, PascalCase, or UPPER-CASE (`subject-case`) — start lower-case. No trailing period (`subject-full-stop`).
+- Header line `type(scope): description`: max 100 chars, trimmed (`header-max-length`, `header-trim`).
+- Body: preceded by a blank line; each line max 100 chars (`body-leading-blank`, `body-max-line-length`).
+- Footer: preceded by a blank line; each line max 100 chars (`footer-leading-blank`, `footer-max-line-length`).
+- Breaking change: append `!` before `:` (e.g. `feat(api)!: remove endpoint`) and/or add a `BREAKING CHANGE:` footer. `BREAKING CHANGE` must be upper-case (per the v1.0.0 spec the parser recognises).
+
+House style (not enforced by the config, kept for quality):
+
+- Description: imperative present tense ("add" not "added"). The subject alone should convey the change.
+- Body: omit for self-evident changes. When needed, terse bullets (imperative) — one per distinct change, so they slot straight into an MR "Changes" list. No prose paragraphs, no restating the diff. At most ~4 bullets.
+- Explain WHY only when it is not obvious from the change and would otherwise be lost. One short clause.
+- Footer: git-trailer format — `token: value` or `token #value`. Multi-word tokens use `-` (e.g. `Reviewed-by`, `Refs`), with `BREAKING CHANGE` the space-allowed exception. Use for issue refs (`Closes #123`) or breaking-change detail.
 
 ## Output
 

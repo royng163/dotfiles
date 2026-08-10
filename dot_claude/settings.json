@@ -2,7 +2,8 @@
   "env": {
     "MAX_THINKING_TOKENS": "10000",
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50"
+    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
+    "CLAUDE_CODE_TMUX_TRUECOLOR": "1"
   },
   "permissions": {
     "allow": [
@@ -15,19 +16,28 @@
 
       "Bash(python3 -m json.tool)"
     ],
-    "defaultMode": "auto",
+    "deny": [
+      "Bash(git push)",
+      "Bash(git push *)"
+    ],
+    "defaultMode": "plan",
     "additionalDirectories": [
       "/Users/royng/.claude"
     ]
   },
-  "model": "claude-fable-5[1m]",
+  "skillOverrides": {
+    "context7-mcp": "off"
+  },
   "hooks": {},
+  "worktree": {
+    "baseRef": "fresh"
+  },
   "statusLine": {
     "type": "command",
     "command": "bash \"/Users/royng/.claude/hooks/statusline.sh\""
   },
   "enabledPlugins": {
-    "context7@claude-plugins-official": true,
+    "context7@claude-plugins-official": false,
     "ponytail@ponytail": true
   },
   "extraKnownMarketplaces": {
@@ -45,8 +55,11 @@
     }
   },
   "effortLevel": "high",
+  "awaySummaryEnabled": false,
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
+  "preferredNotifChannel": "terminal_bell",
+  "showTurnDuration": true,
   "skipAutoPermissionPrompt": true,
   "mcpServers": {
     "token-savior-recall": {
