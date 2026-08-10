@@ -1,0 +1,227 @@
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }} Zed settings
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }}
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }} For information on how to configure Zed, see the Zed
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }} documentation{{ .chezmoi.pathListSeparator }} https{{ .chezmoi.pathListSeparator }}{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }}zed.dev{{ .chezmoi.pathSeparator }}docs{{ .chezmoi.pathSeparator }}configuring-zed
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }}
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }} To see all of Zed's default settings without changing your
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }} custom settings, run `zed{{ .chezmoi.pathListSeparator }} open default settings` from the
+{{ .chezmoi.pathSeparator }}{{ .chezmoi.pathSeparator }} command palette (cmd-shift-p {{ .chezmoi.pathSeparator }} ctrl-shift-p)
+{
+  "diff_view_style"{{ .chezmoi.pathListSeparator }} "split",
+  "proxy"{{ .chezmoi.pathListSeparator }} "",
+  "agent_buffer_font_size"{{ .chezmoi.pathListSeparator }} 15.0,
+  "languages"{{ .chezmoi.pathListSeparator }} {
+    "JavaScript"{{ .chezmoi.pathListSeparator }} {
+      "code_actions_on_format"{{ .chezmoi.pathListSeparator }} {
+        "source.fixAll.eslint"{{ .chezmoi.pathListSeparator }} true
+      }
+    },
+    "Python"{{ .chezmoi.pathListSeparator }} {
+      "language_servers"{{ .chezmoi.pathListSeparator }} ["pylsp", "!basedpyright"],
+    },
+  },
+  "lsp"{{ .chezmoi.pathListSeparator }} {
+    "wakatime"{{ .chezmoi.pathListSeparator }} {
+      "initialization_options"{{ .chezmoi.pathListSeparator }} {
+        "api-key"{{ .chezmoi.pathListSeparator }} "{{ .wakatimeApiKey }}"
+      }
+    },
+    "pylsp"{{ .chezmoi.pathListSeparator }} {
+      "settings"{{ .chezmoi.pathListSeparator }} {
+        "plugins"{{ .chezmoi.pathListSeparator }} {
+          "pycodestyle"{{ .chezmoi.pathListSeparator }} { "enabled"{{ .chezmoi.pathListSeparator }} false },
+          "pyflakes"{{ .chezmoi.pathListSeparator }} { "enabled"{{ .chezmoi.pathListSeparator }} false },
+          "mccabe"{{ .chezmoi.pathListSeparator }} { "enabled"{{ .chezmoi.pathListSeparator }} false },
+          "rope_autoimport"{{ .chezmoi.pathListSeparator }} { "enabled"{{ .chezmoi.pathListSeparator }} true }
+        },
+      },
+    },
+    "sonarlint"{{ .chezmoi.pathListSeparator }} {
+      "settings"{{ .chezmoi.pathListSeparator }} {
+        "connectedMode"{{ .chezmoi.pathListSeparator }} {
+          "connections"{{ .chezmoi.pathListSeparator }} {
+            "sonarqube"{{ .chezmoi.pathListSeparator }} [
+              {
+
+
+                "token"{{ .chezmoi.pathListSeparator }} "{{ .sonarqubeToken }}"
+              }
+            ]
+          }
+        }
+      }
+    },
+  },
+  "restore_on_startup"{{ .chezmoi.pathListSeparator }} "last_session",
+  "soft_wrap"{{ .chezmoi.pathListSeparator }} "none",
+  "preferred_line_length"{{ .chezmoi.pathListSeparator }} 120,
+  "{{ .chezmoi.config.git.command }}_panel"{{ .chezmoi.pathListSeparator }} {
+    "sort_by"{{ .chezmoi.pathListSeparator }} "path",
+    "entry_primary_click_action"{{ .chezmoi.pathListSeparator }} "view_{{ .chezmoi.config.mode }}",
+    "tree_view"{{ .chezmoi.pathListSeparator }} false,
+    "collapse_untracked_diff"{{ .chezmoi.pathListSeparator }} false,
+    "status_style"{{ .chezmoi.pathListSeparator }} "label_color",
+    "show_count_badge"{{ .chezmoi.pathListSeparator }} true,
+    "{{ .chezmoi.config.mode }}_icons"{{ .chezmoi.pathListSeparator }} true,
+  },
+  "ensure_final_newline_on_save"{{ .chezmoi.pathListSeparator }} false,
+  "markdown_preview"{{ .chezmoi.pathListSeparator }} {
+    "limit_content_width"{{ .chezmoi.pathListSeparator }} true,
+  },
+  "code_lens"{{ .chezmoi.pathListSeparator }} "on",
+  "{{ .chezmoi.config.git.command }}"{{ .chezmoi.pathListSeparator }} {
+    "inline_blame"{{ .chezmoi.pathListSeparator }} {
+      "show_commit_summary"{{ .chezmoi.pathListSeparator }} true,
+    },
+  },
+  "calls"{{ .chezmoi.pathListSeparator }} {
+    "mute_on_join"{{ .chezmoi.pathListSeparator }} false,
+  },
+  "terminal"{{ .chezmoi.pathListSeparator }} {
+    "show_count_badge"{{ .chezmoi.pathListSeparator }} false,
+    "font_size"{{ .chezmoi.pathListSeparator }} 13.0,
+  },
+  "project_panel"{{ .chezmoi.pathListSeparator }} {
+    "diagnostic_badges"{{ .chezmoi.pathListSeparator }} true,
+    "{{ .chezmoi.config.git.command }}_status_indicator"{{ .chezmoi.pathListSeparator }} true,
+  },
+  "tabs"{{ .chezmoi.pathListSeparator }} {
+    "{{ .chezmoi.config.git.command }}_status"{{ .chezmoi.pathListSeparator }} false,
+    "{{ .chezmoi.config.mode }}_icons"{{ .chezmoi.pathListSeparator }} true,
+  },
+  "title_bar"{{ .chezmoi.pathListSeparator }} {
+    "show_menus"{{ .chezmoi.pathListSeparator }} false,
+    "show_branch_status_icon"{{ .chezmoi.pathListSeparator }} false,
+  },
+  "status_bar"{{ .chezmoi.pathListSeparator }} {
+    "show_active_{{ .chezmoi.config.mode }}"{{ .chezmoi.pathListSeparator }} false,
+    "line_endings_button"{{ .chezmoi.pathListSeparator }} false,
+    "active_language_button"{{ .chezmoi.pathListSeparator }} true,
+  },
+  "prettier"{{ .chezmoi.pathListSeparator }} {
+    "allowed"{{ .chezmoi.pathListSeparator }} true,
+  },
+  "inlay_hints"{{ .chezmoi.pathListSeparator }} {
+    "show_parameter_hints"{{ .chezmoi.pathListSeparator }} true,
+    "show_value_hints"{{ .chezmoi.pathListSeparator }} true,
+    "show_type_hints"{{ .chezmoi.pathListSeparator }} false,
+    "show_other_hints"{{ .chezmoi.pathListSeparator }} true,
+    "show_background"{{ .chezmoi.pathListSeparator }} false,
+    "enabled"{{ .chezmoi.pathListSeparator }} true,
+  },
+  "toolbar"{{ .chezmoi.pathListSeparator }} {
+    "code_actions"{{ .chezmoi.pathListSeparator }} false,
+  },
+  "agent_ui_font_size"{{ .chezmoi.pathListSeparator }} 16.0,
+  "buffer_line_height"{{ .chezmoi.pathListSeparator }} "comfortable",
+  "diagnostics"{{ .chezmoi.pathListSeparator }} {
+    "button"{{ .chezmoi.pathListSeparator }} true,
+    "inline"{{ .chezmoi.pathListSeparator }} {
+      "enabled"{{ .chezmoi.pathListSeparator }} true,
+    },
+  },
+  "language_models"{{ .chezmoi.pathListSeparator }} {
+    "opencode"{{ .chezmoi.pathListSeparator }} {
+      "show_go_models"{{ .chezmoi.pathListSeparator }} false,
+    },
+  },
+  "edit_predictions"{{ .chezmoi.pathListSeparator }} {
+    "provider"{{ .chezmoi.pathListSeparator }} "copilot",
+    "allow_data_collection"{{ .chezmoi.pathListSeparator }} "no",
+  },
+  "agent"{{ .chezmoi.pathListSeparator }} {
+
+    "enable_feedback"{{ .chezmoi.pathListSeparator }} false,
+    "expand_terminal_card"{{ .chezmoi.pathListSeparator }} false,
+    "max_content_width"{{ .chezmoi.pathListSeparator }} 850.0,
+    "limit_content_width"{{ .chezmoi.pathListSeparator }} true,
+    "flexible"{{ .chezmoi.pathListSeparator }} true,
+    "show_turn_stats"{{ .chezmoi.pathListSeparator }} true,
+    "single_{{ .chezmoi.config.mode }}_review"{{ .chezmoi.pathListSeparator }} true,
+    "dock"{{ .chezmoi.pathListSeparator }} "right",
+    "sidebar_side"{{ .chezmoi.pathListSeparator }} "right",
+    "favorite_models"{{ .chezmoi.pathListSeparator }} [],
+    "model_parameters"{{ .chezmoi.pathListSeparator }} [],
+    "thinking_display"{{ .chezmoi.pathListSeparator }} "preview",
+  },
+  "agent_servers"{{ .chezmoi.pathListSeparator }} {
+    "claude-acp"{{ .chezmoi.pathListSeparator }} {
+      "default_config_options"{{ .chezmoi.pathListSeparator }} {
+        "mode"{{ .chezmoi.pathListSeparator }} "plan"
+      },
+      "type"{{ .chezmoi.pathListSeparator }} "registry",
+    },
+  },
+  "telemetry"{{ .chezmoi.pathListSeparator }} {
+    "diagnostics"{{ .chezmoi.pathListSeparator }} false,
+    "metrics"{{ .chezmoi.pathListSeparator }} false,
+  },
+  "base_keymap"{{ .chezmoi.pathListSeparator }} "VSCode",
+  "mouse_wheel_zoom"{{ .chezmoi.pathListSeparator }} true,
+  "minimap"{{ .chezmoi.pathListSeparator }} {
+    "show"{{ .chezmoi.pathListSeparator }} "never",
+  },
+  "autosave"{{ .chezmoi.pathListSeparator }} "off",
+  "show_whitespaces"{{ .chezmoi.pathListSeparator }} "all",
+  "icon_theme"{{ .chezmoi.pathListSeparator }} "Material Icon Theme",
+  "ui_font_size"{{ .chezmoi.pathListSeparator }} 16.0,
+  "buffer_font_size"{{ .chezmoi.pathListSeparator }} 14.0,
+  "theme"{{ .chezmoi.pathListSeparator }} "One Dark Pro Darker",
+  "theme_overrides"{{ .chezmoi.pathListSeparator }} {
+    "One Dark Pro Darker"{{ .chezmoi.pathListSeparator }} {
+      "syntax"{{ .chezmoi.pathListSeparator }} {
+        "comment"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#7f848eff"
+        },
+        "comment.doc"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#7f848eff"
+        },
+        "constant.comment.todo"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#61afefff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#61afef33",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 700
+        },
+        "constant.comment.todo.text"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#61afefff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#61afef33",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 400
+        },
+        "string.comment.info"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#98c379ff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#98c37933",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 700
+        },
+        "string.comment.info.text"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#98c379ff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#98c37933",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 400
+        },
+        "keyword.comment.warn"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#e5c07bff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#e5c07b33",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 700
+        },
+        "keyword.comment.warn.text"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#e5c07bff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#e5c07b33",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 400
+        },
+        "property.comment.error"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#e06c75ff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#e06c7533",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 700
+        },
+        "property.comment.error.text"{{ .chezmoi.pathListSeparator }} {
+          "color"{{ .chezmoi.pathListSeparator }} "#e06c75ff",
+          "background_color"{{ .chezmoi.pathListSeparator }} "#e06c7533",
+          "font_weight"{{ .chezmoi.pathListSeparator }} 400
+        },
+      },
+    },
+  },
+  "log"{{ .chezmoi.pathListSeparator }} {
+    "dev_container"{{ .chezmoi.pathListSeparator }} "trace",
+    "remote"{{ .chezmoi.pathListSeparator }} "trace",
+    "terminal"{{ .chezmoi.pathListSeparator }} "trace",
+  },
+}
