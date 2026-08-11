@@ -60,8 +60,12 @@ Enforced by `config-conventional` — a message that breaks any of these fails l
 House style (not enforced by the config, kept for quality):
 
 - Description: imperative present tense ("add" not "added"). The subject alone should convey the change.
-- Body: omit for self-evident changes. When needed, terse bullets (imperative) — one per distinct change, so they slot straight into an MR "Changes" list. No prose paragraphs, no restating the diff. At most ~4 bullets.
+- **Default to subject only.** Most commits need no body. Add one only when a reviewer would
+  otherwise lose the WHY, or when the commit bundles genuinely separate changes.
+- Body: at most 3 bullets, imperative, one line each (no wrapped continuation). No prose
+  paragraphs, no tables, no measurements, no restating the diff, no bullet per file.
 - Explain WHY only when it is not obvious from the change and would otherwise be lost. One short clause.
+- Whole message under ~60 words. If a bullet only rephrases the subject, delete it.
 - Footer: git-trailer format — `token: value` or `token #value`. Multi-word tokens use `-` (e.g. `Reviewed-by`, `Refs`), with `BREAKING CHANGE` the space-allowed exception. Use for issue refs (`Closes #123`) or breaking-change detail.
 
 ## Output

@@ -34,7 +34,7 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 
 ## Testing
 - <command / step> → <expected outcome>
-<UI: add screenshot/GIF. Backend: paste example output/log if available.>
+<UI: one screenshot/GIF placeholder. Backend: at most 2 lines of example output.>
 
 ## Related MRs
 - <label>: <MR link>
@@ -50,11 +50,22 @@ invent URLs. Omit the section when the work stands alone.
 
 ## Length budget
 
-- Summary: 1-2 sentences. Never more.
-- Changes: aim for 3-6 bullets total across all areas; hard cap ~8. One area heading only when there are genuinely distinct areas — a single-area change needs no bold heading, just bullets.
-- One bullet per user-facing behaviour or decision, not per field/column/method. Do not enumerate every column, param, or file — name the shape ("Members + Equipment sheets"), not the contents.
-- Testing: 1-3 bullets.
-- Drop any bullet a reader could infer from the title or another bullet. If two bullets share a rationale, merge them.
+Hard caps, not aspirations. Whole body **under ~150 words**. If it does not fit, cut content
+— do not compress by removing spaces or merging unrelated points into one bullet.
+
+- Summary: **one sentence.** A second is allowed only for a fix that needs symptom + cause.
+- Changes: **3-5 bullets total**, hard cap 6 — across all areas, not per area.
+- Every bullet: **one line, ~15 words max.** No wrapped continuation lines. If a bullet needs
+  two clauses joined by a dash, the rationale is probably inferable — drop it.
+- Rationale: only for a decision a reviewer would question, and ~8 words max.
+- Area headings: only with 2+ genuinely distinct areas **and** more than 4 bullets. Otherwise
+  just list bullets with no heading.
+- Testing: 1-3 bullets, ~12 words each.
+- One bullet per user-facing behaviour or decision, not per field/column/method/file. Name the
+  shape ("Members + Equipment sheets"), not the contents.
+
+Never include: restatements of the title, mechanism detail the diff already shows, measurement
+dumps or tables, or a bullet a reader could infer from another bullet.
 
 ## Emphasis by change type
 
