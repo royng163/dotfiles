@@ -11,6 +11,5 @@
 - Comments describe what the code does for a future reader who has no idea a change was ever made. Never narrate the edit or its history.
 - Banned: comparisons to prior/other versions or to the task ("all statuses, not just the dashboard ones", "now also handles X", "changed to", "previously", "as requested", "per ticket"). Strip the contrast and state the present behavior plainly, or omit the comment.
 - Only add a comment when the code is non-obvious; do not annotate self-evident code.
-- Never write `ponytail:`-style or persona/assumption-narrating comments (comments that justify a simplification, shortcut, or default, or that flag an assumption to revisit) even when a skill or persona suggests them. State present behavior plainly or omit.
 - Keep comments short: at most 1-2 lines. Prefer fewer comments overall; don't explain how the code works step by step. If a comment needs a paragraph, the code or naming should carry it instead.
 - Fill the line before wrapping: write one line up to the project's print width (prettier `printWidth`, ruff/black `line-length`, else 100). A second line is only for text that genuinely doesn't fit, and then both lines run near-full — never a long first line with a few dangling words under it. Rewrite the sentence shorter rather than spilling into a stub line.
