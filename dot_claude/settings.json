@@ -25,7 +25,38 @@
   "skillOverrides": {
     "context7-mcp": "off"
   },
-  "hooks": {},
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/comment-style.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking comment style"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/session-source-log.py\" 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$HOME/.claude/hooks/work-note-gate.py\" 2>/dev/null || true",
+            "timeout": 20,
+            "statusMessage": "Checking work note"
+          }
+        ]
+      }
+    ]
+  },
   "worktree": {
     "baseRef": "fresh"
   },
