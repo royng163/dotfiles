@@ -13,13 +13,14 @@ Curate a Common Changelog release entry. Do NOT commit or tag.
 
 ## Output location
 
-Changelog files live in the **workspace-root** shared folder
+Changelog files live in the **workspace-root** shared folder `../.notes/changelog/`
+— the parent directory holding all the repos, alongside the other shared notes.
+NOT a `CHANGELOG.md` inside the repo, and NOT the repo's own `.notes/`. If the
+project has no workspace-root notes folder, ask before creating one.
 
-NOT a `CHANGELOG.md` inside the repo and NOT the repo's own `.notes/`.
-
-- **One file per release**, named `v<VERSION>-<repo>.md` (e.g.
-
-  the different repos that share the folder.
+- **One file per release**, named `v<VERSION>-<repo>.md` (e.g. `v2.3.0-web.md`).
+  The repo suffix disambiguates releases from the different repos that share the
+  folder.
 - Each file holds a single release block. Do not prepend to or aggregate an
   existing file — write the new version's own file.
 
