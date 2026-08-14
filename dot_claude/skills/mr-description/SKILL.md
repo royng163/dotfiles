@@ -4,8 +4,9 @@ description: >
   Generate MR title + body as a communication artifact: action-oriented title, then
   Summary / Changes / Testing. Changes grouped by feature with rationale only
   when non-obvious; Testing gives steps with expected outcomes. Emphasis adapts to change
-
-  copyable. Trigger: "write MR", "PR body", "summarize branch", /mr.
+  type. Diffs against the repo's default branch unless told otherwise. Prints raw
+  markdown in a code block so it is copyable.
+  Trigger: "write MR", "PR body", "summarize branch", /mr.
 ---
 
 A PR body lets a reviewer grasp what changed, why it matters, and how to verify it
@@ -16,7 +17,8 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 
 ## Defaults
 
-
+- Target: the repo's default branch — `git symbolic-ref --short refs/remotes/origin/HEAD`. A project that merges into a long-lived release or variant branch instead will say so in its own docs or a project-level override of this skill; honour that over the default.
+- Scope: `git log <target>..HEAD --no-merges` + `git diff <target> --stat`.
 - Print the whole body in one fenced code block (``` ``` ```) so it is copyable. No preamble, no file writing.
 - No file/line counts — reviewers see those in the UI.
 
@@ -26,7 +28,7 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 <title>
 
 ## Summary
-
+<1-2 sentences: what this does and why. Lead with the outcome. Embed the issue link inline here, e.g. "... ([ABC-366](<tracker-url>/ABC-366)).">
 
 ## Changes
 **<Area>**
@@ -43,8 +45,8 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 Omit any section that would be empty — never print a heading followed by "none" or
 "N/A". Summary and Changes are always present; Testing appears only when there is
 something to say. Reference the Jira ticket in the Summary with the link embedded
-inline. Add a Related MRs section when the feature spans repos or phases — check the
-
+inline. Add a Related MRs section when the feature spans repos or surfaces — if the
+project keeps work notes, check the feature's note for which surfaces it touched.
 Emit a placeholder link (e.g. `<backend MR link>`) per companion MR; never ask for or
 invent URLs. Omit the section when the work stands alone.
 
@@ -84,12 +86,12 @@ Same four headings; shift the stress:
 - No backticks on paths/symbols in the body.
 - Describe only this branch's commits; drop work merged in from the target.
 - Omit empty sections entirely — no "none"/"N/A" placeholder headings.
-
-- Related MRs section: include for split features (see the work note); one bullet per companion MR, labelled by role (Backend, Frontend, Integration), each a placeholder link. Never fabricate a URL. Keep it last.
+- Reference the issue only in the Summary, with the link embedded inline. Take the tracker's URL shape from the project's own docs or an existing MR; never invent a host. Do not put the issue in Related MRs.
+- Related MRs section: include for split features; one bullet per companion MR, labelled by the surface it covers, each a placeholder link. Never fabricate a URL. Keep it last.
 
 ## Workflow
 
-
+1. Get the branch and resolve the target. Ask if the resolved default looks wrong for this project.
 2. Enumerate scope with the commands above; exclude merged-in work (`git log --merges` to spot it).
 3. Classify the dominant change type to set emphasis.
 4. Draft the title, then Summary / Changes / Testing.

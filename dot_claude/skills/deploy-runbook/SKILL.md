@@ -137,7 +137,8 @@ If the rollout is console-only, drop every CLI command rather than offering both
 
 ## Alibaba Cloud console references
 
-
+Only relevant when the project deploys on Alibaba Cloud RDS. Links were verified
+when written; re-check them, and drop this section entirely for another provider.
 
 | Operation | Doc |
 |---|---|
