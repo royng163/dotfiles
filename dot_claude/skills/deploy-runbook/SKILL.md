@@ -2,7 +2,7 @@
 name: deploy-runbook
 description: >
   Draft a deployment runbook for a release to a named environment (UAT, production),
-  written to the workspace-root .notes/ folder. Inspects the release delta first to
+  written to the workspace-root .notes/runbooks/ folder. Inspects the release delta first to
   find irreversible migrations, new configuration, and startup blockers, then writes
   a minimal-structure runbook with a backup gate and an honest rollback section.
   Calibrates detail to the audience (internal ops vs external security review).
@@ -15,11 +15,13 @@ Do NOT deploy anything, and do NOT commit.
 
 ## Output location
 
+Workspace-root shared folder `../.notes/runbooks/`:
+`../.notes/runbooks/v<version>-<environment>.md`, e.g. `v1.1.1-production.md`.
 
-matching the existing files there (`Local Development Setup.md`):
-`../.notes/<Environment> Deployment Runbook.md`
-
-One file per environment. Re-running for a later release updates the same file.
+**One file per release and environment, never overwritten.** Keying the filename
+on the environment alone destroys the previous release's runbook, which matters
+because the notes folder is not under version control — there is nothing to
+recover it from. A later release writes a new file beside the old one.
 
 ## Step 1 — Establish the facts (never skip, never infer)
 
@@ -149,6 +151,6 @@ If the rollout is console-only, drop every CLI command rather than offering both
 
 ## Output
 
-Write `../.notes/<Environment> Deployment Runbook.md`. Then report, outside the
+Write `../.notes/runbooks/v<version>-<environment>.md`. Then report, outside the
 document: any irreversible migration found, any unverifiable claim left out, and
 every placeholder the user must fill.
