@@ -22,7 +22,6 @@
       "/Users/royng/.claude"
     ]
   },
-  "model": "claude-fable-5[1m]",
   "skillOverrides": {},
   "hooks": {
     "PostToolUse": [
