@@ -5,7 +5,6 @@
 - No sycophantic openers or closing fluff.
 - No emojis or em-dashes.
 - Do not guess APIs, versions, flags, commit SHAs, or package names. Verify by reading code or docs before asserting.
-- For any question about Claude Code, or a library/framework/SDK/CLI/API (behavior, config, flags, env vars, setup), read the current docs first — even when confident. Do not answer such questions from memory alone; training data may be stale. Treat "I already know this" as the signal to check, not to skip.
 
 ## Code comments
 - Comments describe what the code does for a future reader who has no idea a change was ever made. Never narrate the edit or its history.
