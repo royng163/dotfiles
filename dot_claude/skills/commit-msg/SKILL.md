@@ -63,10 +63,41 @@ House style (not enforced by the config, kept for quality):
 - **Default to subject only.** Most commits need no body. Add one only when a reviewer would
   otherwise lose the WHY, or when the commit bundles genuinely separate changes.
 - Body: at most 3 bullets, imperative, one line each (no wrapped continuation). No prose
-  paragraphs, no tables, no measurements, no restating the diff, no bullet per file.
+  paragraphs, no tables, no measurements, no restating the diff, no bullet per file. A commit
+  spanning several areas may group them instead — see Grouped body.
 - Explain WHY only when it is not obvious from the change and would otherwise be lost. One short clause.
 - Whole message under ~60 words. If a bullet only rephrases the subject, delete it.
 - Footer: git-trailer format — `token: value` or `token #value`. Multi-word tokens use `-` (e.g. `Reviewed-by`, `Refs`), with `BREAKING CHANGE` the space-allowed exception. Use for issue refs (`Closes #123`) or breaking-change detail.
+
+## Grouped body
+
+When one commit genuinely spans several parts — a rule and the emails it triggers, a schema
+change and the endpoints reading it — a flat bullet list buries which change belongs where.
+Group the body under plain label lines instead:
+
+```
+feat(booking): require contact details out of hours and notify every party
+
+Requirements:
+- Refuse the hold unless a second user and both contact numbers are supplied
+- Judge the slot against the location's hours alone, never the equipment's
+
+Notifications:
+- Send the booker, equipment team and FMO a notice once the booking confirms
+- Replace the ordinary confirmation out of hours rather than sending both
+```
+
+Escalate to this form only when it earns its length:
+
+- **Ask first whether these should be separate commits.** Groups that share no reason to land
+  together are two commits wearing one hat. Group only what must ship atomically.
+- **2-4 groups**, 1-3 bullets each, **10 bullets total** across all groups. One group means a
+  flat list; five means the commit is too big.
+- Labels are domain areas, capitalised, ending in a colon on their own line — not layer or
+  file names. "Notifications:", not "services/:" or "Backend:".
+- A blank line between groups. Every bullet still one line, imperative, under 100 chars.
+- Whole message under ~120 words at this size, and the subject alone must still convey the
+  change — the groups add detail, they never carry the headline.
 
 ## Output
 
