@@ -84,5 +84,6 @@
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "preferredNotifChannel": "terminal_bell",
-  "showTurnDuration": true
+  "showTurnDuration": true,
+  "cleanupPeriodDays": 30
 }
