@@ -3,7 +3,6 @@
   "env": {
     "MAX_THINKING_TOKENS": "10000",
     "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
-    "CLAUDE_AUTOCOMPACT_PCT_OVERRIDE": "50",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1"
   },
   "permissions": {
@@ -87,5 +86,6 @@
   "preferredNotifChannel": "terminal_bell",
   "showTurnDuration": true,
   "model": "claude-fable-5[1m]",
-  "enableWorkflows": false
+  "enableWorkflows": false,
+  "autoCompactWindow": 500000
 }
