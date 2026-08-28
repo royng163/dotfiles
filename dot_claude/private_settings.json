@@ -58,6 +58,7 @@
   "worktree": {
     "baseRef": "fresh"
   },
+  "enableWorkflows": false,
   "statusLine": {
     "type": "command",
     "command": "bash \"/Users/royng/.claude/hooks/statusline.sh\""
@@ -80,12 +81,10 @@
     }
   },
   "effortLevel": "high",
+  "autoCompactWindow": 500000,
   "awaySummaryEnabled": false,
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "preferredNotifChannel": "terminal_bell",
-  "showTurnDuration": true,
-  "model": "claude-fable-5[1m]",
-  "enableWorkflows": false,
-  "autoCompactWindow": 500000
+  "showTurnDuration": true
 }
