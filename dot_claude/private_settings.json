@@ -86,5 +86,33 @@
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "preferredNotifChannel": "terminal_bell",
-  "showTurnDuration": true
+  "showTurnDuration": true,
+  "autoMode": {
+    "environment": [
+      "### Org-wide",
+      "**Organization**: None configured",
+      "**Cloud provider(s)**: None configured",
+
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: Default branch is `master` (from repo facts); protection/rulesets not queryable here (gh check did not run against this host)",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+
+
+      "**Trusted cloud buckets**: None configured",
+
+
+
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (no prod-named hosts or namespaces observed in this repo's evidence)",
+
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
+      "### User-specific",
+
+
+      "**Org-specific CLIs**: None configured (chezmoi, cmux, hs, sonar, venv, osascript seen locally but are personal/dev tooling, not org-specific)",
+
+    ]
+  }
 }
