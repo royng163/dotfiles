@@ -2,7 +2,7 @@
 name: deploy-runbook
 description: >
   Draft a deployment runbook for a release to a named environment (UAT, production),
-  written to the workspace-root .notes/runbooks/ folder. Inspects the release delta first to
+  written to the workspace-root .notes/guides/ folder. Inspects the release delta first to
   find irreversible migrations, new configuration, and startup blockers, then writes
   a minimal-structure runbook with a backup gate and an honest rollback section.
   Calibrates detail to the audience (internal ops vs external security review).
@@ -15,8 +15,8 @@ Do NOT deploy anything, and do NOT commit.
 
 ## Output location
 
-Workspace-root shared folder `../.notes/runbooks/`:
-`../.notes/runbooks/v<version>-<environment>.md`, e.g. `v1.1.1-production.md`.
+Workspace-root shared folder `../.notes/guides/`:
+`../.notes/guides/v<version>-<environment>.md`, e.g. `v1.1.1-production.md`.
 
 **One file per release and environment, never overwritten.** Keying the filename
 on the environment alone destroys the previous release's runbook, which matters
@@ -152,6 +152,6 @@ when written; re-check them, and drop this section entirely for another provider
 
 ## Output
 
-Write `../.notes/runbooks/v<version>-<environment>.md`. Then report, outside the
+Write `../.notes/guides/v<version>-<environment>.md`. Then report, outside the
 document: any irreversible migration found, any unverifiable claim left out, and
 every placeholder the user must fill.
