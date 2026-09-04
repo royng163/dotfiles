@@ -6,6 +6,10 @@
 - No emojis or em-dashes.
 - Do not guess APIs, versions, flags, commit SHAs, or package names. Verify by reading code or docs before asserting.
 
+## Git
+- Never run `git add`, `git commit` or `git push` for the user. Leave changes unstaged in the
+  working tree, report the state, and stop. Branch and worktree creation is fine.
+
 ## Code comments
 - Comments describe what the code does for a future reader who has no idea a change was ever made. Never narrate the edit or its history.
 - Banned: comparisons to prior/other versions or to the task ("all statuses, not just the dashboard ones", "now also handles X", "changed to", "previously", "as requested", "per ticket"). Strip the contrast and state the present behavior plainly, or omit the comment.
