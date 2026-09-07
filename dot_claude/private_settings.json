@@ -114,6 +114,5 @@
       "**Org-specific CLIs**: None configured (chezmoi, cmux, hs, sonar, venv, osascript seen locally but are personal/dev tooling, not org-specific)",
 
     ]
-  },
-  "model": "claude-fable-5-1[1m]"
+  }
 }
