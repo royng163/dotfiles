@@ -57,7 +57,8 @@ eval "$(starship init zsh)"
 
 # Modern CLI tools. Each is guarded so this file still loads on a machine or OS
 # where the binary is absent.
-command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+# --cmd cd makes cd itself do the frecency jump; cdi is the fzf picker.
+command -v zoxide >/dev/null && eval "$(zoxide init zsh --cmd cd)"
 
 # Debian and Ubuntu ship bat as batcat to avoid a name clash with bacula-console.
 command -v batcat >/dev/null && ! command -v bat >/dev/null && alias bat=batcat
@@ -68,3 +69,19 @@ if command -v eza >/dev/null; then
   alias la='eza -la --icons --group-directories-first --git'
   alias lt='eza --tree --level=2 --icons'
 fi
+
+# Tab completion. Made explicit here rather than relying on bun's completion file
+# to bootstrap it, which is where compinit was being loaded from.
+autoload -Uz compinit && compinit
+
+# Suggestion and highlighting plugins, from the first prefix that has them.
+# Syntax highlighting wraps the line editor, so it must stay last in this file.
+for _d in /opt/homebrew/share /usr/share/zsh/plugins /usr/share; do
+  [ -r "$_d/zsh-autosuggestions/zsh-autosuggestions.zsh" ] &&
+    source "$_d/zsh-autosuggestions/zsh-autosuggestions.zsh" && break
+done
+for _d in /opt/homebrew/share /usr/share/zsh/plugins /usr/share; do
+  [ -r "$_d/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] &&
+    source "$_d/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" && break
+done
+unset _d
