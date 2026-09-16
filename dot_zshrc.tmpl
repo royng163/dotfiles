@@ -1,0 +1,72 @@
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}miniforge3{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathSeparator }}conda' 'shell.zsh' 'hook' 2> {{ .chezmoi.pathSeparator }}dev{{ .chezmoi.pathSeparator }}null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}miniforge3{{ .chezmoi.pathSeparator }}etc{{ .chezmoi.pathSeparator }}profile.d{{ .chezmoi.pathSeparator }}conda.sh" ]; then
+        . "{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}miniforge3{{ .chezmoi.pathSeparator }}etc{{ .chezmoi.pathSeparator }}profile.d{{ .chezmoi.pathSeparator }}conda.sh"
+    else
+        export PATH="{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}miniforge3{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathListSeparator }}$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba shell init' !!
+export MAMBA_EXE='{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}miniforge3{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathSeparator }}mamba';
+export MAMBA_ROOT_PREFIX='{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}miniforge3';
+__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> {{ .chezmoi.pathSeparator }}dev{{ .chezmoi.pathSeparator }}null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
+
+# opencode
+export PATH={{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}.opencode{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathListSeparator }}$PATH
+
+# bun completions
+[ -s "{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}.bun{{ .chezmoi.pathSeparator }}_bun" ] && source "{{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}.bun{{ .chezmoi.pathSeparator }}_bun"
+
+# bun
+export BUN_INSTALL="$HOME{{ .chezmoi.pathSeparator }}.bun"
+export PATH="$BUN_INSTALL{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathListSeparator }}$PATH"
+export PATH="$HOME{{ .chezmoi.pathSeparator }}.local{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathListSeparator }}$PATH"
+export PATH="$HOME{{ .chezmoi.pathSeparator }}.local{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathListSeparator }}$PATH"
+alias code="open -a \"Visual Studio Code\""
+export DYLD_LIBRARY_PATH={{ .chezmoi.pathSeparator }}opt{{ .chezmoi.pathSeparator }}homebrew{{ .chezmoi.pathSeparator }}lib{{ .chezmoi.pathListSeparator }}$DYLD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH={{ .chezmoi.pathSeparator }}opt{{ .chezmoi.pathSeparator }}homebrew{{ .chezmoi.pathSeparator }}lib{{ .chezmoi.pathListSeparator }}$DYLD_LIBRARY_PATH
+export DYLD_LIBRARY_PATH="{{ .chezmoi.pathSeparator }}opt{{ .chezmoi.pathSeparator }}homebrew{{ .chezmoi.pathSeparator }}lib{{ .chezmoi.pathListSeparator }}$DYLD_LIBRARY_PATH"
+export DYLD_LIBRARY_PATH="{{ .chezmoi.pathSeparator }}opt{{ .chezmoi.pathSeparator }}homebrew{{ .chezmoi.pathSeparator }}lib{{ .chezmoi.pathListSeparator }}$DYLD_LIBRARY_PATH"
+
+# mimocode
+export PATH={{ .chezmoi.destDir }}{{ .chezmoi.pathSeparator }}.mimocode{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathListSeparator }}$PATH
+
+# Editor for Vue DevTools "open in editor". Vite 4 bundles a launch-editor with no
+# zed entry, and its fallthrough passes the line and column as separate arguments,
+# which Zed opens as extra files named after the numbers. "subl" is in its table and
+# gets a single path{{ .chezmoi.pathListSeparator }}line{{ .chezmoi.pathListSeparator }}column, which the Zed CLI accepts. ~{{ .chezmoi.pathSeparator }}.local{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathSeparator }}subl -> zed.
+export LAUNCH_EDITOR="$HOME{{ .chezmoi.pathSeparator }}.local{{ .chezmoi.pathSeparator }}bin{{ .chezmoi.pathSeparator }}subl"
+
+# Prompt. Must load after conda{{ .chezmoi.pathSeparator }}mamba init, which rewrite PS1.
+eval "$(starship init zsh)"
+
+# Modern CLI tools. Each is guarded so this {{ .chezmoi.config.mode }} still loads on a machine or OS
+# where the binary is absent.
+command -v zoxide >{{ .chezmoi.pathSeparator }}dev{{ .chezmoi.pathSeparator }}null && eval "$(zoxide init zsh)"
+
+# Debian and Ubuntu ship bat as batcat to avoid a name clash with bacula-console.
+command -v batcat >{{ .chezmoi.pathSeparator }}dev{{ .chezmoi.pathSeparator }}null && ! command -v bat >{{ .chezmoi.pathSeparator }}dev{{ .chezmoi.pathSeparator }}null && alias bat=batcat
+
+if command -v eza >{{ .chezmoi.pathSeparator }}dev{{ .chezmoi.pathSeparator }}null; then
+  alias ls='eza --icons --group-directories-first'
+  alias ll='eza -l --icons --group-directories-first --{{ .chezmoi.config.git.command }}'
+  alias la='eza -la --icons --group-directories-first --{{ .chezmoi.config.git.command }}'
+  alias lt='eza --tree --level=2 --icons'
+fi
