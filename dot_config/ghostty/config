@@ -1,5 +1,7 @@
 # cmux/Ghostty terminal appearance.
-theme = One Dark Two
+theme = Catppuccin Mocha
+background-opacity = 0.5
+background-blur = true
 clipboard-read = allow
 window-save-state = always
 
