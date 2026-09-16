@@ -1,0 +1,41 @@
+# Two lines so a long path never crowds the command.
+format = """
+$directory$git_branch$git_status$python$nodejs$cmd_duration
+$character"""
+
+add_newline = true
+
+[directory]
+truncation_length = 3
+truncate_to_repo = true
+style = "bold cyan"
+
+[git_branch]
+symbol = " "
+style = "bold purple"
+
+[git_status]
+style = "bold yellow"
+
+[python]
+symbol = " "
+# Wrapped in () so the module vanishes outside an active venv; the interpreter
+# version is rarely what you need mid-task, so only the venv name is shown.
+format = '([$symbol$virtualenv]($style) )'
+style = "bold green"
+
+[nodejs]
+symbol = " "
+# Only in directories that actually declare node, so Django repos stay quiet.
+detect_files = ["package.json", ".nvmrc"]
+detect_folders = []
+style = "bold green"
+
+[cmd_duration]
+min_time = 2000
+format = '[ $duration]($style) '
+style = "bold yellow"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"

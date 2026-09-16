@@ -1,0 +1,3 @@
+# TwoDark is bat's build of the One Dark palette, matching the Ghostty theme.
+--theme="TwoDark"
+--style="numbers,changes,header"
