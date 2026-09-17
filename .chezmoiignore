@@ -1,0 +1,19 @@
+{{/* Patterns match the TARGET path. This file is always treated as a template.
+     Under WSL .chezmoi.os is "linux", so the WSL kernel string is what tells it
+     apart from a real Linux desktop. */}}
+{{- $wsl := contains "microsoft" (lower (index .chezmoi.kernel "osrelease" | toString)) }}
+
+{{- if eq .chezmoi.os "windows" }}
+{{/* PowerShell does not read a zsh config. */}}
+.zshrc
+{{- end }}
+
+{{- if or (eq .chezmoi.os "windows") $wsl }}
+{{/* Ghostty has no Windows build, and a WSL shell renders in Windows Terminal. */}}
+.config/ghostty
+{{- end }}
+
+{{- if ne .chezmoi.os "darwin" }}
+{{/* cmux ships as a macOS app only. */}}
+.config/cmux
+{{- end }}
