@@ -1,3 +1,4 @@
+{{- $home := .chezmoi.homeDir | replace "\\" "/" -}}
 {
   "cleanupPeriodDays": 30,
   "env": {
@@ -19,7 +20,7 @@
     ],
     "defaultMode": "plan",
     "additionalDirectories": [
-      "/Users/royng/.claude"
+      "{{ $home }}/.claude"
     ]
   },
   "skillOverrides": {},
@@ -61,7 +62,7 @@
   "enableWorkflows": false,
   "statusLine": {
     "type": "command",
-    "command": "bash \"/Users/royng/.claude/hooks/statusline.sh\""
+    "command": "bash \"{{ $home }}/.claude/hooks/statusline.sh\""
   },
   "enabledPlugins": {
     "ponytail@ponytail": true
