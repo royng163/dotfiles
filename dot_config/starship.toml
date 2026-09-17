@@ -3,20 +3,19 @@ command_timeout = 1000
 
 format = """
 $character\
-[](fg:white bg:bright-black)\
-[█](fg:bright-black bg:black)\
 $directory\
-[█](fg:bright-black bg:black)\
+[](fg:white bg:bright-black)\
 [$git_branch\
-$git_state](bold bg:black fg:white)\
-[$python$nodejs$golang$rust$java$php$ruby$c](bg:black fg:cyan)\
+$git_state](bold bg:bright-black fg:bright-white)\
+[](fg:bright-black bg:black)\
+[$python$nodejs$golang$rust$java$php$ruby$c](bg:black)\
 $fill\
 $cmd_duration\
 [](fg:red bg:black)\
 [ ](fg:black bg:red)\
 $username\
 [](fg:green bg:bright-black)\
-[󰌽 ](fg:green bg:black inverted)\
+$os\
 $hostname\
 $line_break\
 [‎]()"""
@@ -37,7 +36,7 @@ disabled = false
 # Version, plus the virtualenv name when one is active.
 symbol = "󰌠 "
 format = "[ $symbol$version( \\($virtualenv\\)) ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
 
 [cmd_duration]
 min_time = 1000
@@ -48,8 +47,8 @@ style="bold bg:black"
 
 [directory]
 truncation_length = 5
-format = "[󰉋 $path]($style)[$lock_symbol]($lock_style)"
-style = "bold fg:bright-white bg:bright-black"
+format = "[ 󰉋 $path]($style)[$lock_symbol]($lock_style)"
+style = "bold fg:black bg:white"
 read_only = "🔒"
 read_only_style= "bold white"
 
@@ -99,34 +98,46 @@ style = "cyan"
 [nodejs]
 symbol = " "
 format = "[ $symbol$version ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
 
 [golang]
 symbol = " "
 format = "[ $symbol$version ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
 
 [rust]
 symbol = " "
 format = "[ $symbol$version ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
 
 [java]
 symbol = " "
 format = "[ $symbol$version ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
 
 [php]
 symbol = " "
 format = "[ $symbol$version ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
 
 [ruby]
 symbol = " "
 format = "[ $symbol$version ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
 
 [c]
 symbol = " "
 format = "[ $symbol$version ]($style)"
-style = "bg:black fg:#abb2bf"
+style = "bg:black fg:white"
+
+[os]
+disabled = false
+format = "[$symbol ]($style)"
+style = "fg:green bg:black inverted"
+
+[os.symbols]
+Macos = ""
+Linux = "󰌽"
+Ubuntu = "󰕈"
+Debian = "󰣚"
+Windows = "󰍲"

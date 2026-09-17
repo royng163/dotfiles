@@ -84,7 +84,7 @@
   "autoCompactWindow": 500000,
   "awaySummaryEnabled": false,
   "skipWorkflowUsageWarning": true,
-  "theme": "auto",
+  "theme": "dark",
   "preferredNotifChannel": "terminal_bell",
   "showTurnDuration": true,
   "autoMode": {
@@ -93,7 +93,7 @@
       "**Organization**: None configured",
       "**Cloud provider(s)**: None configured",
 
-      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Internal sharing / snippet hosting**: None configured \u2014 treat public paste/gist services as outside the trust boundary",
       "**Secrets management**: None configured",
       "**Default / protected branches**: Default branch is `master` (from repo facts); protection/rulesets not queryable here (gh check did not run against this host)",
       "**CI/CD deploy targets**: None configured",
