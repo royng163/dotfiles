@@ -20,7 +20,7 @@ import sys
 from patchright.sync_api import sync_playwright
 
 BASE_URL = os.environ.get("BASE_URL", "http://localhost:5173/")
-OUT_DIR = os.environ.get("SCRATCHPAD", ".")
+OUT_DIR = os.environ.get("SCRATCHPAD") or "."
 HEADLESS = os.environ.get("HEADLESS", "1") != "0"
 
 

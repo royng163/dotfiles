@@ -30,12 +30,13 @@ non-UI changes.
    with `http` are used as-is):
    ```bash
    BASE_URL="http://localhost:5173/" \
-   SCRATCHPAD="$CLAUDE_SCRATCHPAD" \
+   SCRATCHPAD="<session scratchpad dir>" \
    python ~/.claude/skills/browser-check/scripts/check.py "/login" "/dashboard"
    ```
    - Hash-router app? End `BASE_URL` with `#`, e.g.
      `http://localhost:5173/admin/#`.
-   - `SCRATCHPAD` = where screenshots go (use the session scratchpad).
+   - `SCRATCHPAD` = where screenshots go. Paste the session scratchpad path
+     from the environment preamble; there is no env var for it. Unset means cwd.
    - `HEADLESS=0` to watch it run live.
 
 4. Read the output:
