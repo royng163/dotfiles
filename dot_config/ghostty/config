@@ -34,6 +34,6 @@ window-padding-y = 8
 window-padding-balance = true
 
 # Wallpaper behind the text; minimum-contrast keeps foreground legible over the bright top.
-background-image = /Users/royng/Documents/wallpaper/p3r_bg_dithered.png
+background-image = /Users/royng/Documents/wallpaper/p3r_bg.jpeg
 background-image-fit = cover
 background-image-opacity = 0.04
