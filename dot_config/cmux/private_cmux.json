@@ -407,4 +407,18 @@
   //       ]
   //     }
   //   },
+  "shortcuts": {
+    "bindings": {
+      "toggleSplitZoom": {
+        "first": {
+          "command": false,
+          "control": false,
+          "key": "z",
+          "keyCode": 6,
+          "option": true,
+          "shift": true
+        }
+      }
+    }
+  },
 }
