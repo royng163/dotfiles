@@ -1,24 +1,30 @@
 #!/bin/bash
-# Minimal Claude Code status line
-# Displays: model name and 5-hour session limit
+# Claude Code status line: model + effort, context tokens, 5h/7d limits, git worktree
 
 input=$(cat)
 
-model_name=$(echo "$input" | jq -r '.model.display_name // empty')
-five_hour_limit=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
+IFS=$'\t' read -r model effort ctx five seven worktree < <(echo "$input" | jq -r '[
+  .model.display_name // "",
+  .effort.level // "",
+  .context_window.total_input_tokens // "",
+  .rate_limits.five_hour.used_percentage // "",
+  .rate_limits.seven_day.used_percentage // "",
+  .workspace.git_worktree // ""
+] | map(tostring | if . == "" then "-" else . end) | @tsv')
 
-# Build compact status line
-parts=""
+parts=()
+head="${model#-}"
+[ "$effort" != "-" ] && head="$head $effort"
+[ -n "$head" ] && parts+=("$head")
+[ "$ctx" != "-" ] && [ "$ctx" != "0" ] && parts+=("ctx $((ctx / 1000))k")
 
-if [ -n "$model_name" ]; then
-  parts="$model_name"
-fi
+limits=""
+[ "$five" != "-" ] && limits="5h:$(printf '%.0f' "$five")%"
+[ "$seven" != "-" ] && limits="${limits:+$limits }7d:$(printf '%.0f' "$seven")%"
+[ -n "$limits" ] && parts+=("$limits")
 
-if [ -n "$five_hour_limit" ]; then
-  if [ -n "$parts" ]; then
-    parts="$parts | "
-  fi
-  parts="${parts}5h:$(printf '%.0f' "$five_hour_limit")%"
-fi
+[ "$worktree" != "-" ] && parts+=("$worktree")
 
-printf '%s\n' "$parts"
+out=""
+for p in "${parts[@]}"; do out="${out:+$out | }$p"; done
+printf '%s\n' "$out"
