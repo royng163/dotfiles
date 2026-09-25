@@ -7,8 +7,10 @@
     "appearance": "dark"
   },
   "terminal": {
+    "showTextBoxOnNewTerminals": false,
+    "focusTextBoxOnNewTerminals": false,
     "agentHibernation": {
-      "enabled": true,
+      "enabled": false,
       "idleSeconds": 30,
       "maxLiveTerminals": 3
     },
