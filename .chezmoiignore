@@ -11,6 +11,7 @@
 {{- if or (eq .chezmoi.os "windows") $wsl }}
 {{/* Ghostty has no Windows build, and a WSL shell renders in Windows Terminal. */}}
 .config/ghostty
+.config/zed
 {{- end }}
 
 {{- if ne .chezmoi.os "darwin" }}
