@@ -1,0 +1,10 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* Synced settings, keeping the remote project lists Zed writes into this file. */ -}}
+{{- $s := includeTemplate "zed-settings.json" . | fromJsonc -}}
+{{- if .chezmoi.stdin }}
+{{-   $current := fromJsonc .chezmoi.stdin }}
+{{-   range list "wsl_connections" "ssh_connections" }}
+{{-     if hasKey $current . }}{{ $_ := set $s . (get $current .) }}{{ end }}
+{{-   end }}
+{{- end }}
+{{ toPrettyJson $s }}

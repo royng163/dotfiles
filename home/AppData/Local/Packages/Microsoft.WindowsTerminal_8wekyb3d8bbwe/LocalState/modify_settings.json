@@ -1,0 +1,17 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- /* Owns only these keys; Terminal keeps rewriting the rest of the file itself. */ -}}
+{{- $scheme := "One Dark Pro Darker" -}}
+{{- $font := "Cascadia Mono NF" -}}
+{{- $s := dict -}}
+{{- if .chezmoi.stdin }}{{ $s = fromJsonc .chezmoi.stdin }}{{ end -}}
+{{- $s = setValueAtPath "defaultProfile" "{574e775e-4f2a-5b96-ac1e-a2962a402336}" $s -}}
+{{- $s = setValueAtPath "profiles.defaults.font.face" $font $s -}}
+{{- $s = setValueAtPath "profiles.defaults.colorScheme" $scheme $s -}}
+{{- /* WSL's fragment sets its own scheme and font, which beat profiles.defaults. */ -}}
+{{- range (dig "profiles" "list" list $s) }}
+{{-   if eq (get . "source") "Microsoft.WSL" }}
+{{-     $_ := set . "colorScheme" $scheme }}
+{{-     $_ := set . "font" (merge (dict "face" $font) (get . "font" | default dict)) }}
+{{-   end }}
+{{- end }}
+{{ toPrettyJson $s }}

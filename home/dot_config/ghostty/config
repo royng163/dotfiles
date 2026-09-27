@@ -1,5 +1,5 @@
 # cmux/Ghostty terminal appearance.
-# One Dark Pro Darker (Binaryify), as the 16 ANSI colors so the Starship prompt and
+# One Dark Pro Darker, as the 16 ANSI colors so the Starship prompt and
 # Claude Code's dark-ansi theme both render from this one palette.
 background = #23272e
 foreground = #abb2bf
