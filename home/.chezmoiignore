@@ -4,8 +4,15 @@
 {{- $wsl := contains "microsoft" (lower (index .chezmoi.kernel "osrelease" | toString)) }}
 
 {{- if eq .chezmoi.os "windows" }}
-{{/* PowerShell does not read a zsh config. */}}
+{{/* Windows is a daily machine, not a dev box: terminal setup only. */}}
 .zshrc
+.claude
+.config/bat
+.chezmoiscripts/unix/**
+{{- else }}
+.chezmoiscripts/windows/**
+AppData
+Documents
 {{- end }}
 
 {{- if or (eq .chezmoi.os "windows") $wsl }}
@@ -17,4 +24,8 @@
 {{- if ne .chezmoi.os "darwin" }}
 {{/* cmux ships as a macOS app only. */}}
 .config/cmux
+{{- end }}
+
+{{- if ne .chezmoi.os "linux" }}
+.chezmoiscripts/linux/**
 {{- end }}

@@ -36,14 +36,15 @@
         },
       },
     },
+{{- if hasKey . "sonarqubeUrl" }}
     "sonarlint": {
       "settings": {
         "connectedMode": {
           "connections": {
             "sonarqube": [
               {
-
-
+                "connectionId": {{ .sonarqubeConnectionId | quote }},
+                "serverUrl": {{ .sonarqubeUrl | quote }},
                 "token": "{{ .sonarqubeToken }}"
               }
             ]
@@ -51,6 +52,7 @@
         }
       }
     },
+{{- end }}
   },
   "restore_on_startup": "last_session",
   "soft_wrap": "none",
@@ -130,7 +132,7 @@
     "allow_data_collection": "no",
   },
   "agent": {
-
+    "terminal_init_command": "{{ if hasKey . "zedProxy" }}HTTPS_PROXY={{ .zedProxy }} HTTP_PROXY={{ .zedProxy }} {{ end }}claude",
     "enable_feedback": false,
     "expand_terminal_card": false,
     "max_content_width": 850.0,
@@ -164,14 +166,46 @@
   "autosave": "off",
   "show_whitespaces": "all",
   "icon_theme": "Material Icon Theme",
+  "auto_install_extensions": {
+    "one-dark-pro": true,
+    "material-icon-theme": true,
+  },
   "ui_font_size": 16.0,
   "buffer_font_size": 14.0,
-  "theme": "One Dark Pro Darker",
+  // The one-dark-pro extension ships only "One Dark Pro", already on the Darker backgrounds;
+  // these overrides take the remaining colors from VS Code's One Dark Pro Darker.
+  "theme": "One Dark Pro",
   "theme_overrides": {
-    "One Dark Pro Darker": {
+    "One Dark Pro": {
+      "panel.background": "#1e2227",
+      "editor.invisible": "#ffffff1d",
+      "hint": "#abb2bf",
+      "hint.background": "#2c313c",
+      "version_control.added": "#109868",
+      "version_control.modified": "#948b60",
+      "version_control.deleted": "#9a353d",
+      "players": [
+        {
+          "cursor": "#528bff",
+          "background": "#528bff",
+          "selection": "#67769660"
+        }
+      ],
       "syntax": {
         "comment": {
           "color": "#7f848eff"
+        },
+        "operator": {
+          "color": "#56b6c2ff"
+        },
+        "string.regex": {
+          "color": "#56b6c2ff"
+        },
+        "title": {
+          "color": "#e06c75ff"
+        },
+        "punctuation.list_marker": {
+          "color": "#e5c07bff"
         },
         "comment.doc": {
           "color": "#7f848eff"
