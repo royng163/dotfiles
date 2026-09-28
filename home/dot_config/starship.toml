@@ -22,8 +22,8 @@ $line_break\
 
 [character]
 format = "$symbol"
-error_symbol = "[█](fg:red bg:black)[ ERROR](fg:red bg:black inverted bold)[](fg:red bg:white)"
-success_symbol = "[█](fg:bright-white bg:black)[ PROMPT](fg:bright-white bg:black inverted bold)[](fg:bright-white bg:white)"
+error_symbol = "[█](fg:red bg:black)[ ERROR ](fg:red bg:black inverted bold)[](fg:red bg:white)"
+success_symbol = "[█](fg:bright-white bg:black)[ PROMPT ](fg:bright-white bg:black inverted bold)[](fg:bright-white bg:white)"
 
 [fill]
 symbol = ' '
@@ -35,7 +35,7 @@ disabled = false
 [python]
 # Version, plus the virtualenv name when one is active.
 symbol = "󰌠 "
-format = "[ $symbol$version( \\($virtualenv\\)) ]($style)"
+format = "[ $symbol$version( \\($virtualenv\\))  ]($style)"
 style = "bg:black fg:white"
 
 [cmd_duration]
@@ -47,7 +47,7 @@ style="bold bg:black"
 
 [directory]
 truncation_length = 5
-format = "[ 󰉋 $path]($style)[$lock_symbol]($lock_style)"
+format = "[ 󰉋 $path ]($style)[$lock_symbol]($lock_style)"
 style = "bold fg:black bg:white"
 read_only = "🔒"
 read_only_style= "bold white"
@@ -76,7 +76,7 @@ format = '($style)'
 disabled = false
 
 [git_branch]
-format = " 󰘬 $branch"
+format = " 󰘬 $branch "
 style = "bold fg:bright-black bg:black"
 
 [git_status]
@@ -96,38 +96,38 @@ format = '\([$state( $progress_current/$progress_total)]($style)\) '
 style = "cyan"
 
 [nodejs]
-symbol = " "
-format = "[ $symbol$version ]($style)"
+symbol = " "
+format = "[ $symbol$version  ]($style)"
 style = "bg:black fg:white"
 
 [golang]
-symbol = " "
-format = "[ $symbol$version ]($style)"
+symbol = " "
+format = "[ $symbol$version  ]($style)"
 style = "bg:black fg:white"
 
 [rust]
-symbol = " "
-format = "[ $symbol$version ]($style)"
+symbol = "󱘗 "
+format = "[ $symbol$version  ]($style)"
 style = "bg:black fg:white"
 
 [java]
-symbol = " "
-format = "[ $symbol$version ]($style)"
+symbol = " "
+format = "[ $symbol$version  ]($style)"
 style = "bg:black fg:white"
 
 [php]
-symbol = " "
-format = "[ $symbol$version ]($style)"
+symbol = " "
+format = "[ $symbol$version  ]($style)"
 style = "bg:black fg:white"
 
 [ruby]
-symbol = " "
-format = "[ $symbol$version ]($style)"
+symbol = " "
+format = "[ $symbol$version  ]($style)"
 style = "bg:black fg:white"
 
 [c]
-symbol = " "
-format = "[ $symbol$version ]($style)"
+symbol = " "
+format = "[ $symbol$version  ]($style)"
 style = "bg:black fg:white"
 
 [os]

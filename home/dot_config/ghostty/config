@@ -24,7 +24,7 @@ clipboard-read = allow
 window-save-state = always
 
 # Nerd Font: the prompt and file listings draw glyphs outside the base unicode set.
-font-family = "JetBrainsMono Nerd Font Mono"
+font-family = "Cascadia Mono NF"
 font-thicken = true
 # Floor every fg/bg pair at WCAG AA; dim greys get lifted, bright text is untouched.
 minimum-contrast = 4.5
