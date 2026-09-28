@@ -7,20 +7,46 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "preview_tabs": {
+    "enable_preview_from_file_finder": false
+  },
+  "debugger": {
+    "dock": "right"
+  },
   "diff_view_style": "split",
   "proxy": "",
   "agent_buffer_font_size": 15.0,
   "languages": {
+    // SonarLint is kept for Python only: the Django repo is 612 .py / 0 .js, the
+    // Vue repos the reverse, and each analyser costs ~500-950 MB of JVM.
+    "Nginx": {
+      "enable_language_server": false
+    },
     "JavaScript": {
       "code_actions_on_format": {
         "source.fixAll.eslint": true
-      }
+      },
+      "language_servers": ["!sonarlint", "..."]
     },
+    "TypeScript": { "language_servers": ["!sonarlint", "..."] },
+    "TSX": { "language_servers": ["!sonarlint", "..."] },
+    "HTML": { "language_servers": ["!sonarlint", "..."] },
+    "CSS": { "language_servers": ["!sonarlint", "..."] },
+    "YAML": { "language_servers": ["!sonarlint", "..."] },
     "Python": {
       "language_servers": ["pylsp", "!basedpyright"],
     },
   },
   "lsp": {
+    "vtsls": {
+      "settings": {
+        // Zed defaults tsserver to 8 GiB, which two servers can exhaust on a
+        // 16 GB machine. The semantic server peaks near 2.3 GB across these
+        // repos, so 4 GiB clears the V8 heap limit without inviting swap.
+        "typescript": { "tsserver": { "maxTsServerMemory": 4096 } },
+        "javascript": { "tsserver": { "maxTsServerMemory": 4096 } }
+      }
+    },
     "wakatime": {
       "initialization_options": {
         "api-key": "{{ .wakatimeApiKey }}"
@@ -58,8 +84,9 @@
   "soft_wrap": "none",
   "preferred_line_length": 120,
   "git_panel": {
+    "group_by": "staging",
     "sort_by": "path",
-    "entry_primary_click_action": "view_file",
+    "entry_primary_click_action": "project_diff",
     "tree_view": false,
     "collapse_untracked_diff": false,
     "status_style": "label_color",
@@ -128,6 +155,12 @@
     },
   },
   "edit_predictions": {
+    "open_ai_compatible_api": {
+      "api_url": ""
+    },
+    "codestral": {
+      "api_url": "https://codestral.mistral.ai"
+    },
     "provider": "copilot",
     "allow_data_collection": "no",
   },
