@@ -108,6 +108,8 @@
   },
   "terminal": {
     "show_count_badge": false,
+    // A Nerd Font, for the Starship prompt icons.
+    "font_family": "Cascadia Mono NF",
     "font_size": 13.0,
   },
   "project_panel": {
@@ -200,14 +202,14 @@
   "show_whitespaces": "all",
   "icon_theme": "Material Icon Theme",
   "auto_install_extensions": {
-    "one-dark-pro": true,
+    "one-dark-pro-enhanced": true,
     "material-icon-theme": true,
   },
   "ui_font_size": 16.0,
   "buffer_font_size": 14.0,
-  "theme": "One Dark Pro",
+  "theme": "One Dark Pro Darker",
   "theme_overrides": {
-    "One Dark Pro": {
+    "One Dark Pro Darker": {
       "syntax": {
         "comment": {
           "color": "#7f848eff"

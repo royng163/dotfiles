@@ -14,4 +14,6 @@ elif command -v brew >/dev/null; then
   for p in fzf ripgrep fd bat eza btop zoxide direnv zsh-autosuggestions zsh-syntax-highlighting; do
     brew list "$p" >/dev/null 2>&1 || brew install "$p"
   done
+  # Same Nerd Font as windows/install-font. Not needed on WSL, which renders in Windows Terminal.
+  brew list --cask font-cascadia-mono-nf >/dev/null 2>&1 || brew install --cask font-cascadia-mono-nf
 fi
