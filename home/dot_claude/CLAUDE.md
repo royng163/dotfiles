@@ -7,8 +7,9 @@
 - Do not guess APIs, versions, flags, commit SHAs, or package names. Verify by reading code or docs before asserting.
 
 ## Git
-- Never run `git add`, `git commit` or `git push` for the user. Leave changes unstaged in the
-  working tree, report the state, and stop. Branch and worktree creation is fine.
+- Run `git add` and `git commit` (including `--amend`) only when the user asks for that commit.
+  Otherwise leave changes unstaged, report the state, and stop. Never run `git push`.
+- Branch and worktree creation is fine.
 
 ## Code comments
 - Comments describe what the code does for a future reader who has no idea a change was ever made. Never narrate the edit or its history.
