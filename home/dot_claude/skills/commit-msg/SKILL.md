@@ -21,7 +21,7 @@ Generate a conventional commit message. Do NOT commit.
 
 <optional body>
 
-<optional footer>
+<optional BREAKING CHANGE footer>
 ```
 
 ## Types
@@ -67,7 +67,9 @@ House style (not enforced by the config, kept for quality):
   spanning several areas may group them instead — see Grouped body.
 - Explain WHY only when it is not obvious from the change and would otherwise be lost. One short clause.
 - Whole message under ~60 words. If a bullet only rephrases the subject, delete it.
-- Footer: git-trailer format — `token: value` or `token #value`. Multi-word tokens use `-` (e.g. `Reviewed-by`, `Refs`), with `BREAKING CHANGE` the space-allowed exception. Use for issue refs (`Closes #123`) or breaking-change detail.
+- No ticket references anywhere: no Jira keys (`HV-602`) or issue numbers in the subject, scope,
+  body or footer, and no `Refs:` / `Closes:` / `Fixes:` section, even when the branch or diff names one.
+- Footer: only for breaking-change detail, as a `BREAKING CHANGE:` trailer. Omit it otherwise.
 
 ## Grouped body
 
