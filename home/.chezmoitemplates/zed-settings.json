@@ -205,40 +205,12 @@
   },
   "ui_font_size": 16.0,
   "buffer_font_size": 14.0,
-  // The one-dark-pro extension ships only "One Dark Pro", already on the Darker backgrounds;
-  // these overrides take the remaining colors from VS Code's One Dark Pro Darker.
   "theme": "One Dark Pro",
   "theme_overrides": {
     "One Dark Pro": {
-      "panel.background": "#1e2227",
-      "editor.invisible": "#ffffff1d",
-      "hint": "#abb2bf",
-      "hint.background": "#2c313c",
-      "version_control.added": "#109868",
-      "version_control.modified": "#948b60",
-      "version_control.deleted": "#9a353d",
-      "players": [
-        {
-          "cursor": "#528bff",
-          "background": "#528bff",
-          "selection": "#67769660"
-        }
-      ],
       "syntax": {
         "comment": {
           "color": "#7f848eff"
-        },
-        "operator": {
-          "color": "#56b6c2ff"
-        },
-        "string.regex": {
-          "color": "#56b6c2ff"
-        },
-        "title": {
-          "color": "#e06c75ff"
-        },
-        "punctuation.list_marker": {
-          "color": "#e5c07bff"
         },
         "comment.doc": {
           "color": "#7f848eff"
