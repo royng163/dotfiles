@@ -111,6 +111,8 @@
     // A Nerd Font, for the Starship prompt icons.
     "font_family": "Cascadia Mono NF",
     "font_size": 13.0,
+    // Cascadia's ascent + descent, so powerline separators fill the row like its background.
+    "line_height": { "custom": 1.16 },
   },
   "project_panel": {
     "diagnostic_badges": true,
