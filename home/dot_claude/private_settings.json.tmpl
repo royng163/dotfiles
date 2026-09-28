@@ -3,7 +3,7 @@
   "cleanupPeriodDays": 30,
   "env": {
     "MAX_THINKING_TOKENS": "10000",
-    "CLAUDE_CODE_SUBAGENT_MODEL": "haiku",
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet",
     "CLAUDE_CODE_EFFORT_LEVEL": "high",
     "CLAUDE_CODE_TMUX_TRUECOLOR": "1"
 {{- /* proxy is per-machine data from ~/.config/chezmoi/chezmoi.toml, never committed */}}
@@ -22,7 +22,9 @@
     ],
     "deny": [
       "Bash(git push)",
-      "Bash(git push *)"
+      "Bash(git push *)",
+      "Bash(git commit)",
+      "Bash(git commit *)"
     ],
     "defaultMode": "plan",
     "additionalDirectories": [
@@ -91,7 +93,7 @@
   "autoCompactWindow": 500000,
   "awaySummaryEnabled": false,
   "skipWorkflowUsageWarning": true,
-  "theme": "dark",
+  "theme": "custom:blue-prompt",
   "preferredNotifChannel": "terminal_bell",
   "showTurnDuration": true
 {{- /* work-specific autoMode context is per-machine data, never committed */}}
