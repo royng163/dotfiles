@@ -17,8 +17,7 @@ $username\
 [](fg:green bg:bright-black)\
 $os\
 $hostname\
-$line_break\
-[‎]()"""
+$line_break"""
 
 [character]
 format = "$symbol"
