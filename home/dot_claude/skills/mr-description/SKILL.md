@@ -67,7 +67,10 @@ Hard caps, not aspirations. Whole body **under ~150 words**. If it does not fit,
   shape ("Members + Equipment sheets"), not the contents.
 
 Never include: restatements of the title, mechanism detail the diff already shows, measurement
-dumps or tables, or a bullet a reader could infer from another bullet.
+dumps or tables, a bullet a reader could infer from another bullet, or post-deploy / post-merge
+commands (seeds, management commands, migrations to run).
+
+When creating the MR, assign no reviewers; the author picks them.
 
 ## Emphasis by change type
 
@@ -76,7 +79,7 @@ Same four headings; shift the stress:
 - **Fix** — Summary = symptom + root cause; Testing = the failing case now passing (regression test).
 - **Refactor** — Summary asserts behavior unchanged + names the benefit; Testing = suite still green.
 - **Deps** — Summary = version deltas + notable impacts; Testing = app still runs.
-- **Docs/chore** — Summary = rationale + who is affected; note any post-merge action.
+- **Docs/chore** — Summary = rationale + who is affected.
 
 ## Rules
 
