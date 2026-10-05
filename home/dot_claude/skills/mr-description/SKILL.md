@@ -70,7 +70,8 @@ Never include: restatements of the title, mechanism detail the diff already show
 dumps or tables, a bullet a reader could infer from another bullet, or post-deploy / post-merge
 commands (seeds, management commands, migrations to run).
 
-When creating the MR, assign no reviewers; the author picks them.
+When creating the MR, open it as a draft (`glab mr create --draft`) and assign no reviewers; the
+author marks it ready and picks them.
 
 ## Emphasis by change type
 
