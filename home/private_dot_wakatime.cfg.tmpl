@@ -1,0 +1,11 @@
+[settings]
+api_key = {{ .wakatimeApiKey }}
+# Claude's scratch, plans, memory and session entries are logged as AI Coding but aren't work.
+exclude =
+    /\.notes/
+    /Projects/hkstp/.*\.(mdx?|ya?ml)$
+    ^/private/tmp/
+    ^/tmp/
+    /\.claude/
+    /Downloads/
+    ^Claude [0-9a-f-]+$

@@ -8,6 +8,7 @@
 .zshrc
 .claude
 .config/bat
+.wakatime.cfg
 .chezmoiscripts/unix/**
 {{- else }}
 .chezmoiscripts/windows/**
@@ -19,6 +20,10 @@ Documents
 {{/* Ghostty has no Windows build, and a WSL shell renders in Windows Terminal. */}}
 .config/ghostty
 .config/zed
+{{- end }}
+
+{{- if not (hasKey . "wakatimeApiKey") }}
+.wakatime.cfg
 {{- end }}
 
 {{- if ne .chezmoi.os "darwin" }}
