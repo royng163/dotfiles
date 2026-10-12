@@ -9,6 +9,7 @@ Dotfiles for macOS, WSL (Ubuntu) and Windows, managed with [chezmoi](https://www
 | `~/.zshrc` (login shell on macOS and WSL) | ✓ | ✓ | |
 | `~/.config/starship.toml` | ✓ | ✓ | ✓ |
 | `~/.config/bat/config` | ✓ | ✓ | |
+| `~/.wakatime.cfg` (needs `wakatimeApiKey`) | ✓ | ✓ | |
 | `~/.config/ghostty/config` | ✓ | | |
 | Zed settings | ✓ | | ✓ |
 | `~/.config/cmux/cmux.json` | ✓ | | |
@@ -25,11 +26,11 @@ Scripts in `home/.chezmoiscripts/`. Each skips what is already installed.
 | --- | --- | --- |
 | `unix/install-nvm` | macOS, WSL | nvm (unless Homebrew's is present), plus Node LTS as default if there is none |
 | `unix/install-miniforge` | macOS, WSL | Miniforge at `~/miniforge3` |
-| `unix/install-cli-tools` | macOS, WSL | apt or brew: zsh plugins, fzf, ripgrep, fd, bat, eza, btop, zoxide, direnv (plus zsh on Linux) |
+| `unix/install-cli-tools` | macOS, WSL | apt or brew: zsh plugins, fzf, ripgrep, fd, bat, eza, btop, zoxide, direnv (plus zsh on Linux, Cascadia Mono NF on macOS) |
 | `linux/chsh` | WSL | makes zsh the login shell |
 | `windows/install-packages` | Windows | winget: Windows Terminal, PowerShell 7, Git, Starship, chezmoi, Coreutils, Zed, nvm for Windows, Miniforge |
 | `windows/install-node` | Windows | Node LTS via nvm, if no version is active (nvm asks for UAC) |
-| `windows/install-font` | Windows | Cascadia Mono NF (pinned release, hash-checked), unless already installed |
+| `windows/install-font` | Windows | Cascadia Mono NF (pinned release, hash-checked), unless already installed; macOS gets it from Homebrew in `install-cli-tools` |
 | `windows/configure-windows` | Windows | Registry, with one UAC prompt: Explorer (extensions, hidden files, full path, opens to This PC, no frequent/recent/cloud files), taskbar End Task, no web search/highlights/Start recommendations/Widgets, Do Not Disturb, no Bluetooth tray icon, dark mode, Sudo, Developer Mode, long paths, Remote Desktop off, Edge blank new tab and no first-run |
 
 Some Explorer settings take effect after signing out. Installers never edit shell rc files; `.zshrc` and the PowerShell profile load nvm and conda. `.zshrc` expects `starship`, and uses the CLI tools and zsh plugins when present.
@@ -55,7 +56,7 @@ Secrets and work-specific values live in `~/.config/chezmoi/chezmoi.toml` under 
 | --- | --- |
 | `proxy` | Claude Code `HTTP(S)_PROXY` |
 | `claudeAutoModeEnvironment` | Claude Code `autoMode.environment` (list) |
-| `wakatimeApiKey` | Zed (required on macOS and Windows) |
+| `wakatimeApiKey` | Zed (required on macOS and Windows), `~/.wakatime.cfg` |
 | `sonarqubeUrl`, `sonarqubeConnectionId`, `sonarqubeToken` | Zed SonarLint |
 | `zedProxy` | Zed agent terminal |
 
