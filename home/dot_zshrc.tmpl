@@ -22,18 +22,20 @@ conda() {
 }
 
 
-# >>> mamba initialize >>>
-# !! Contents within this block are managed by 'mamba shell init' !!
+# Caches a tool's init script, keyed by the tool's resolved path so an upgrade regenerates it.
+_zcache=${XDG_CACHE_HOME:-$HOME/.cache}/zsh-init
+[[ -d $_zcache ]] || mkdir -p $_zcache
+_cached_init() {
+  local bin=${commands[$2]:-$2}
+  [[ -x $bin ]] || return 1
+  local f=$_zcache/$1${${bin:A}//\//_}.zsh
+  [[ -s $f ]] || "${@:2}" >| $f 2>/dev/null || { rm -f $f; return 1 }
+  source $f
+}
+
 export MAMBA_EXE="$HOME/miniforge3/bin/mamba"
 export MAMBA_ROOT_PREFIX="$HOME/miniforge3"
-__mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__mamba_setup"
-else
-    alias mamba="$MAMBA_EXE"  # Fallback on help from mamba activate
-fi
-unset __mamba_setup
-# <<< mamba initialize <<<
+_cached_init mamba "$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX"
 
 # opencode
 export PATH=$HOME/.opencode/bin:$PATH
@@ -74,18 +76,17 @@ if [ -d /usr/local/hadoop ]; then
   export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 fi
 
-# nvm, from ~/.nvm or Homebrew's copy on macOS. --no-use skips the ~0.4s `nvm use default`; the
-# newest installed version matching the default alias goes on PATH instead, else nvm resolves it.
+# nvm, from ~/.nvm or Homebrew's copy on macOS. The newest installed version matching the default
+# alias goes on PATH and `nvm` itself loads on first use; otherwise nvm resolves the default now.
 export NVM_DIR="$HOME/.nvm"
-for _f in "$NVM_DIR/nvm.sh" /opt/homebrew/opt/nvm/nvm.sh; do
-  [ -s "$_f" ] && source "$_f" --no-use && break
-done
+_nvm_sh=("$NVM_DIR/nvm.sh"(N) /opt/homebrew/opt/nvm/nvm.sh(N))
 _f=()
 [ -r "$NVM_DIR/alias/default" ] && _f=("$NVM_DIR"/versions/node/v${"$(<"$NVM_DIR/alias/default")"#v}(|.*)(Nn[-1]))
 if (( $#_f )); then
   path=("$_f[1]/bin" $path)
-elif command -v nvm >/dev/null; then
-  nvm use default --silent >/dev/null
+  (( $#_nvm_sh )) && nvm() { unfunction nvm; source "$_nvm_sh[1]" --no-use; nvm "$@" }
+elif (( $#_nvm_sh )); then
+  source "$_nvm_sh[1]" --no-use && nvm use default --silent >/dev/null
 fi
 unset _f
 
@@ -96,18 +97,18 @@ unset _f
 export LAUNCH_EDITOR="$HOME/.local/bin/subl"
 
 # Prompt. Must load after conda/mamba init, which rewrite PS1.
-eval "$(starship init zsh)"
+_cached_init starship starship init zsh --print-full-init
 
 # Modern CLI tools. Each is guarded so this file still loads on a machine or OS
 # where the binary is absent.
 # --cmd cd makes cd itself do the frecency jump; cdi is the fzf picker.
-command -v zoxide >/dev/null && eval "$(zoxide init zsh --cmd cd)"
+_cached_init zoxide zoxide init zsh --cmd cd
 
 # Debian and Ubuntu ship bat as batcat to avoid a name clash with bacula-console, and fd as fdfind.
 command -v batcat >/dev/null && ! command -v bat >/dev/null && alias bat=batcat
 command -v fdfind >/dev/null && ! command -v fd >/dev/null && alias fd=fdfind
 
-command -v direnv >/dev/null && eval "$(direnv hook zsh)"
+_cached_init direnv direnv hook zsh
 
 if command -v eza >/dev/null; then
   alias ls='eza --icons --group-directories-first'
@@ -121,16 +122,20 @@ command -v bat >/dev/null || command -v batcat >/dev/null && alias cat='bat --pa
 command -v btop >/dev/null && alias top=btop
 
 # fzf keys: Ctrl+R history, Ctrl+T file path, Alt+C cd. Ubuntu's fzf predates `fzf --zsh`.
-if _fzf=$(fzf --zsh 2>/dev/null); then
-  eval "$_fzf"
-elif [ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
+if ! _cached_init fzf fzf --zsh && [ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
   source /usr/share/doc/fzf/examples/key-bindings.zsh
 fi
-unset _fzf
 
 # Tab completion. Made explicit here rather than relying on bun's completion file
 # to bootstrap it, which is where compinit was being loaded from.
-autoload -Uz compinit && compinit
+# The security audit runs when the dump is over a day old; otherwise the dump is trusted as is.
+autoload -Uz compinit
+_d=(${ZDOTDIR:-$HOME}/.zcompdump(N.mh-24))
+if (( $#_d )); then
+  compinit -C
+else
+  compinit && touch ${ZDOTDIR:-$HOME}/.zcompdump
+fi
 
 # Suggestion and highlighting plugins, from the first prefix that has them.
 # Syntax highlighting wraps the line editor, so it must stay last in this file.
