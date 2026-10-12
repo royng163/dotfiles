@@ -16,7 +16,15 @@ Read the task and trace the code it touches first, then stop at the first rung t
 - No unrequested abstractions: no interface with one implementation, no config for a fixed value.
 - A bug fix goes where every caller routes through, not only in the path the ticket names.
 - Never simplify away input validation, error handling that prevents data loss, or security.
-- A deliberate shortcut with a known ceiling gets a plain comment naming it and the upgrade path.
+
+## Planning
+- Before planning a non-trivial change, do a blind-spot pass: list what the request leaves unsaid,
+  then interview the user one question at a time about anything that would change the data model,
+  API contract or user flow.
+
+## Claude Code setup
+- Auto-compact runs at 500K tokens via `autoCompactWindow` in `~/.claude/settings.json`.
+  `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` has no effect on a model that compacts at its own limit.
 
 ## Git
 - Run `git add` and `git commit` (including `--amend`) only when the user asks for that commit.
