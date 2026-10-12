@@ -1,8 +1,8 @@
-theme = "nord"
+theme = "gruvbox"
 
 [style]
 mode = "nerd_font"
-separator = ""
+separator = "  "
 
 [[segments]]
 id = "model"
@@ -13,22 +13,13 @@ plain = "🤖"
 nerd_font = ""
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c16 = 3
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 136
-g = 192
-b = 208
+c16 = 3
 
 [segments.styles]
-text_bold = false
+text_bold = true
 
 [segments.options]
 
@@ -41,22 +32,13 @@ plain = "📁"
 nerd_font = "󰉋"
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c16 = 2
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 163
-g = 190
-b = 140
+c16 = 2
 
 [segments.styles]
-text_bold = false
+text_bold = true
 
 [segments.options]
 
@@ -69,22 +51,13 @@ plain = "🌿"
 nerd_font = "󰊢"
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c16 = 9
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 129
-g = 161
-b = 193
+c16 = 9
 
 [segments.styles]
-text_bold = false
+text_bold = true
 
 [segments.options]
 show_sha = false
@@ -98,22 +71,13 @@ plain = "⚡️"
 nerd_font = ""
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c16 = 4
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 180
-g = 142
-b = 173
+c16 = 4
 
 [segments.styles]
-text_bold = false
+text_bold = true
 
 [segments.options]
 
@@ -126,27 +90,18 @@ plain = "📊"
 nerd_font = "󰪞"
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c16 = 6
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 235
-g = 203
-b = 139
+c16 = 6
 
 [segments.styles]
 text_bold = false
 
 [segments.options]
 cache_duration = 180
-api_base_url = "https://api.anthropic.com"
 timeout = 2
+api_base_url = "https://api.anthropic.com"
 
 [[segments]]
 id = "cost"
@@ -157,22 +112,13 @@ plain = "💰"
 nerd_font = ""
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c256 = 214
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 235
-g = 203
-b = 139
+c256 = 214
 
 [segments.styles]
-text_bold = false
+text_bold = true
 
 [segments.options]
 
@@ -185,22 +131,13 @@ plain = "⏱️"
 nerd_font = "󱦻"
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c256 = 142
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 163
-g = 190
-b = 140
+c256 = 142
 
 [segments.styles]
-text_bold = false
+text_bold = true
 
 [segments.options]
 
@@ -213,21 +150,12 @@ plain = "🎯"
 nerd_font = "󱋵"
 
 [segments.colors.icon]
-r = 46
-g = 52
-b = 64
+c256 = 109
 
 [segments.colors.text]
-r = 46
-g = 52
-b = 64
-
-[segments.colors.background]
-r = 136
-g = 192
-b = 208
+c256 = 109
 
 [segments.styles]
-text_bold = false
+text_bold = true
 
 [segments.options]
