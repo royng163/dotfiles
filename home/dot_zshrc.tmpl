@@ -13,20 +13,13 @@ bindkey '^[[B' down-line-or-beginning-search '^[OB' down-line-or-beginning-searc
 bindkey '^[[H' beginning-of-line '^[[F' end-of-line '^[[3~' delete-char
 bindkey '^[[1;5C' forward-word '^[[1;5D' backward-word '^H' backward-kill-word
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$("$HOME/miniforge3/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/miniforge3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniforge3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/miniforge3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+# Miniforge's base env goes on PATH up front; `conda` loads its ~0.5s shell hook on first use.
+export PATH="$HOME/miniforge3/bin:$HOME/miniforge3/condabin:$PATH"
+conda() {
+  unfunction conda
+  eval "$("$HOME/miniforge3/bin/conda" shell.zsh hook 2>/dev/null)"
+  conda "$@"
+}
 
 
 # >>> mamba initialize >>>
@@ -81,11 +74,19 @@ if [ -d /usr/local/hadoop ]; then
   export HADOOP_OPTS="-Djava.library.path=$HADOOP_HOME/lib/native"
 fi
 
-# nvm, from ~/.nvm or Homebrew's copy on macOS.
+# nvm, from ~/.nvm or Homebrew's copy on macOS. --no-use skips the ~0.4s `nvm use default`; the
+# newest installed version matching the default alias goes on PATH instead, else nvm resolves it.
 export NVM_DIR="$HOME/.nvm"
 for _f in "$NVM_DIR/nvm.sh" /opt/homebrew/opt/nvm/nvm.sh; do
-  [ -s "$_f" ] && source "$_f" && break
+  [ -s "$_f" ] && source "$_f" --no-use && break
 done
+_f=()
+[ -r "$NVM_DIR/alias/default" ] && _f=("$NVM_DIR"/versions/node/v${"$(<"$NVM_DIR/alias/default")"#v}(|.*)(Nn[-1]))
+if (( $#_f )); then
+  path=("$_f[1]/bin" $path)
+elif command -v nvm >/dev/null; then
+  nvm use default --silent >/dev/null
+fi
 unset _f
 
 # Editor for Vue DevTools "open in editor". Vite 4 bundles a launch-editor with no
@@ -120,11 +121,12 @@ command -v bat >/dev/null || command -v batcat >/dev/null && alias cat='bat --pa
 command -v btop >/dev/null && alias top=btop
 
 # fzf keys: Ctrl+R history, Ctrl+T file path, Alt+C cd. Ubuntu's fzf predates `fzf --zsh`.
-if fzf --zsh >/dev/null 2>&1; then
-  source <(fzf --zsh)
+if _fzf=$(fzf --zsh 2>/dev/null); then
+  eval "$_fzf"
 elif [ -r /usr/share/doc/fzf/examples/key-bindings.zsh ]; then
   source /usr/share/doc/fzf/examples/key-bindings.zsh
 fi
+unset _fzf
 
 # Tab completion. Made explicit here rather than relying on bun's completion file
 # to bootstrap it, which is where compinit was being loaded from.
