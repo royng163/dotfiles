@@ -20,9 +20,7 @@
       "Bash(npm info *)",
       "Bash(python3 -m json.tool)",
       "Bash(git add *)",
-      "Bash(git commit *)",
-      "Bash(git -C * add *)",
-      "Bash(git -C * commit *)"
+      "Bash(git commit *)"
     ],
     "deny": [
       "Bash(git push)",
