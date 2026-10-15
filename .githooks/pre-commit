@@ -1,0 +1,8 @@
+#!/bin/sh
+# This repo is public and chezmoi auto-pushes each commit, so staged secrets block the commit.
+PATH="$HOME/.local/bin:$PATH"
+if ! command -v gitleaks >/dev/null; then
+  echo "pre-commit: gitleaks is not installed; run chezmoi apply to install it" >&2
+  exit 1
+fi
+exec gitleaks git --pre-commit --staged --redact --no-banner

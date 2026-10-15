@@ -22,10 +22,6 @@ Read the task and trace the code it touches first, then stop at the first rung t
   then interview the user one question at a time about anything that would change the data model,
   API contract or user flow.
 
-## Claude Code setup
-- Auto-compact runs at 500K tokens via `autoCompactWindow` in `~/.claude/settings.json`.
-  `CLAUDE_AUTOCOMPACT_PCT_OVERRIDE` has no effect on a model that compacts at its own limit.
-
 ## Git
 - Run `git add` and `git commit` (including `--amend`) only when the user asks for that commit.
   Otherwise leave changes unstaged, report the state, and stop. Never run `git push`.

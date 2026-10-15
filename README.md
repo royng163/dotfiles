@@ -13,7 +13,9 @@ Dotfiles for macOS, WSL (Ubuntu) and Windows, managed with [chezmoi](https://www
 | `~/.config/ghostty/config` | ✓ | | |
 | Zed settings | ✓ | | ✓ |
 | `~/.config/cmux/cmux.json` | ✓ | | |
-| `~/.claude/` (settings, CLAUDE.md, hooks, skills, MCP server) | ✓ | ✓ | |
+| `~/.claude/` (settings, CLAUDE.md, hooks, MCP server, skill symlinks) | ✓ | ✓ | |
+| `~/.agents/skills/` (Agent Skills, read by Codex, Gemini CLI and OpenCode; linked into `~/.claude/skills/`) | ✓ | ✓ | |
+| `~/.config/opencode/AGENTS.md` (same shared instructions as `~/.claude/CLAUDE.md`) | ✓ | ✓ | |
 | Windows Terminal settings: default profile, font, color scheme | | | ✓ |
 | Windows Terminal color scheme (One Dark Pro Darker) | | | ✓ |
 | PowerShell 7 profile (conda, Starship; the Coreutils block is left alone) | | | ✓ |
@@ -26,7 +28,8 @@ Scripts in `home/.chezmoiscripts/`. Each skips what is already installed.
 | --- | --- | --- |
 | `unix/install-nvm` | macOS, WSL | nvm (unless Homebrew's is present), plus Node LTS as default if there is none |
 | `unix/install-miniforge` | macOS, WSL | Miniforge at `~/miniforge3` |
-| `unix/install-cli-tools` | macOS, WSL | apt or brew: zsh plugins, fzf, ripgrep, fd, bat, eza, btop, zoxide, direnv (plus zsh on Linux, Cascadia Mono NF on macOS) |
+| `unix/install-cli-tools` | macOS, WSL | apt or brew: zsh plugins, fzf, ripgrep, fd, bat, eza, btop, zoxide, direnv, gitleaks (plus zsh on Linux, Cascadia Mono NF on macOS) |
+| `unix/git-hooks` | macOS, WSL | points this repo at `.githooks/`, whose pre-commit hook runs gitleaks on staged changes |
 | `linux/chsh` | WSL | makes zsh the login shell |
 | `windows/install-packages` | Windows | winget: Windows Terminal, PowerShell 7, Git, Starship, chezmoi, Coreutils, Zed, nvm for Windows, Miniforge |
 | `windows/install-node` | Windows | Node LTS via nvm, if no version is active (nvm asks for UAC) |
@@ -59,6 +62,7 @@ Secrets and work-specific values live in `~/.config/chezmoi/chezmoi.toml` under 
 | `wakatimeApiKey` | Zed (required on macOS and Windows), `~/.wakatime.cfg` |
 | `sonarqubeUrl`, `sonarqubeConnectionId`, `sonarqubeToken` | Zed SonarLint |
 | `zedProxy` | Zed agent terminal |
+| `wakatimeExclude` | extra `exclude` patterns in `~/.wakatime.cfg` (list) |
 
 ## Command guide
 
@@ -83,7 +87,7 @@ Adapted from [chezmoi and git: dotfiles without pretending every machine is the 
 
 ## Layout
 
-`.chezmoiroot` points chezmoi at `home/`, so repo files (this README, `CLAUDE.md`) are never deployed.
+`.chezmoiroot` points chezmoi at `home/`, so repo files (this README, `CLAUDE.md`, `LICENSE`, `.githooks/`) are never deployed.
 
 ```
 home/
@@ -91,9 +95,13 @@ home/
   .chezmoiscripts/unix/       run_onchange_* scripts, macOS and WSL
   .chezmoiscripts/linux/      run_onchange_* scripts, Linux only
   .chezmoiscripts/windows/    run_onchange_* scripts, Windows only
-  .chezmoitemplates/          shared templates (Zed settings for macOS and Windows)
+  .chezmoitemplates/          shared templates: Zed settings, Claude settings, agents.md (instructions for every agent)
   AppData/, Documents/        Windows targets
-  dot_claude/, dot_config/, dot_zshrc.tmpl
+  dot_agents/, dot_claude/, dot_config/, dot_zshrc.tmpl
 ```
 
 Name prefixes: `dot_` → `.`, `private_` → mode 600, `executable_` → +x, `modify_` → edits the existing file, `run_onchange_` → reruns when its content changes, `.tmpl` → template.
+
+## License
+
+[MIT](LICENSE)

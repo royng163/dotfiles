@@ -3,7 +3,9 @@ api_key = {{ .wakatimeApiKey }}
 # Claude's scratch, plans, memory and session entries are logged as AI Coding but aren't work.
 exclude =
     /\.notes/
-    /Projects/work/.*\.(mdx?|ya?ml)$
+{{- if hasKey . "wakatimeExclude" }}{{ range .wakatimeExclude }}
+    {{ . }}
+{{- end }}{{ end }}
     ^/private/tmp/
     ^/tmp/
     /\.claude/

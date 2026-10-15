@@ -1,0 +1,3 @@
+#!/bin/sh
+# Points the dotfiles repo at its tracked hooks (gitleaks pre-commit).
+git -C "{{ .chezmoi.workingTree }}" config core.hooksPath .githooks
