@@ -3,6 +3,7 @@
 
 import asyncio
 import base64
+import os
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent, ImageContent
@@ -14,16 +15,26 @@ _context = None
 _page = None
 _pw = None
 _viewport = {"width": 1280, "height": 720}
+_issues = []
+
+
+async def _new_page():
+    global _context, _page
+    _context = await _browser.new_context(viewport=_viewport)
+    _page = await _context.new_page()
+    # patchright disables the console API for stealth, so console and page errors never fire
+    _page.on("requestfailed", lambda r: _issues.append(f"requestfailed: {r.method} {r.url} -> {r.failure}"))
+    _page.on("response", lambda r: _issues.append(f"http {r.status}: {r.request.method} {r.url}")
+             if r.status >= 400 else None)
 
 
 async def get_page():
-    global _browser, _context, _page, _pw
+    global _browser, _pw
     if _page is None:
         from patchright.async_api import async_playwright
         _pw = await async_playwright().start()
         _browser = await _pw.chromium.launch(headless=True)
-        _context = await _browser.new_context(viewport=_viewport)
-        _page = await _context.new_page()
+        await _new_page()
     return _page
 
 
@@ -45,7 +56,8 @@ async def list_tools():
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "full_page": {"type": "boolean", "description": "Capture full scrollable page (default false)"}
+                    "full_page": {"type": "boolean", "description": "Capture full scrollable page (default false)"},
+                    "path": {"type": "string", "description": "Also save the PNG to this absolute path"},
                 },
             },
         ),
@@ -125,6 +137,11 @@ async def list_tools():
             },
         ),
         Tool(
+            name="browser_errors",
+            description="Failed requests and 4xx/5xx responses since the last call, then clear them",
+            inputSchema={"type": "object", "properties": {}},
+        ),
+        Tool(
             name="browser_close",
             description="Close the browser",
             inputSchema={"type": "object", "properties": {}},
@@ -144,7 +161,10 @@ async def call_tool(name: str, arguments: dict):
     elif name == "browser_screenshot":
         page = await get_page()
         full_page = arguments.get("full_page", False)
-        data = await page.screenshot(full_page=full_page)
+        path = arguments.get("path")
+        if path:
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+        data = await page.screenshot(full_page=full_page, path=path)
         b64 = base64.b64encode(data).decode()
         return [ImageContent(type="image", data=b64, mimeType="image/png")]
 
@@ -193,13 +213,17 @@ async def call_tool(name: str, arguments: dict):
         w, h = arguments["width"], arguments["height"]
         _viewport = {"width": w, "height": h}
         current_url = _page.url if _page else None
-        if _context:
-            await _context.close()
-        _context = await _browser.new_context(viewport=_viewport)
-        _page = await _context.new_page()
+        await get_page()
+        await _context.close()
+        await _new_page()
         if current_url and current_url != "about:blank":
             await _page.goto(current_url, wait_until="domcontentloaded")
         return [TextContent(type="text", text=f"Viewport set to {w}x{h}")]
+
+    elif name == "browser_errors":
+        found = _issues[:]
+        _issues.clear()
+        return [TextContent(type="text", text="\n".join(found) or "no failed requests")]
 
     elif name == "browser_close":
         if _browser:
