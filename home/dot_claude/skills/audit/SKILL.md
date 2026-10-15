@@ -90,6 +90,15 @@ without having run it**, and never describe a skipped check as passed. If a chec
 cannot run here — a browser flow, a manual contract call — say so and name it as
 outstanding rather than dropping it silently.
 
+### SonarQube
+
+When the repo has a `sonar-project.properties`, fetch the open issues for each changed file from
+its last analysis: `sonar list issues --file <path> --statuses OPEN,CONFIRMED --format json`, run
+from the repo root. They predate the change, so each one is an **Opportunistic** finding in the
+file it sits in: offer it with its rule key, `[sonar python:S3776]`, and say whether the fix is
+local and safe or falls under propose-and-stop. Skip files outside the scope. If `sonar` is
+missing, unauthenticated or fails, say so in the ground truth and carry on without it.
+
 ## Pass 1 — correctness
 
 Does the change do what it claims, and do the paths around it hold? Questions, not
