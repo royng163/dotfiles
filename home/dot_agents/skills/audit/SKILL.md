@@ -90,6 +90,15 @@ without having run it**, and never describe a skipped check as passed. If a chec
 cannot run here — a browser flow, a manual contract call — say so and name it as
 outstanding rather than dropping it silently.
 
+### Framework checks
+
+Run the stack's own static checks over backend code in scope, even when the repo's docs do not
+list them. For Django: `manage.py check` and `manage.py makemigrations --check --dry-run`, under
+the project's test environment. A warning the change introduces is **Must fix**. A pre-existing
+warning on a model or field in a file the change touches is **Opportunistic**; any other is one
+**Out of scope** line. After a fix, `makemigrations --check --dry-run` must show no change, or
+the migration follows the repo's migration rules and is propose-and-stop.
+
 ### SonarQube
 
 When the repo has a `sonar-project.properties`, fetch the open issues for each changed file from
