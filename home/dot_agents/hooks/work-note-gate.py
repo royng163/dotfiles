@@ -8,8 +8,9 @@ its writes are handed to the lead's session, and the lead is checked when it nex
 The notes folder lives at the monorepo root when the repo is a monorepo, otherwise at the
 parent of the repo so sibling repos share it. `--where` prints that path.
 
-Runs as a Stop hook for Claude Code and for CodeBuddy Code. Both write their own transcript
-shape, and both block differently, so the tool is detected from the transcript path.
+Runs as a Stop hook for Claude Code and CodeBuddy Code, which pass a transcript, and as a
+plugin adapter in OpenCode, which passes the paths the session wrote. Each tool blocks
+differently, so the caller is detected from `tool` in the payload or the transcript path.
 
 No-ops unless a resolved or legacy `.notes/work/` folder exists, so it stays silent in
 projects that do not keep work notes.
@@ -27,7 +28,11 @@ SOURCE_SUFFIXES = {
     '.sql',
 }
 WRITE_TOOLS = {'Write', 'Edit', 'MultiEdit', 'NotebookEdit'}
-TOOL_HOMES = (Path.home() / '.claude', Path.home() / '.codebuddy', Path.home() / '.agents')
+CLAUDE_HOME = Path.home() / '.claude'
+CODEBUDDY_HOME = Path.home() / '.codebuddy'
+AGENTS_HOME = Path.home() / '.agents'
+TOOL_HOMES = (CLAUDE_HOME, CODEBUDDY_HOME, AGENTS_HOME)
+OPENCODE_STATE = Path.home() / '.local' / 'share' / 'opencode' / 'work-note-gate'
 PRUNE_AFTER = 7 * 24 * 60 * 60
 # The gate yields after this many blocks in one session. A blocking hook that
 # cannot be satisfied would otherwise stall the turn until the harness cap.
@@ -40,12 +45,26 @@ BACKEND_DIRS = {'backend', 'server', 'api'}
 FRONTEND_DIRS = {'frontend', 'client', 'web', 'mobile', 'admin'}
 
 
-def tool_home(transcript):
-    """The agent home that owns this transcript: ~/.claude or ~/.codebuddy."""
-    for home in TOOL_HOMES:
-        if home in transcript.parents:
-            return home
-    return TOOL_HOMES[0]
+def resolve_tool(payload):
+    """Which agent invoked the gate: an explicit field, else the transcript's home."""
+    tool = payload.get('tool')
+    if tool in ('claude', 'codebuddy', 'opencode'):
+        return tool
+    transcript = payload.get('transcript_path')
+    if transcript:
+        for home in TOOL_HOMES:
+            if home in Path(transcript).parents:
+                return 'codebuddy' if home == CODEBUDDY_HOME else 'claude'
+    return 'claude'
+
+
+def state_dir(tool):
+    """Where block counters, skip markers and handoffs live for one agent."""
+    if tool == 'opencode':
+        return OPENCODE_STATE
+    if tool == 'codebuddy':
+        return CODEBUDDY_HOME / 'hooks' / 'state'
+    return CLAUDE_HOME / 'hooks' / 'state'
 
 
 @lru_cache(maxsize=None)
@@ -187,7 +206,7 @@ def read_transcript(transcript, root):
                     except ValueError:
                         pass
                 written += written_paths(line)
-    return [name for name in written if is_source(name, root)], team
+    return [name for name in written if name], team
 
 
 def is_source(name, root):
@@ -261,14 +280,14 @@ def prune(log_dir):
         pass
 
 
-def block(home, reason, system_message):
+def block(tool, reason, system_message):
     """Report a block in the shape the calling tool expects."""
-    if home.name == '.codebuddy':
-        # CodeBuddy Code blocks on exit code 2 and reads reason/stopReason from stdout.
-        print(json.dumps({'reason': reason, 'systemMessage': system_message}))
-        return 2
-    print(json.dumps({'decision': 'block', 'reason': reason, 'systemMessage': system_message}))
-    return 0
+    if tool == 'claude':
+        print(json.dumps({'decision': 'block', 'reason': reason, 'systemMessage': system_message}))
+        return 0
+    # CodeBuddy blocks on exit 2; the OpenCode plugin reads `reason` and re-prompts.
+    print(json.dumps({'reason': reason, 'systemMessage': system_message}))
+    return 2
 
 
 def main():
@@ -282,23 +301,31 @@ def main():
         payload = {}
 
     session = payload.get('session_id')
-    transcript = payload.get('transcript_path')
-    if not session or not transcript:
+    if not session:
         return 0
 
-    home = tool_home(Path(transcript))
-    log_dir = home / 'hooks' / 'state'
-    teams_dir = home / 'teams'
+    tool = resolve_tool(payload)
+    log_dir = state_dir(tool)
+    teams_dir = CLAUDE_HOME / 'teams'
     prune(log_dir)
 
     cwd = Path(payload.get('cwd') or Path.cwd())
-    written, team = read_transcript(Path(transcript), git_root(cwd))
+    root = git_root(cwd)
+    # OpenCode has no transcript, so its plugin reports the paths the session wrote.
+    explicit = payload.get('written')
+    if explicit:
+        raw, team = [str(path) for path in explicit], None
+    elif payload.get('transcript_path'):
+        raw, team = read_transcript(Path(payload['transcript_path']), root)
+    else:
+        return 0
+
     handoff = log_dir / f'{session}.handoff'
     try:
-        written += handoff.read_text().split('\n')
+        raw += handoff.read_text().split('\n')
     except OSError:
         pass
-    written = existing(name.strip() for name in written if name.strip())
+    written = existing(name for name in (n.strip() for n in raw) if name and is_source(name, root))
     if not written:
         (log_dir / f'{session}.blocks').unlink(missing_ok=True)
         return 0
@@ -363,7 +390,7 @@ def main():
         'work-note skill for the format. If this change genuinely '
         f'needs no note, run `touch {log_dir}/{session}.skip` and then stop.'
     )
-    return block(home, reason, f'Work-note gate: {len(stale)} file(s) written after the note.')
+    return block(tool, reason, f'Work-note gate: {len(stale)} file(s) written after the note.')
 
 
 if __name__ == '__main__':
