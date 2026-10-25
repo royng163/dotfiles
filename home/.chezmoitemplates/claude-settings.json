@@ -38,7 +38,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$HOME/.claude/hooks/work-note-gate.py\" 2>/dev/null || true",
+            "command": "python3 \"$HOME/.agents/hooks/work-note-gate.py\" 2>/dev/null || true",
             "timeout": 20,
             "statusMessage": "Checking work note"
           }
