@@ -1,23 +1,49 @@
 ---
 name: work-note
 description: >
-  Create or extend the shared work note for a feature in a multi-repo workspace:
-  a single file per feature, at the workspace root, holding the contract between
-  surfaces (backend, frontend, admin) and what each one actually changed — terse,
-  carrying only what the user or the next surface acts on. Also
-  scaffolds the shared notes folder in a new workspace.
+  Create or extend the shared work note for a feature: one file per feature at
+  the monorepo root when the repo is a monorepo, otherwise at the parent of the
+  repo so sibling repos share it. Holds the contract between surfaces (backend,
+  frontend, admin) and what each one actually changed — terse, carrying only what
+  the user or the next surface acts on. Also scaffolds the shared notes folder.
   Trigger: starting or finishing work on a surface, picking up a feature another
   surface began, "work note", "write the work note", /work-note.
 ---
 
-One file per feature, shared across every repo in the workspace. It is how a
-surface tells the next one what it can rely on.
+One file per feature, shared across every surface: at the monorepo root, or at the
+parent of a single-surface repo. It is how a surface tells the next one what it can
+rely on.
 
 ## Output location
 
-Notes live in the **workspace-root** shared folder `.notes/work/`, the parent
-directory holding all the repos — never inside a repo, and never in a repo's own
-`.notes/`. From a repo worktree that is `../.notes/work/`.
+Resolve the **notes root** from the current git repository:
+
+- **Monorepo:** `<git-root>/.notes/work/`.
+- **Single-surface repo:** `<git-root>/../.notes/work/`, so sibling repos share the
+  note.
+
+A repo is a monorepo when any of these is true:
+
+- the root has a workspace manifest: `pnpm-workspace.yaml`, `lerna.json`, `nx.json`,
+  `turbo.json`, `rush.json`, `go.work`, a `Cargo.toml` with `[workspace]`, a
+  `package.json` with `workspaces`, or a `pyproject.toml` with `[tool.uv.workspace]`;
+- the root has `apps/`, `packages/`, or `services/`;
+- the root has two or more surface directories, such as `backend/` with `client/`,
+  `frontend/`, `web/`, `mobile/`, or `admin/`;
+- the project's `CLAUDE.md` or `AGENTS.md` declares more than one surface.
+
+Examples:
+
+- `FinC` has `backend/` and `client/`, so notes go in `FinC/.notes/work/`.
+- A standalone `api` repo with sibling `web-client` and `web-admin` repos puts notes
+  in the parent: `../.notes/work/`.
+
+Never create `.notes/` inside a surface directory. Do not keep a parent `.notes/`
+alongside a monorepo `.notes/`; the monorepo root is canonical. If an existing note
+lives at the old parent location in a monorepo, move it to the monorepo root.
+
+When the hook is installed, `python3 ~/.agents/hooks/work-note-gate.py --where`
+prints the resolved folder.
 
 Name: `<ticket>-<slug>.md`, ticket lowercase and dashed (`abc-123-guest-checkout`).
 No ticket, use the slug alone. A project may group notes into subfolders by
@@ -157,7 +183,7 @@ is leaking in and burying the lines that matter — cut, don't reorganise.
 
 ## New workspace scaffold
 
-When a workspace has no `.notes/`, create at its root:
+When the resolved notes root has no `.notes/`, create at that root:
 
 ```
 .notes/
@@ -166,13 +192,15 @@ When a workspace has no `.notes/`, create at its root:
   changelog/            per-release notes (see the changelog skill)
 ```
 
-Then add to the workspace `CLAUDE.md`, filled in for that project:
+Then add to the root `CLAUDE.md` or `AGENTS.md` (or the parent one for a
+single-surface repo), filled in for that project:
 
 ```markdown
 ## Feature Work
 
 Every feature gets a work note — see the `work-note` skill for the format and
-procedure. Notes live in `<workspace>/.notes/work/`, never inside a repo.
+procedure. Notes live at the resolved notes root: `<monorepo>/.notes/work/` for a
+monorepo, or `<parent>/.notes/work/` for a single-surface repo.
 Surfaces, in dependency order: `Backend` (<repo>), `Frontend` (<repo>).
 Work loops back; the frontend surfacing a backend problem is normal.
 Mandatory before the task is done.

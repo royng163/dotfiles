@@ -15,3 +15,6 @@ if [ "$(nvm version default)" = "N/A" ]; then
   nvm install --lts
   nvm alias default 'lts/*'
 fi
+
+# Claude Code status line; its postinstall puts the binary at ~/.claude/ccline/ccline.
+[ -x "$HOME/.claude/ccline/ccline" ] || npm install -g @cometix/ccline
