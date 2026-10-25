@@ -1,0 +1,10 @@
+{{ template "agents.md" . }}
+## CodeBuddy Code setup
+- Project rules live in the repo-root `AGENTS.md`, which loads automatically. Do not create
+  per-tool copies such as `CLAUDE.md`; one canonical file per repo.
+- Memory loads in this order: `~/.codebuddy/CODEBUDDY.md`, `~/.codebuddy/rules/*.md`, then the
+  project `CODEBUDDY.md` and `.codebuddy/rules/*.md`. Project level wins on name collisions.
+- Memory under `~/.codebuddy/projects/<path>/memory/` is machine-local and not synced.
+- TUI: `/cost` for token spend, `/context` for context occupancy, `/model` to switch models,
+  `/compact <instructions>` before a long session.
+- Skills resolve from `~/.codebuddy/skills/`, symlinked here to the shared `~/.agents/skills`.

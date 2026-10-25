@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+"""Merge the work-note gate hook into the CodeBuddy settings file.
+
+chezmoi runs this script with the current settings on stdin and keeps its stdout as the new
+settings, so the rest of the file stays owned by the user.
+"""
+import json
+import sys
+
+GATE = {
+    "hooks": [
+        {
+            "type": "command",
+            "command": 'python3 "$HOME/.agents/hooks/work-note-gate.py"',
+            "timeout": 20,
+        }
+    ]
+}
+
+
+def main():
+    raw = sys.stdin.read().strip()
+    settings = json.loads(raw) if raw else {}
+    hooks = settings.setdefault("hooks", {})
+    stop = hooks.setdefault("Stop", [])
+    for entry in stop:
+        for hook in entry.get("hooks", []):
+            if hook.get("type") == "command" and "work-note-gate.py" in hook.get("command", ""):
+                print(json.dumps(settings, indent=2))
+                return 0
+    stop.append(GATE)
+    print(json.dumps(settings, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

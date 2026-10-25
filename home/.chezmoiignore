@@ -8,6 +8,7 @@
 .zshrc
 .claude
 .agents
+.codebuddy
 .config/opencode
 .config/bat
 .wakatime.cfg
