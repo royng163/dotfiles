@@ -33,3 +33,27 @@ Read the task and trace the code it touches first, then stop at the first rung t
 - Only add a comment when the code is non-obvious; do not annotate self-evident code.
 - Keep comments short: at most 1-2 lines. Prefer fewer comments overall; don't explain how the code works step by step. If a comment needs a paragraph, the code or naming should carry it instead.
 - Fill the line before wrapping: write one line up to the project's print width (prettier `printWidth`, ruff/black `line-length`, else 100). A second line is only for text that genuinely doesn't fit, and then both lines run near-full — never a long first line with a few dangling words under it. Rewrite the sentence shorter rather than spilling into a stub line.
+
+## Current documentation
+Do not answer from training data alone when the question is about a library,
+framework, SDK, API, CLI tool, or cloud service — including well-known ones like
+React, Next.js, Prisma, Express, Tailwind, Django or Spring Boot. Versions move,
+flags get renamed, config keys change shape. Treat "I already know this" as the
+signal to check, not to skip.
+
+Applies to: API syntax, configuration keys, version migration, library-specific
+debugging, setup instructions, CLI usage and flags.
+
+Fetch the library's own current documentation with web tools or Context7, or web search when the
+canonical URL is unknown. Prefer the official docs over blog posts and over
+aggregators. Quote or cite what the docs actually say, and name the version when
+behaviour is version-dependent.
+
+Does not apply to: refactoring, writing scripts from scratch, debugging business
+logic, code review, or general programming concepts.
+
+
+## Orca teams
+- "Use Orca teams" and "Orca this" request supervised Orca orchestration.
+- Follow the orchestration skill, use Codex workers unless another agent is requested, and collect their results before finishing.
+- Use Orca dispatches and messages for coordination; never substitute native subagents for an Orca team.

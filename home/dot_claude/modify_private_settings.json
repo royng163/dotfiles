@@ -1,9 +1,0 @@
-{{- /* chezmoi:modify-template */ -}}
-{{- /* Template keys win, except those Claude Code edits itself; keys only in the live file are kept. */ -}}
-{{- $s := dict -}}
-{{- if .chezmoi.stdin }}{{ $s = fromJson .chezmoi.stdin }}{{ end -}}
-{{- $liveOwned := list "effortLevel" "enabledPlugins" "extraKnownMarketplaces" "skillOverrides" "theme" -}}
-{{- range $k, $v := includeTemplate "claude-settings.json" . | fromJson -}}
-{{-   if not (and (has $k $liveOwned) (hasKey $s $k)) }}{{ $_ := set $s $k $v }}{{ end -}}
-{{- end -}}
-{{ toPrettyJson $s }}

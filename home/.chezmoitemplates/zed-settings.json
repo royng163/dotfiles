@@ -153,11 +153,6 @@
       "enabled": true,
     },
   },
-  "language_models": {
-    "opencode": {
-      "show_go_models": false,
-    },
-  },
   "edit_predictions": {
     "open_ai_compatible_api": {
       "api_url": ""
@@ -169,7 +164,7 @@
     "allow_data_collection": "no",
   },
   "agent": {
-    "terminal_init_command": "{{ if hasKey . "zedProxy" }}HTTPS_PROXY={{ .zedProxy }} HTTP_PROXY={{ .zedProxy }} {{ end }}claude",
+    "terminal_init_command": "{{ if hasKey . "zedProxy" }}HTTPS_PROXY={{ .zedProxy }} HTTP_PROXY={{ .zedProxy }} {{ end }}codex",
     "enable_feedback": false,
     "expand_terminal_card": false,
     "max_content_width": 850.0,
@@ -184,10 +179,7 @@
     "thinking_display": "preview",
   },
   "agent_servers": {
-    "claude-acp": {
-      "default_config_options": {
-        "mode": "plan"
-      },
+    "codex-acp": {
       "type": "registry",
     },
   },

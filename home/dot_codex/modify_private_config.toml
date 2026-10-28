@@ -1,0 +1,20 @@
+{{- /* chezmoi:modify-template */ -}}
+{{- $s := dict -}}
+{{- if .chezmoi.stdin }}{{ $s = fromToml .chezmoi.stdin }}{{ end -}}
+{{- range $key, $value := includeTemplate "codex-settings.toml" . | fromToml -}}
+{{-   if eq $key "tui" -}}
+{{-     $tui := default (dict) (get $s "tui") -}}
+{{-     range $k, $v := $value }}{{ $_ := set $tui $k $v }}{{ end -}}
+{{-     $_ := set $s "tui" $tui -}}
+{{-   else -}}
+{{-     $_ := set $s $key $value -}}
+{{-   end -}}
+{{- end -}}
+{{- $m := default (dict) (get $s "mcp_servers") -}}
+{{- range $name, $server := (includeTemplate "mcp-servers.json" . | fromJson).mcpServers -}}
+{{-   $config := omit $server "type" -}}
+{{-   if eq $server.type "stdio" }}{{ $_ := set $config "startup_timeout_sec" 30 }}{{ end -}}
+{{-   $_ := set $m $name $config -}}
+{{- end -}}
+{{- $_ := set $s "mcp_servers" $m -}}
+{{ toToml $s }}

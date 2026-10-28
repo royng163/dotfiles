@@ -37,8 +37,7 @@ export MAMBA_EXE="$HOME/miniforge3/bin/mamba"
 export MAMBA_ROOT_PREFIX="$HOME/miniforge3"
 _cached_init mamba "$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX"
 
-# opencode. Skills come from ~/.agents/skills; ~/.claude/skills holds symlinks to the same folders.
-export PATH=$HOME/.opencode/bin:$PATH
+# Agent Skills are shared through ~/.agents/skills.
 export OPENCODE_DISABLE_CLAUDE_CODE_SKILLS=1
 
 # bun completions

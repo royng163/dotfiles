@@ -1,0 +1,11 @@
+model = "gpt-6.1-sol"
+model_reasoning_effort = "xhigh"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+project_doc_fallback_filenames = ["CLAUDE.md"]
+
+[tui]
+theme = "one-half-dark"
+status_line = ["model-with-reasoning", "current-dir", "git-branch", "five-hour-limit", "used-tokens"]
+status_line_use_colors = true
+terminal_title = ["activity", "thread-name"]

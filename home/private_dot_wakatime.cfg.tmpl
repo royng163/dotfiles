@@ -1,6 +1,6 @@
 [settings]
 api_key = {{ .wakatimeApiKey }}
-# Claude's scratch, plans, memory and session entries are logged as AI Coding but aren't work.
+# Agent scratch files, plans and session entries are not project work.
 exclude =
     /\.notes/
 {{- if hasKey . "wakatimeExclude" }}{{ range .wakatimeExclude }}
@@ -9,5 +9,7 @@ exclude =
     ^/private/tmp/
     ^/tmp/
     /\.claude/
+    /\.codex/
+    /\.agents/
     /Downloads/
     ^Claude [0-9a-f-]+$

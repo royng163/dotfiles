@@ -1,0 +1,5 @@
+#!/bin/sh
+set -eu
+python="$HOME/miniforge3/bin/python3"
+[ -x "$python" ] || python=python3
+exec "$python" "$HOME/.agents/mcp-servers/patchright_server.py"

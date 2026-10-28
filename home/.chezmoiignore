@@ -6,10 +6,8 @@
 {{- if eq .chezmoi.os "windows" }}
 {{/* Windows is a daily machine, not a dev box: terminal setup only. */}}
 .zshrc
-.claude
+.codex
 .agents
-.codebuddy
-.config/opencode
 .config/bat
 .wakatime.cfg
 .chezmoiscripts/unix/**
@@ -32,6 +30,7 @@ Documents
 {{- if ne .chezmoi.os "darwin" }}
 {{/* cmux ships as a macOS app only. */}}
 .config/cmux
+Library/LaunchAgents
 {{- end }}
 
 {{- if ne .chezmoi.os "linux" }}
