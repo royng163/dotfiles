@@ -1,107 +1,87 @@
 # dotfiles
 
-Dotfiles for macOS, WSL (Ubuntu) and Windows, managed with [chezmoi](https://www.chezmoi.io/).
+Portable settings for macOS, WSL Ubuntu and Windows, managed with [chezmoi](https://www.chezmoi.io/).
 
-## What syncs where
+## Setup
 
-| Target | macOS | WSL | Windows |
-| --- | :-: | :-: | :-: |
-| `~/.zshrc` (login shell on macOS and WSL) | ✓ | ✓ | |
-| `~/.config/starship.toml` | ✓ | ✓ | ✓ |
-| `~/.config/bat/config` | ✓ | ✓ | |
-| `~/.wakatime.cfg` (needs `wakatimeApiKey`) | ✓ | ✓ | |
-| `~/.config/ghostty/config` | ✓ | | |
-| Zed settings | ✓ | | ✓ |
-| `~/.config/cmux/cmux.json` | ✓ | | |
-| `~/.claude/` (settings, CLAUDE.md, hooks, MCP server, skill symlinks) | ✓ | ✓ | |
-| `~/.agents/skills/` (Agent Skills, read by Codex, Gemini CLI and OpenCode; linked into `~/.claude/skills/`) | ✓ | ✓ | |
-| `~/.config/opencode/AGENTS.md` (same shared instructions as `~/.claude/CLAUDE.md`) | ✓ | ✓ | |
-| Windows Terminal settings: default profile, font, color scheme | | | ✓ |
-| Windows Terminal color scheme (One Dark Pro Darker) | | | ✓ |
-| PowerShell 7 profile (conda, Starship; the Coreutils block is left alone) | | | ✓ |
-
-## What gets installed
-
-Scripts in `home/.chezmoiscripts/`. Each skips what is already installed.
-
-| Script | OS | Does |
-| --- | --- | --- |
-| `unix/install-nvm` | macOS, WSL | nvm (unless Homebrew's is present), plus Node LTS as default if there is none |
-| `unix/install-miniforge` | macOS, WSL | Miniforge at `~/miniforge3` |
-| `unix/install-cli-tools` | macOS, WSL | apt or brew: zsh plugins, fzf, ripgrep, fd, bat, eza, btop, zoxide, direnv, gitleaks (plus zsh on Linux, Cascadia Mono NF on macOS) |
-| `unix/git-hooks` | macOS, WSL | points this repo at `.githooks/`, whose pre-commit hook runs gitleaks on staged changes |
-| `linux/chsh` | WSL | makes zsh the login shell |
-| `windows/install-packages` | Windows | winget: Windows Terminal, PowerShell 7, Git, Starship, chezmoi, Coreutils, Zed, nvm for Windows, Miniforge |
-| `windows/install-node` | Windows | Node LTS via nvm, if no version is active (nvm asks for UAC) |
-| `windows/install-font` | Windows | Cascadia Mono NF (pinned release, hash-checked), unless already installed; macOS gets it from Homebrew in `install-cli-tools` |
-| `windows/configure-windows` | Windows | Registry, with one UAC prompt: Explorer (extensions, hidden files, full path, opens to This PC, no frequent/recent/cloud files), taskbar End Task, no web search/highlights/Start recommendations/Widgets, Do Not Disturb, no Bluetooth tray icon, dark mode, Sudo, Developer Mode, long paths, Remote Desktop off, Edge blank new tab and no first-run |
-
-Some Explorer settings take effect after signing out. Installers never edit shell rc files; `.zshrc` and the PowerShell profile load nvm and conda. `.zshrc` expects `starship`, and uses the CLI tools and zsh plugins when present.
-
-## New machine
+Install chezmoi with Homebrew (macOS), Snap (WSL), or winget (Windows), then:
 
 ```sh
-brew install chezmoi                   # macOS
-sudo snap install chezmoi --classic    # WSL
-winget install --id twpayne.chezmoi -e # Windows
-
-chezmoi init royng163    # clone only, no --apply yet
-chezmoi data             # check the machine data
-chezmoi diff             # review
+chezmoi init royng163
+# Add machine-local [data] values to ~/.config/chezmoi/chezmoi.toml.
+chezmoi diff
 chezmoi apply -v
 ```
 
-## Per-machine data
+Run Windows applies in a real terminal because nvm-windows requires a console.
+Install Orca (and Zed on macOS), then sign into Codex. Review plugin trust prompts locally.
 
-Secrets and work-specific values live in `~/.config/chezmoi/chezmoi.toml` under `[data]`, never in this repo. Templates skip the related sections when a key is missing.
+## What syncs
 
-| Key | Used by |
-| --- | --- |
-| `proxy` | Claude Code `HTTP(S)_PROXY` |
-| `claudeAutoModeEnvironment` | Claude Code `autoMode.environment` (list) |
-| `wakatimeApiKey` | Zed (required on macOS and Windows), `~/.wakatime.cfg` |
-| `sonarqubeUrl`, `sonarqubeConnectionId`, `sonarqubeToken` | Zed SonarLint |
-| `zedProxy` | Zed agent terminal |
-| `wakatimeExclude` | extra `exclude` patterns in `~/.wakatime.cfg` (list) |
+| Settings | macOS | WSL | Windows |
+| --- | :---: | :---: | :---: |
+| zsh, bat | Yes | Yes | |
+| Starship | Yes | Yes | Yes |
+| Zed, with thread sidebar on the left | Yes | | Yes |
+| Codex preferences, instructions and Git rules | Yes | Yes | |
+| Shared agent instructions, skills and MCP | Yes | Yes | |
+| WakaTime config, when an API key is supplied | Yes | Yes | |
+| WakaTime two-minute sync timer | Yes | | |
+| Zed `subl` editor bridge | Yes | | |
+| Windows Terminal theme/settings, PowerShell profile | | | Yes |
 
-## Command guide
+Six custom skills are synced: audit, browser-check, changelog, commit-msg,
+mr-description and work-note, including its helper. Archify v3.2.0 is installed
+from a pinned, checksum-verified release only when missing; existing builds stay in place.
+Orca's bundled orchestration skill is installed when its CLI is available, preserving
+customized copies. If Orca is installed later, run:
 
-Adapted from [chezmoi and git: dotfiles without pretending every machine is the same](https://blog.hofstede.it/chezmoi-and-git-dotfiles-without-pretending-every-machine-is-the-same/).
-
-| Task | Command |
-| --- | --- |
-| Start managing a file | `chezmoi add ~/.config/foo` |
-| Edit, then apply | `chezmoi edit --apply ~/.config/foo` |
-| What would change | `chezmoi status`, `chezmoi diff [file]` |
-| Dry run | `chezmoi apply --dry-run -v` |
-| Apply | `chezmoi apply -v [file]` |
-| Edited the real file by mistake | `chezmoi re-add [file]` (plain files), `chezmoi merge file` (templates) |
-| Make a file a template | `chezmoi chattr +template ~/.config/foo` |
-| Restrict permissions | `chezmoi chattr +private ~/.ssh/config` |
-| Preview a rendered file | `chezmoi cat ~/.config/foo` |
-| Show template data | `chezmoi data` |
-| Health check | `chezmoi doctor` |
-| Find the source file | `chezmoi source-path ~/.config/foo` |
-| Pull and apply | `chezmoi update -v` |
-| Commit and push | `chezmoi cd`, then `git add -A && git commit && git push`, then `exit` |
-
-## Layout
-
-`.chezmoiroot` points chezmoi at `home/`, so repo files (this README, `CLAUDE.md`, `LICENSE`, `.githooks/`) are never deployed.
-
-```
-home/
-  .chezmoiignore              per-OS ignore rules (template)
-  .chezmoiscripts/unix/       run_onchange_* scripts, macOS and WSL
-  .chezmoiscripts/linux/      run_onchange_* scripts, Linux only
-  .chezmoiscripts/windows/    run_onchange_* scripts, Windows only
-  .chezmoitemplates/          shared templates: Zed settings, Claude settings, agents.md (instructions for every agent)
-  AppData/, Documents/        Windows targets
-  dot_agents/, dot_claude/, dot_config/, dot_zshrc.tmpl
+```sh
+orca skills install --skill orchestration --agent universal --json
 ```
 
-Name prefixes: `dot_` → `.`, `private_` → mode 600, `executable_` → +x, `modify_` → edits the existing file, `run_onchange_` → reruns when its content changes, `.tmpl` → template.
+On Linux, use `orca-ide` instead of `orca`. Say **“Orca this”** or **“Use Orca teams”**
+to request supervised Codex workers.
 
-## License
+Context7 and Patchright share one registry in `home/.chezmoitemplates/mcp-servers.json`.
+It renders to `~/.agents/mcp.json` and Codex's native config; other clients need adapters.
+Codex preferences in `codex-settings.toml` merge with local plugins, hooks and project trust.
+Sessions, authentication, imported memories and Orca UI settings/keybindings remain local.
+WakaTime records attributable file activity, so its total can be shorter than session time.
 
-[MIT](LICENSE)
+## Installed tools
+
+macOS/WSL scripts provision nvm + Node LTS, Miniforge, shell tools and plugins,
+Starship, gitleaks, Codex + WakaTime, MCP dependencies, Chromium and shared skills.
+macOS also gets Cascadia Mono NF. Linux sets zsh as the login shell.
+Windows scripts install terminal/developer tools and the font, configure Node LTS,
+and apply Explorer, taskbar, privacy and development preferences with UAC as needed.
+Shell profiles stay chezmoi-managed; installers skip tools already present.
+
+## Machine-local data
+
+Keep secrets and private endpoints in `~/.config/chezmoi/chezmoi.toml` under `[data]`:
+
+| Keys | Purpose |
+| --- | --- |
+| `wakatimeApiKey` | Required by Zed; enables `~/.wakatime.cfg` |
+| `sonarqubeUrl`, `sonarqubeConnectionId`, `sonarqubeToken` | Optional Zed SonarLint connection |
+| `zedProxy` | Optional Zed agent terminal proxy |
+| `wakatimeExclude` | Optional list of extra WakaTime exclusions |
+
+## Maintenance
+
+Sources live under `home/` (`.chezmoiroot`); OS selection is in `.chezmoiignore`.
+Edit shared templates for portable preferences, then review and apply:
+
+```sh
+chezmoi diff
+chezmoi apply
+chezmoi status    # empty when managed files match
+chezmoi managed  # targets for this machine
+```
+
+The local chezmoi Git automation policy may commit/push during operations; review it
+before changing sources. The repository's pre-commit hook runs gitleaks on staged files.
+
+[MIT license](LICENSE)

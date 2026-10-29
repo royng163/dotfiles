@@ -18,8 +18,6 @@ Documents
 {{- end }}
 
 {{- if or (eq .chezmoi.os "windows") $wsl }}
-{{/* Ghostty has no Windows build, and a WSL shell renders in Windows Terminal. */}}
-.config/ghostty
 .config/zed
 {{- end }}
 
@@ -28,9 +26,8 @@ Documents
 {{- end }}
 
 {{- if ne .chezmoi.os "darwin" }}
-{{/* cmux ships as a macOS app only. */}}
-.config/cmux
 Library/LaunchAgents
+.local/bin/subl
 {{- end }}
 
 {{- if ne .chezmoi.os "linux" }}

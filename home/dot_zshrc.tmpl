@@ -37,9 +37,6 @@ export MAMBA_EXE="$HOME/miniforge3/bin/mamba"
 export MAMBA_ROOT_PREFIX="$HOME/miniforge3"
 _cached_init mamba "$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX"
 
-# Agent Skills are shared through ~/.agents/skills.
-export OPENCODE_DISABLE_CLAUDE_CODE_SKILLS=1
-
 # bun completions
 [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
@@ -51,9 +48,6 @@ export PATH="$HOME/.local/bin:$PATH"
 alias code="open -a \"Visual Studio Code\""
 export DYLD_LIBRARY_PATH=/opt/homebrew/lib:$DYLD_LIBRARY_PATH
 {{- end }}
-
-# mimocode
-export PATH=$HOME/.mimocode/bin:$PATH
 
 # Machine-specific toolchains, each only where it is installed.
 [ -d /usr/lib/jvm/java-17-openjdk-amd64 ] && export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
@@ -93,7 +87,7 @@ unset _f
 # Editor for Vue DevTools "open in editor". Vite 4 bundles a launch-editor with no
 # zed entry, and its fallthrough passes the line and column as separate arguments,
 # which Zed opens as extra files named after the numbers. "subl" is in its table and
-# gets a single path:line:column, which the Zed CLI accepts. ~/.local/bin/subl -> zed.
+# gets a single path:line:column, which the ~/.local/bin/subl wrapper passes to Zed.
 export LAUNCH_EDITOR="$HOME/.local/bin/subl"
 
 # Prompt. Must load after conda/mamba init, which rewrite PS1.

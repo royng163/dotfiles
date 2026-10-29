@@ -24,9 +24,17 @@ if command -v apt-get >/dev/null; then
     rm -rf "$dir"
   fi
 elif command -v brew >/dev/null; then
-  for p in fzf ripgrep fd bat eza btop zoxide direnv zsh-autosuggestions zsh-syntax-highlighting gitleaks; do
+  for p in fzf ripgrep fd bat eza btop zoxide direnv starship zsh-autosuggestions zsh-syntax-highlighting gitleaks; do
     brew list "$p" >/dev/null 2>&1 || brew install "$p"
   done
   # Same Nerd Font as windows/install-font. Not needed on WSL, which renders in Windows Terminal.
   brew list --cask font-cascadia-mono-nf >/dev/null 2>&1 || brew install --cask font-cascadia-mono-nf
+fi
+
+if ! command -v starship >/dev/null && [ ! -x "$HOME/.local/bin/starship" ]; then
+  dir=$(mktemp -d)
+  trap 'rm -rf "$dir"' EXIT
+  curl -fsSL -o "$dir/install-starship.sh" https://starship.rs/install.sh
+  mkdir -p "$HOME/.local/bin"
+  sh "$dir/install-starship.sh" -y -b "$HOME/.local/bin"
 fi

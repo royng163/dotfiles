@@ -57,3 +57,4 @@ logic, code review, or general programming concepts.
 - "Use Orca teams" and "Orca this" request supervised Orca orchestration.
 - Follow the orchestration skill, use Codex workers unless another agent is requested, and collect their results before finishing.
 - Use Orca dispatches and messages for coordination; never substitute native subagents for an Orca team.
+- Start each worker in its assigned repository or worktree, and have it verify `pwd` before editing.

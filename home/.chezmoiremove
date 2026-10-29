@@ -1,0 +1,5 @@
+{{- if eq .chezmoi.os "darwin" }}
+.config/cmux
+.config/ghostty
+.local/bin/cmux-unstick
+{{- end }}
