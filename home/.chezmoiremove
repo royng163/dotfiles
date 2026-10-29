@@ -3,3 +3,6 @@
 .config/ghostty
 .local/bin/cmux-unstick
 {{- end }}
+{{- if ne .chezmoi.os "windows" }}
+.agents/skills/orchestration
+{{- end }}

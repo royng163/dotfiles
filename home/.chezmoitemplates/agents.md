@@ -53,8 +53,11 @@ Does not apply to: refactoring, writing scripts from scratch, debugging business
 logic, code review, or general programming concepts.
 
 
-## Orca teams
-- "Use Orca teams" and "Orca this" request supervised Orca orchestration.
-- Follow the orchestration skill, use Codex workers unless another agent is requested, and collect their results before finishing.
-- Use Orca dispatches and messages for coordination; never substitute native subagents for an Orca team.
-- Start each worker in its assigned repository or worktree, and have it verify `pwd` before editing.
+## Native Codex teams
+- "Use a team" and "Team this" request native Codex subagents. Use Orca orchestration only when explicitly requested.
+- The lead assigns exclusive edit ownership by repository or worktree. Use `backend_dev` and `frontend_dev` roles where available; otherwise include the matching `~/.codex/agents/` role instructions in the native worker task.
+- Each task names its absolute checkout, project role file when present, shared note, branch/base, acceptance checks and dependencies.
+- Workers share the parent's session directory and permissions. Set every shell call's `workdir` to the assigned checkout; verify `pwd` and `git rev-parse --show-toplevel` there before editing. Address edit targets by absolute path.
+- Explicitly read the assigned repository's instructions, local overrides and applicable design rules. Do not assume the parent's loaded instructions cover a sibling repository.
+- Use native worker messages and follow-up tasks. Route contract changes and blockers through the lead; only the lead edits shared work notes.
+- Collect each worker's result and test evidence before reporting completion. Reuse workers for related follow-ups; record progress before pausing or replacing one.

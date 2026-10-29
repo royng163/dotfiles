@@ -34,21 +34,3 @@ if not target.exists() and not target.is_symlink():
             raise SystemExit("Archify archive has no SKILL.md")
         (staging / "archify").rename(target)
 PY
-
-orca_cli=${ORCA_CLI_COMMAND:-}
-if [ -z "$orca_cli" ]; then
-  case "$(uname -s)" in
-    Darwin)
-      orca_cli=$(command -v orca || :)
-      if [ -z "$orca_cli" ] && [ -x /Applications/Orca.app/Contents/Resources/bin/orca ]; then
-        orca_cli=/Applications/Orca.app/Contents/Resources/bin/orca
-      fi
-      ;;
-    Linux) orca_cli=$(command -v orca-ide || :) ;;
-  esac
-fi
-if [ -n "$orca_cli" ]; then
-  "$orca_cli" skills install --skill orchestration --agent universal --json
-else
-  printf '%s\n' 'Orca CLI not found; install its orchestration skill after installing Orca.'
-fi
