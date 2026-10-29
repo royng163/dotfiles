@@ -53,11 +53,12 @@ Does not apply to: refactoring, writing scripts from scratch, debugging business
 logic, code review, or general programming concepts.
 
 
-## Native Codex teams
-- "Use a team" and "Team this" request native Codex subagents. Use Orca orchestration only when explicitly requested.
-- The lead assigns exclusive edit ownership by repository or worktree. Use `backend_dev` and `frontend_dev` roles where available; otherwise include the matching `~/.codex/agents/` role instructions in the native worker task.
-- Each task names its absolute checkout, project role file when present, shared note, branch/base, acceptance checks and dependencies.
-- Workers share the parent's session directory and permissions. Set every shell call's `workdir` to the assigned checkout; verify `pwd` and `git rev-parse --show-toplevel` there before editing. Address edit targets by absolute path.
-- Explicitly read the assigned repository's instructions, local overrides and applicable design rules. Do not assume the parent's loaded instructions cover a sibling repository.
-- Use native worker messages and follow-up tasks. Route contract changes and blockers through the lead; only the lead edits shared work notes.
-- Collect each worker's result and test evidence before reporting completion. Reuse workers for related follow-ups; record progress before pausing or replacing one.
+## Orca Codex workers
+- "Use a team", "Team this", "Use Orca teams" and "Orca this" request supervised Orca orchestration with Codex workers.
+- Follow the orchestration skill and load the selected Orca CLI's version-matched guide before coordinating workers. Use Orca Runs, Tasks, messages and completion acknowledgments; never substitute native subagents for this workflow.
+- The lead creates one Run for the effort, assigns exclusive repository ownership and records Tasks with real dependencies. A Run records coordination state; the lead schedules workers and validates their results.
+- Each Task supplies absolute paths to the assigned checkout, portable worker prompt (`~/.agents/orca/backend-dev.md` or `frontend-dev.md`), project role file when present and shared note, plus branch/base and acceptance checks.
+- Resolve the assigned checkout and start each worker with its exact existing workspace selector and `--agent codex`. `--worktree current` selects the lead's workspace. Prefer existing checkouts; create worktrees only when requested or needed for isolation.
+- Before editing, each worker verifies its actual session directory with `pwd` and `git rev-parse --show-toplevel`, then sets every shell call's `workdir` to that checkout and uses absolute edit paths. Read that repository's instructions and local overrides explicitly.
+- Use Orca messages and blocking ask/reply for contract changes and blockers. Only the lead edits shared work notes. Require accepted completion and test evidence, then reuse, retain at the user's request or release each settled worker as the guide directs.
+- Use native Codex subagents only when explicitly requested as a separate workflow.

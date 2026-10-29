@@ -5,9 +5,6 @@ approval_policy = "on-request"
 sandbox_mode = "workspace-write"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 
-[agents]
-enabled = true
-
 [tui]
 theme = "one-half-dark"
 status_line = ["model-with-reasoning", "current-dir", "git-branch", "used-tokens", "thread-title"]
