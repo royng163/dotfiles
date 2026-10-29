@@ -72,12 +72,14 @@ sides agree. So:
 1. Create the note with frontmatter, `## Status`, and `## Contract`.
 2. `## Contract` states the behaviour being built and the wire shape the next
    surface will consume. If a requirement is not yet decided, write the open
-   question there rather than guessing.
+   question there rather than guessing. Make each changed behaviour an acceptance
+   case: concrete setup or input, expected result and a named check or browser flow.
 3. Only then implement, and append the surface's own section.
 
-**Picking up a surface:** read frontmatter, `## Status`, and `## Contract`. Nothing
-else. The surface sections are long by design and hold reasoning the next surface
-does not need.
+**Picking up a surface:** start with frontmatter, `## Status`, and `## Contract`.
+Read the assigned entry points and follow relevant callers, tests and evidence links
+as needed. Ask for the specific missing contract decision rather than loading unrelated
+surface histories.
 
 **Finishing a surface:** append or extend its section, update its `## Status` line
 with state plus branch and commit, and update `pending` in frontmatter.
@@ -88,6 +90,36 @@ with state plus branch and commit, and update `pending` in frontmatter.
 **Sending work back:** edit `## Contract` to the new truth, append the reasoning to
 the section of the surface that has to change, and set that surface's `## Status`
 line back to `todo`. Do not keep a superseded contract next to the new one.
+
+## Acceptance evidence
+
+Reuse `WHEN` / `THEN` / `AND` cases in `## Contract`. Add a `Check:` line naming the
+existing test, repository command or reproducible manual/browser flow that proves each
+case. Include relevant refusal and regression cases when the behaviour needs them.
+Run the check and record its actual outcome under the owning surface's `Testing Done`.
+Name checks that could not run and what blocks them.
+
+For a bug fix, reproduce the wrong result before the fix when practical. Record the
+failing test ID or reproduction and compare the same check afterward. Keep unrelated
+baseline failures separate from regressions. A manual check is appropriate when a useful
+automated regression would cost more than the change warrants; record its inputs and result.
+
+## Resume checkpoints
+
+Before planned compaction, a restart or a switch to unrelated work, update `## Status`
+and keep a short `### Resume` block there. For each active surface, record:
+
+- Checkout, branch and observed HEAD, owned dirty files and any changes owned by others.
+- Next concrete action, blocker or dependency and who can resolve it.
+- Verification commands or browser flows already run, outcomes and evidence paths;
+  link `Testing Done` when it already holds the details.
+- For Orca work, Run/Task/Dispatch IDs and terminal handle, with the observed worker state.
+
+The lead collects worker checkpoints and is the only writer of a shared note. Read the
+checkpoint on resume, then verify Git/filesystem state and live Orca state before editing
+or dispatching. Saved handles and liveness are observations, not current authority.
+Keep checkpoints in the project note; they do not authorize a stash, commit or background
+session observer. Replace the resume block as work advances so it describes one next state.
 
 ## Format
 
@@ -111,6 +143,7 @@ pending: [frontend-admin]
 - **WHEN** checkout completes with no session
 - **THEN** `POST /orders/` returns 201 with `account: null` and a `claim_token`
 - **AND** the token is single-use and expires in 7 days
+- **Check:** submit a guest checkout in the client; verify the response and reject token reuse.
 
 ### Claiming attaches the order to a new account
 - **WHEN** `POST /orders/claim/` is called with a valid token
@@ -138,11 +171,11 @@ pending: [frontend-admin]
 - **`## Status` is the readable half**: one line per surface, `state, branch @ sha`.
   Prose lines, **not checkboxes** — a checkbox implies monotonic progress, and
   surfaces reopen. Omit surfaces the feature does not touch.
-- **`## Contract` is written first and edited in place.** It is the only section
-  that is ever rewritten. Behaviour as `WHEN` / `THEN` / `AND` bullets under an H3
-  naming the behaviour, plus the endpoints, payload fields and error codes the next
-  surface consumes. Error codes are the contract; user-facing copy is not, unless
-  the server sends it.
+- **`## Contract` is written first and edited in place.** Keep its current truth;
+  preserve decisions in the owning surface section. Use `WHEN` / `THEN` / `AND` bullets
+  under an H3 naming the behaviour, plus the endpoints, payload fields and error codes
+  the next surface consumes. Error codes are the contract; user-facing copy is not,
+  unless the server sends it.
 - **Surface sections use the declared headings verbatim.** Their subsections are
   H3: Files Changed, API / Contract Changes, Workarounds, Testing Done, Next
   Surface. Nothing else goes at H2.

@@ -27,6 +27,12 @@ Read the task and trace the code it touches first, then stop at the first rung t
   Otherwise leave changes unstaged, report the state, and stop. Never run `git push`.
 - Branch and worktree creation is fine.
 
+## Acceptance and continuity
+- Before changing behavior, define concrete inputs or setup and the expected result. For features, keep these acceptance cases in the existing work-note contract and name how each will be checked.
+- For a bug fix, reproduce the failure and capture a failing regression check before the fix when practical. Reuse repository checks; record baseline failures and distinguish them from regressions.
+- Before compaction, restarting or switching to unrelated work, save a concise resume checkpoint in the existing work note or task record. Follow the work-note skill's checkpoint format for features; verify filesystem and live worker state on resume. Checkpointing does not authorize a stash or commit.
+- Use `capture-lessons` when explicitly asked to save reusable learning. Keep project lessons in project instructions and portable preferences in the chezmoi-managed shared source.
+
 ## Code comments
 - Comments describe what the code does for a future reader who has no idea a change was ever made. Never narrate the edit or its history.
 - Banned: comparisons to prior/other versions or to the task ("all statuses, not just the dashboard ones", "now also handles X", "changed to", "previously", "as requested", "per ticket"). Strip the contrast and state the present behavior plainly, or omit the comment.
@@ -57,10 +63,11 @@ logic, code review, or general programming concepts.
 - "Use a team", "Team this", "Use Orca teams" and "Orca this" request supervised Orca orchestration with Codex workers.
 - Follow the orchestration skill and load the selected Orca CLI's version-matched guide before coordinating workers. Use Orca Runs, Tasks, messages and completion acknowledgments; never substitute native subagents for this workflow.
 - The lead creates one Run for the effort, assigns exclusive repository ownership and records Tasks with real dependencies. A Run records coordination state; the lead schedules workers and validates their results.
-- Each Task supplies absolute paths to the assigned checkout, portable worker prompt (`~/.agents/orca/backend-dev.md` or `frontend-dev.md`), project role file when present and shared note, plus branch/base and acceptance checks.
+- Each Task supplies absolute paths to the assigned checkout, portable worker prompt (`~/.agents/orca/backend-dev.md` or `frontend-dev.md`), project role file when present and shared note, plus branch/base and acceptance checks. Give a concise objective, relevant entry points and required contract details; link the authoritative files instead of copying full documents or session history. Workers expand context through targeted searches and ask the lead for specific unresolved gaps.
 - Resolve the assigned checkout and start each worker with its exact existing workspace selector and `--agent codex`. `--worktree current` selects the lead's workspace. Prefer existing checkouts; create worktrees only when requested or needed for isolation.
 - Before editing, each worker verifies its actual session directory with `pwd` and `git rev-parse --show-toplevel`, then sets every shell call's `workdir` to that checkout and uses absolute edit paths. Read that repository's instructions and local overrides explicitly.
 - Use Orca messages and blocking ask/reply for contract changes and blockers. Only the lead edits shared work notes. Require accepted completion and test evidence before settlement.
+- Allow parallel read-only browser checks for workers with isolated MCP processes. Coordinate shared browser contexts and shared-data writes. Keep acceptance evidence proportional to the change: reuse checks for unchanged snapshots, rerun affected checks after revisions and require extra reports or preservation probes only when they answer a concrete risk.
 - Keep workers as terminal tabs in their assigned repository projects. Report each worker's repository and terminal handle at launch. The user requests that completed tabs stay open: reuse a settled worker for an immediate follow-up, otherwise run `worker-retain` as the guide directs. Release retained tabs only when the user asks to close them.
 - The lead reports team audit findings after the test ground truth in one Markdown table: `ID | Where | Kind | Finding | My call`. Use independent sequences `b1`, `b2`, ... for backend, `c1`, `c2`, ... for client frontend and `a1`, `a2`, ... for admin frontend. Keep IDs stable through approvals and follow-ups; append findings with the responsible surface's next ID and route approved fixes by ID.
 - Use native Codex subagents only when explicitly requested as a separate workflow.

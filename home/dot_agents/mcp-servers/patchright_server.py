@@ -63,11 +63,11 @@ async def list_tools():
         ),
         Tool(
             name="browser_click",
-            description="Click an element by CSS selector or text",
+            description='Click a CSS or Playwright selector. For visible text use text="Save".',
             inputSchema={
                 "type": "object",
                 "properties": {
-                    "selector": {"type": "string", "description": "CSS selector or text to click"}
+                    "selector": {"type": "string", "description": 'CSS or Playwright selector, e.g. #save or text="Save"'}
                 },
                 "required": ["selector"],
             },
@@ -86,7 +86,7 @@ async def list_tools():
         ),
         Tool(
             name="browser_snapshot",
-            description="Get the accessibility tree snapshot of the current page",
+            description="Get the ARIA snapshot of the current page",
             inputSchema={"type": "object", "properties": {}},
         ),
         Tool(
@@ -126,7 +126,7 @@ async def list_tools():
         ),
         Tool(
             name="browser_set_viewport",
-            description="Set browser viewport size (recreates page context). Use width=375 for mobile, 1440 for desktop.",
+            description="Resize the current page while preserving login and form state. Use width=375 for mobile, 1440 for desktop.",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -151,7 +151,7 @@ async def list_tools():
 
 @server.call_tool()
 async def call_tool(name: str, arguments: dict):
-    global _browser, _context, _page
+    global _browser, _context, _page, _pw, _viewport
 
     if name == "browser_navigate":
         page = await get_page()
@@ -171,10 +171,7 @@ async def call_tool(name: str, arguments: dict):
     elif name == "browser_click":
         page = await get_page()
         sel = arguments["selector"]
-        try:
-            await page.click(sel)
-        except Exception:
-            await page.get_by_text(sel).first.click()
+        await page.click(sel)
         return [TextContent(type="text", text=f"Clicked {sel}")]
 
     elif name == "browser_type":
@@ -184,9 +181,8 @@ async def call_tool(name: str, arguments: dict):
 
     elif name == "browser_snapshot":
         page = await get_page()
-        snapshot = await page.accessibility.snapshot()
-        import json
-        return [TextContent(type="text", text=json.dumps(snapshot, indent=2))]
+        snapshot = await page.locator("body").aria_snapshot()
+        return [TextContent(type="text", text=snapshot)]
 
     elif name == "browser_evaluate":
         page = await get_page()
@@ -209,15 +205,10 @@ async def call_tool(name: str, arguments: dict):
         return [TextContent(type="text", text=page.url)]
 
     elif name == "browser_set_viewport":
-        global _browser, _context, _page, _viewport
         w, h = arguments["width"], arguments["height"]
         _viewport = {"width": w, "height": h}
-        current_url = _page.url if _page else None
-        await get_page()
-        await _context.close()
-        await _new_page()
-        if current_url and current_url != "about:blank":
-            await _page.goto(current_url, wait_until="domcontentloaded")
+        page = await get_page()
+        await page.set_viewport_size(_viewport)
         return [TextContent(type="text", text=f"Viewport set to {w}x{h}")]
 
     elif name == "browser_errors":
@@ -229,6 +220,9 @@ async def call_tool(name: str, arguments: dict):
         if _browser:
             await _browser.close()
             _browser = _context = _page = None
+        if _pw:
+            await _pw.stop()
+            _pw = None
         return [TextContent(type="text", text="Browser closed")]
 
     return [TextContent(type="text", text=f"Unknown tool: {name}")]
