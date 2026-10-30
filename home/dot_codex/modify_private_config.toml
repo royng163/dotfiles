@@ -2,7 +2,7 @@
 {{- $s := dict -}}
 {{- if .chezmoi.stdin }}{{ $s = fromToml .chezmoi.stdin }}{{ end -}}
 {{- range $key, $value := includeTemplate "codex-settings.toml" . | fromToml -}}
-{{-   if or (eq $key "tui") (eq $key "agents") -}}
+{{-   if or (eq $key "tui") (eq $key "agents") (eq $key "features") -}}
 {{-     $table := default (dict) (get $s $key) -}}
 {{-     range $k, $v := $value }}{{ $_ := set $table $k $v }}{{ end -}}
 {{-     $_ := set $s $key $table -}}
