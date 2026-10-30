@@ -1,7 +1,7 @@
 ---
 name: mr-description
 description: >
-  Generate MR title + body as a communication artifact: action-oriented title, then
+  Generate MR title + body as a communication artifact: conventional commit title, then
   Summary / Changes / Testing, plus a deployment checklist when needed. Changes grouped by feature with rationale only
   when non-obvious; Testing gives steps with expected outcomes. Emphasis adapts to change
   type. Diffs against the repo's default branch unless told otherwise. Prints raw
@@ -25,14 +25,14 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 ## Structure
 
 ```
-<title>
+<type>(<optional scope>): <description>
 
 ## Summary
 <1-2 sentences: what this does and why. Lead with the outcome. Embed the issue link inline here, e.g. "... ([ABC-366](<tracker-url>/ABC-366)).">
 
 ## Changes
 **<Area>**
-- <what changed> (`<filename>`: `<function or method>()`; `<other filename>`: `<function or method>()`)
+- <what changed> ([<change label>](<verified GitLab diff URL>); [<other change label>](<verified GitLab diff URL>))
 
 | <changed screen or PDF page> |
 |---|
@@ -46,7 +46,9 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 - [ ] After deployment: <required command or manual step> → <expected result>
 
 ## Related MRs
-- <label>: <MR link>
+- Backend: <backend MR URL>
+- Admin: <admin MR URL>
+- Client: <client MR URL>
 ```
 
 Omit any section that would be empty — never print a heading followed by "none" or
@@ -54,8 +56,8 @@ Omit any section that would be empty — never print a heading followed by "none
 something to say. Reference the Jira ticket in the Summary with the link embedded
 inline. Add a Related MRs section when the feature spans repos or surfaces — if the
 project keeps work notes, check the feature's note for which surfaces it touched.
-Emit a placeholder link (e.g. `<backend MR link>`) per companion MR; never ask for or
-invent URLs. Omit the section when the work stands alone.
+Use verified URLs when available, otherwise a labelled placeholder (e.g. `Backend:
+<backend MR URL>`); never ask for or invent URLs. Omit the section when the work stands alone.
 
 ## Length budget
 
@@ -91,11 +93,11 @@ Keep the structure above; shift the stress:
 
 ## Rules
 
-- Title: specific, action-oriented, imperative, lowercase first letter, no period, ~72 chars. Optional conventional-commit prefix (feat/fix/refactor/deps/docs).
+- Title: read [commit-msg](../commit-msg/SKILL.md) and follow its subject rules: required conventional type, optional lower-case noun scope, imperative lower-case description, no trailing period or ticket references, at most 100 characters. Choose the type from the MR's complete branch diff against its target, rather than the working tree. Apply commit-msg to the title only; retain this skill's MR body structure and issue links. GitLab's Draft prefix is separate from the conventional title.
 - Group Changes by feature, not file. Rationale only for non-obvious decisions.
-- End every Changes bullet with parenthesized references: (`example.py`: `Class.method()`; `other.py`: `function()`). Use only filenames, without directory paths, and verify exact function or method names in the diff and source. Wrap each filename and each symbol in its own backticks, with the colon outside; separate file/symbol pairs with semicolons. Include the relevant files and functions for that feature change, repeating the filename for each function. Use (`filename`) when the change has no named function, such as configuration, styles or documentation.
+- End every Changes bullet with parenthesized links to the existing GitLab review diff: ([scope matching](<verified diff URL>); [regression cases](<verified diff URL>)). Use concise descriptive labels and separate links with semicolons. Prefer the MR's Changes view, with a file or line anchor only when verified from GitLab. A verified commit diff URL is also suitable. If an exact anchor cannot be verified, link to the MR Changes page or the relevant commit diff without a fragment. Verify the diff contains the described change, including deleted code. Do not use repository blob links or create GitLab Snippets. If the change is not pushed or no diff URL can be verified, use a clearly labelled placeholder; never invent URLs, commits or anchors, and never push to make a link available.
 - Testing states expected outcomes, not just "ran tests".
-- Use backticks for Changes references and deployment commands; keep paths and symbols elsewhere in the body plain.
+- Use Markdown links for Changes references and backticks for deployment commands; keep paths and symbols elsewhere in the body plain.
 - Include a Deployment checklist only for manual follow-up beyond existing automation. Check source, deployment configuration and work notes. Omit migration execution or confirmation when startup already applies migrations; omit the section when automation covers every step. Use unchecked Markdown checkboxes with the required timing/order, verified command or step, and expected result. Never invent commands or execute them while generating the description.
 - For frontend UI changes, attach a relevant screenshot/GIF when authorized to create or update the MR. Reuse verified evidence that matches the branch, or capture it with browser-check. For a prose-only draft, use a placeholder instead of uploading. If evidence is unavailable, state what is missing; never invent an attachment URL.
 - For PDF layout changes, include visible placeholders identifying representative PDF pages for review.
@@ -103,13 +105,13 @@ Keep the structure above; shift the stress:
 - Describe only this branch's commits; drop work merged in from the target.
 - Omit empty sections entirely — no "none"/"N/A" placeholder headings.
 - Reference the issue only in the Summary, with the link embedded inline. Take the tracker's URL shape from the project's own docs or an existing MR; never invent a host. Do not put the issue in Related MRs.
-- Related MRs section: include for split features; one bullet per companion MR, labelled by the surface it covers, each a placeholder link. Never fabricate a URL. Keep it last.
+- Related MRs section: include for split features; use explicit key-value bullets such as `- Backend: https://<verified-host>/<project>/-/merge_requests/<id>` and `- Base: <verified MR URL>`. Keep the label outside the URL; do not use `[Backend](URL)` as the entire bullet. Use verified URLs when available and labelled placeholders otherwise. Never fabricate a URL. Keep it last.
 
 ## Workflow
 
 1. Get the branch and resolve the target. Ask if the resolved default looks wrong for this project.
-2. Enumerate scope with the commands above; exclude merged-in work (`git log --merges` to spot it). Read the relevant diff and source to verify each Changes reference.
-3. Classify the dominant change type to set emphasis.
+2. Enumerate scope with the commands above; exclude merged-in work (`git log --merges` to spot it). When an MR is supplied, use its actual target and head commit. Read the relevant diff and source and verify each MR Changes or commit diff URL against that revision.
+3. Classify the dominant change type to set emphasis; read commit-msg and apply its subject rules to the title.
 4. Draft the title, then Summary / Changes / Testing. Check deployment configuration and work notes for required follow-up and add a Deployment checklist when needed.
-5. Check the work note for split-feature phases; if any, add a Related MRs section (last) with placeholder links.
+5. Check the work note for split-feature phases; if any, add a Related MRs section (last) with key-value bullets and verified URLs or placeholders.
 6. Print raw markdown in one fenced code block.

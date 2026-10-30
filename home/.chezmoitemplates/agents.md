@@ -59,6 +59,9 @@ Does not apply to: refactoring, writing scripts from scratch, debugging business
 logic, code review, or general programming concepts.
 
 
+## Computer use
+- Prefer CLI, filesystem and service APIs for tasks they can complete. For GUI-only tasks in Codex, use OpenAI's native Computer Use plugin and its app approvals. Keep the ChatGPT app running for local computer access. Use Orca computer use only when explicitly requested. Keep browser-check and Patchright for frontend verification.
+
 ## Orca Codex workers
 - "Use a team", "Team this", "Use Orca teams" and "Orca this" request supervised Orca orchestration with Codex workers.
 - Follow the orchestration skill and load the selected Orca CLI's version-matched guide before coordinating workers. Use Orca Runs, Tasks, messages and completion acknowledgments; never substitute native subagents for this workflow.
@@ -68,7 +71,7 @@ logic, code review, or general programming concepts.
 - Before editing, each worker verifies its actual session directory with `pwd` and `git rev-parse --show-toplevel`, then sets every shell call's `workdir` to that checkout and uses absolute edit paths. Read that repository's instructions and local overrides explicitly.
 - Use Orca messages and blocking ask/reply for contract changes and blockers. Only the lead edits shared work notes. Require accepted completion and test evidence before settlement.
 - Allow parallel read-only browser checks for workers with isolated MCP processes. Coordinate shared browser contexts and shared-data writes. Keep acceptance evidence proportional to the change: reuse checks for unchanged snapshots, rerun affected checks after revisions and require extra reports or preservation probes only when they answer a concrete risk.
-- Keep workers as terminal tabs in their assigned repository projects. Report each worker's repository and terminal handle at launch. The user requests that completed tabs stay open: reuse a settled worker for an immediate follow-up, otherwise run `worker-retain` as the guide directs. Release retained tabs only when the user asks to close them.
+- Keep workers as terminal tabs in their assigned repository projects. Report each worker's repository and terminal handle at launch. Before spawning, inspect the Run's workers and remaining Tasks; reuse the existing worker for that role and checkout. After accepted completion, dispatch remaining work to the same proven terminal. Retain it while explicitly queued work waits on dependencies; otherwise release it with `worker-release` when no remaining assigned work exists. Do not retain completed workers solely for inspection or start duplicate workers for the same checkout. Replace an existing worker only after its exit or failure is proven, following the version-matched recovery guide.
 - After starting or reusing a terminal worker, set a stable role-based tab title with `orca terminal rename --terminal <handle> --title <role-name> --json`. Derive the name from its worker definition and include the assigned surface when roles repeat. Verify the custom tab title; prompt-generated conversation names do not set the worker's role name.
 - The lead reports team audit findings after the test ground truth in one Markdown table: `ID | Where | Kind | Finding | My call`. Use independent sequences `b1`, `b2`, ... for backend, `c1`, `c2`, ... for client frontend and `a1`, `a2`, ... for admin frontend. Keep IDs stable through approvals and follow-ups; append findings with the responsible surface's next ID and route approved fixes by ID.
 - Use native Codex subagents only when explicitly requested as a separate workflow.
