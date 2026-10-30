@@ -8,6 +8,7 @@ project_doc_fallback_filenames = ["CLAUDE.md"]
 
 [features]
 fast_mode = true
+prevent_idle_sleep = true
 
 [tui]
 theme = "one-half-dark"

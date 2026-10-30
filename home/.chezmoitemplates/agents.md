@@ -60,7 +60,7 @@ logic, code review, or general programming concepts.
 
 
 ## Computer use
-- Prefer CLI, filesystem and service APIs for tasks they can complete. For GUI-only tasks in Codex, use OpenAI's native Computer Use plugin and its app approvals. Keep the ChatGPT app running for local computer access. Use Orca computer use only when explicitly requested. Keep browser-check and Patchright for frontend verification.
+- Prefer CLI, filesystem and service APIs for tasks they can complete. For GUI-only tasks, use Orca's computer-use skill first. If Orca is unavailable, lacks permission or cannot complete the action, use OpenAI's native Computer Use plugin with its app approvals; keep the ChatGPT app running for that fallback. Inspect the current app state before retrying an action whose outcome is uncertain. Keep browser-check and Patchright for frontend verification.
 
 ## Orca Codex workers
 - "Use a team", "Team this", "Use Orca teams" and "Orca this" request supervised Orca orchestration with Codex workers.

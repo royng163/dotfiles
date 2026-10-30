@@ -48,7 +48,7 @@ if [ -z "$orca_cli" ]; then
   esac
 fi
 if [ -n "$orca_cli" ]; then
-  "$orca_cli" skills install --skill orchestration --agent universal --json
+  "$orca_cli" skills install --skill orchestration --skill computer-use --agent universal --json
 else
-  printf '%s\n' 'Orca CLI not found; install its orchestration skill after installing Orca.'
+  printf '%s\n' 'Orca CLI not found; install its orchestration and computer-use skills after installing Orca.'
 fi
