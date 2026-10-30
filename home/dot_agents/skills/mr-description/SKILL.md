@@ -32,11 +32,15 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 
 ## Changes
 **<Area>**
-- <what changed> (`<filename>: <function or method>()`; `<other filename>: <function or method>()`)
+- <what changed> (`<filename>`: `<function or method>()`; `<other filename>`: `<function or method>()`)
+
+| <changed screen or PDF page> |
+|---|
+| <screenshot/GIF attachment or PDF-page placeholder> |
 
 ## Testing
 - <command / step> → <expected outcome>
-<UI: one screenshot/GIF placeholder. Backend: at most 2 lines of example output.>
+<Backend: at most 2 lines of example output.>
 
 ## Deployment checklist
 - [ ] After deployment: <required command or manual step> → <expected result>
@@ -89,10 +93,13 @@ Keep the structure above; shift the stress:
 
 - Title: specific, action-oriented, imperative, lowercase first letter, no period, ~72 chars. Optional conventional-commit prefix (feat/fix/refactor/deps/docs).
 - Group Changes by feature, not file. Rationale only for non-obvious decisions.
-- End every Changes bullet with parenthesized references: (`example.py: Class.method()`; `other.py: function()`). Use only filenames, without directory paths, and verify exact function or method names in the diff and source. Wrap each reference separately in backticks and separate them with semicolons. Include the relevant files and functions for that feature change, repeating the filename for each function. Use (`filename`) when the change has no named function, such as configuration, styles or documentation.
+- End every Changes bullet with parenthesized references: (`example.py`: `Class.method()`; `other.py`: `function()`). Use only filenames, without directory paths, and verify exact function or method names in the diff and source. Wrap each filename and each symbol in its own backticks, with the colon outside; separate file/symbol pairs with semicolons. Include the relevant files and functions for that feature change, repeating the filename for each function. Use (`filename`) when the change has no named function, such as configuration, styles or documentation.
 - Testing states expected outcomes, not just "ran tests".
 - Use backticks for Changes references and deployment commands; keep paths and symbols elsewhere in the body plain.
-- Include a Deployment checklist only when this change requires deployment follow-up, such as a migration, seed, management command or manual restart. Use unchecked Markdown checkboxes with the required timing/order, verified command or step, and expected result. Check source, deployment configuration and work notes; include manual actions still needed beyond existing automation. Never invent commands or execute them while generating the description.
+- Include a Deployment checklist only for manual follow-up beyond existing automation. Check source, deployment configuration and work notes. Omit migration execution or confirmation when startup already applies migrations; omit the section when automation covers every step. Use unchecked Markdown checkboxes with the required timing/order, verified command or step, and expected result. Never invent commands or execute them while generating the description.
+- For frontend UI changes, attach a relevant screenshot/GIF when authorized to create or update the MR. Reuse verified evidence that matches the branch, or capture it with browser-check. For a prose-only draft, use a placeholder instead of uploading. If evidence is unavailable, state what is missing; never invent an attachment URL.
+- For PDF layout changes, include visible placeholders identifying representative PDF pages for review.
+- Put screenshots, GIFs and PDF-page placeholders directly beneath the related Changes bullet or group, before the next unrelated change. Use a captioned Markdown table, with side-by-side columns when useful; do not collect visuals in a separate Screenshots or PDF previews section. Check recent user-authored MRs in the project for the established layout when available.
 - Describe only this branch's commits; drop work merged in from the target.
 - Omit empty sections entirely — no "none"/"N/A" placeholder headings.
 - Reference the issue only in the Summary, with the link embedded inline. Take the tracker's URL shape from the project's own docs or an existing MR; never invent a host. Do not put the issue in Related MRs.
