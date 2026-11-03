@@ -126,9 +126,11 @@ rules; the repo's docs supply the specifics for the ones that are project-shaped
 - **State transitions.** Check every status change against the project's documented
   state machine: is the source state guaranteed, is the transition legal, is a
   reverse path needed.
-- **Money and time.** Decimal end to end, never float. Timezone: whatever the
-  project's documented gotcha is, check the change against it — a naive date
-  extracted from an aware datetime is the usual one.
+- **Money and time.** Decimal end to end, never float. Check the project's timezone
+  rules for date extraction and date-only filters. Do boundaries match the calendar
+  used by the business and display? Verify local midnight, end-of-day and adjacent
+  instants; for non-UTC calendars, include an instant whose UTC date differs. Check
+  that test expectations follow the documented calendar, not the code's assumption.
 - **Concurrency and idempotency.** A read-then-write without a lock or a unique
   constraint. A webhook, retry or sync write that must survive being delivered twice.
 - **Soft delete and scoping.** Reads that must filter deleted rows but rely on a
