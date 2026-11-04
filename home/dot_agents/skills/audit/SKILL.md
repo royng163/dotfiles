@@ -73,20 +73,25 @@ argued with or overruled.
 
 ## Ground truth
 
-Run the project's own checks before reporting anything. They outrank every reading
-of the code: a pass that contradicts a failing test is wrong.
+Establish the project's actual check results before reporting findings. Reuse accepted
+results when their source snapshot, dependencies, configuration and relevant environment
+match; otherwise run the affected checks. Checks outrank a contradictory code reading.
 
 Find the procedure rather than inventing one — the agent docs usually list it (test
-command, lint, contract check, browser check, log check). Run what the scope
-touches: the backend suite for server files, unit tests and lint for client files.
+command, lint, contract check, browser check, log check). Cover what the scope
+touches: the backend suite for server files, unit tests and lint for client files. Run
+focused checks during revisions and required full verification once per completed change
+batch. A coordinator reuses matching worker evidence and checks cross-surface gaps instead
+of repeating whole suites or the same audit passes.
 
 **Diff failing test IDs, never counts.** A suite with pre-existing failures makes
 counts meaningless — two failures swapping places reads as "no change" by count and
-as two regressions by ID. Capture the failing set before the change (stash, or the
-merge-base) and compare sets.
+as two regressions by ID. Reuse a matching recorded baseline or capture it from the merge-base in an isolated
+checkout, then compare sets. Do not stash or disturb another agent's changes for a baseline.
 
-Report what ran, what failed, and whether each failure is new. **Never report green
-without having run it**, and never describe a skipped check as passed. If a check
+Report what ran or was reused, its snapshot/environment provenance, what failed, and
+whether each failure is new. **Never report green without matching actual evidence**,
+and never describe an unverified or skipped check as passed. If a check
 cannot run here — a browser flow, a manual contract call — say so and name it as
 outstanding rather than dropping it silently.
 

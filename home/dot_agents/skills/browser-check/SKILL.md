@@ -10,7 +10,8 @@ report what a real browser sees. Use this to confirm a frontend change works ins
 
 ## How
 
-1. Find the dev server URL for this project (README, `package.json` scripts, vite/next config):
+1. Reuse an open isolated session and authentication for related checks within the same task.
+   Find the dev server URL for this project (README, `package.json` scripts, vite/next config):
    base path, and whether it is a hash router (`http://localhost:5173/admin/#/route`). Use a
    server that is already running; start one only if the project's docs allow it.
 2. `browser_set_viewport` when the size matters. It resizes the current page without
@@ -35,7 +36,9 @@ and run the steps again.
   Run read-only checks concurrently once isolation is confirmed; no admin-first/client-second
   grant is needed. Coordinate shared-data writes with the lead. Agents sharing one MCP server
   process share its page and must coordinate navigation, viewport changes and closure.
-- Reuse evidence for an unchanged snapshot and rerun the affected flow after a revision.
+- Reuse evidence for an unchanged snapshot and relevant data/environment. After a revision,
+  rerun the affected flow; capture screenshots that prove acceptance and retake only invalidated
+  steps unless state changes make the remaining sequence inconsistent.
   Report check results and evidence paths concisely; extra reports need a concrete purpose.
 - API-driven pages need their backend up; check the project's proxy config for the target.
 - If a route redirects to login, ask the user how to supply a session rather than guessing
