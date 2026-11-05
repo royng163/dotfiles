@@ -106,12 +106,12 @@ the migration follows the repo's migration rules and is propose-and-stop.
 
 ### SonarQube
 
-When the repo has a `sonar-project.properties`, fetch the open issues for each changed file from
-its last analysis: `sonar list issues --file <path> --statuses OPEN,CONFIRMED --format json`, run
-from the repo root. They predate the change, so each one is an **Opportunistic** finding in the
-file it sits in: offer it with its rule key, `[sonar python:S3776]`, and say whether the fix is
-local and safe or falls under propose-and-stop. Skip files outside the scope. If `sonar` is
-missing, unauthenticated or fails, say so in the ground truth and carry on without it.
+Check for Sonar project properties, connected-mode/CLI bindings or CI configuration in each
+repo in scope. When configured, follow [the SonarQube procedure](references/sonarqube.md):
+verify CLI/authentication, explicitly select project and branch/MR, record analysis freshness,
+retrieve all scoped pages and classify findings against the audited change. Listing server
+issues is not a scan of local edits. Report missing/stale/partial coverage as **unverified**;
+never call it clean or classify every returned issue as pre-existing.
 
 ## Pass 1 — correctness
 
@@ -291,7 +291,7 @@ bound met at the end of each pass, or name what was skipped and why.
 
 | Pass | Done when |
 |---|---|
-| Ground truth | The project's declared checks either run and reported, or named as unrunnable here |
+| Ground truth | Checks run or valid evidence reused with provenance; configured Sonar coverage/freshness and any skipped, stale or partial results explicitly reported |
 | 1 correctness | Every changed function's claim, edge cases, error paths and state transitions checked; every new behaviour either covered by a test or reported as uncovered |
 | 2 laziness | Every file in scope read end to end, and every added function, class, abstraction, dependency and comment either kept for a stated reason or tagged, and every commented-out block and TODO-style note in a touched function reported |
 | 3 performance | Every endpoint, serializer, query and loader the change touches either measured or explicitly skipped with the reason |
