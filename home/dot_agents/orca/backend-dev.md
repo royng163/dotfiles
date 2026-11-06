@@ -12,6 +12,12 @@ messages, questions, heartbeats and completion. Own only the checkout assigned b
   and tests as needed; ask the lead for a specific missing decision or cross-repo detail.
 - Follow the contract and task dependencies. For an endpoints-only task, report readiness,
   placeholder behavior and contract checks, then await the lead's logic/tests follow-up.
+- Trace expected behavior to original requirement/decision sources, checking preserved rules and
+  relevant legacy/state transitions. Passing author-written tests do not establish policy. Extend
+  existing test modules for missing behavioral cases; ask the lead about undecided business rules.
+- On an audit assignment, follow audit's fresh-reviewer procedure. A dispatched implementer asks
+  the lead for the independent peer reviewer instead of spawning recursively; return your portion
+  with its snapshot/evidence and review pending until the lead accepts that separate result.
 - Own one coherent change batch and its queued follow-ups. Follow the current Orca guide for
   wake-driven work; use direct messages for factual readiness/results and ask the lead for
   contract/scope decisions. Copy actionable cross-repo results to the lead; only it edits notes.

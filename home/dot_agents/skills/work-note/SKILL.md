@@ -96,6 +96,18 @@ line back to `todo`. Do not keep a superseded contract next to the new one.
 Reuse `WHEN` / `THEN` / `AND` cases in `## Contract`. Add a `Check:` line naming the
 existing test, repository command or reproducible manual/browser flow that proves each
 case. Include relevant refusal and regression cases when the behaviour needs them.
+Assign stable requirement IDs and cite each expected behavior's original authority: ticket,
+latest explicit user decision or approved specification. A contract derived from implementation
+must be checked against that authority. Keep `Rules preserved` and `Rules changed` under
+Contract; changed business rules need an explicit decision. Unresolved policy blocks that
+part of implementation rather than becoming an inferred default.
+
+A compact row is `ID | Setup/input | Expected result | Authority | Check/evidence`.
+Include relevant legacy/new records, actor/object visibility, saved/current values and
+state/time/view transitions based on actual risk; avoid an exhaustive matrix. Expected test
+values must distinguish approved behavior from plausible wrong implementations. Prefer
+existing test modules and avoid tests that merely repeat the implementation.
+
 Run the check and record its actual outcome under the owning surface's `Testing Done`.
 Name checks that could not run and what blocks them.
 
@@ -103,6 +115,19 @@ For a bug fix, reproduce the wrong result before the fix when practical. Record 
 failing test ID or reproduction and compare the same check afterward. Keep unrelated
 baseline failures separate from regressions. A manual check is appropriate when a useful
 automated regression would cost more than the change warrants; record its inputs and result.
+
+## Review evidence and escaped findings
+
+For a requested audit or the required high-risk pre-MR review, record exact MR target,
+base/head (and stacked-base identity), relevant dirty-state identity, requirement coverage,
+accepted checks and fresh independent reviewer Task/Dispatch/evidence. The lead records this
+in existing Status/Testing Done sections, not a new sign-off section. A changed snapshot
+invalidates affected evidence; do not describe an empty working-diff audit as an MR review.
+
+When a later reviewer finds a missed defect, extend the owning surface section with the
+requirement or preserved rule, why the prior oracle/scope/transition check missed it, the
+approved correction and a regression in an existing module when useful. Validate proposed
+remedies against user decisions; a review comment does not decide new business policy.
 
 ## Resume checkpoints
 
@@ -139,16 +164,26 @@ pending: [frontend-admin]
 - Frontend (admin) — todo, refund panel needs the new order shape
 
 ## Contract
-### A guest order carries no account
+### Rules preserved
+- Existing authenticated checkout and pricing policy.
+
+### Rules changed
+- Guest checkout has no account, authorized by ABC-123.
+
+### R1 — A guest order carries no account
 - **WHEN** checkout completes with no session
 - **THEN** `POST /orders/` returns 201 with `account: null` and a `claim_token`
 - **AND** the token is single-use and expires in 7 days
+- **Authority:** ABC-123 approved guest-checkout requirement.
 - **Check:** submit a guest checkout in the client; verify the response and reject token reuse.
 
-### Claiming attaches the order to a new account
+### R2 — Claiming attaches the order to a new account
 - **WHEN** `POST /orders/claim/` is called with a valid token
 - **THEN** the order's `account` is set and the token is consumed
 - **AND** an already-consumed token returns 409 `{msg: order_already_claimed}`
+- **Authority:** ABC-123 approved account-claim requirement (illustrative example).
+- **Check:** claim once and verify the account/token state; claim again and verify 409
+  with no second state change.
 
 ## Backend
 

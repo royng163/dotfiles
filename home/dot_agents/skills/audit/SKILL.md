@@ -1,7 +1,8 @@
 ---
 name: audit
 description: >
-  The single verification pass over finished work: run the project's own checks,
+  Audit finished work against authoritative requirements, with a fresh independent
+  reviewer and the project's own checks,
   then five passes over one scope — correctness (does it do what it claims, and do
   the edge and error paths hold), laziness (delete / stdlib / native / yagni /
   shrink / docs), performance (N+1 and query slope, payload fields nothing reads,
@@ -14,14 +15,14 @@ description: >
   "review before I commit", "perf audit", "check the conventions", "is this
   following the styleguide", "any N+1 here", "any bugs here", "check the design
   system", "check the error codes", "are the status codes right", or invokes /audit.
-argument-hint: "[path | --diff <repo> | --repo]"
 ---
 
 # Audit
 
 The verification pass over work that is finished but not yet trusted: does it work,
 what should be deleted, what does it cost, and where does it drift from the house
-rules. Report first, apply on approval.
+rules. Start one fresh read-only reviewer for each audit effort using
+[the reviewer procedure](references/fresh-reviewer.md). Report first, apply on approval.
 
 The rules are not in this file. They live in the repo's own docs, and this skill
 reads them — a copy here would be one more thing to drift. The exceptions are HTTP
@@ -34,11 +35,40 @@ which are questions rather than rules.
 |---|---|
 | `/audit` | the working diff: `git diff`, `git diff --cached`, and untracked files |
 | `/audit --diff <repo>` | that repo's working diff, run as `git -C <repo> ...`; for a workspace root that is not a git repo |
+| `/audit --mr <url>` | the exact MR/PR target, provider diff base and source head; include stacked-base dependencies |
+| `/audit --range <base>...<head>` | the pinned merge-base-to-head changes, not the current working diff |
 | `/audit <path>` | that file or directory, whole contents |
 | `/audit --repo` | whole repo. Say up front that this is the slow path |
 
 Decide backend vs frontend **per file**, by extension and by which repo it sits in,
 so a change spanning a server repo and a client repo gets both rule sets in one run.
+
+For an MR or committed branch, resolve base/head SHAs from the actual provider/Git data
+and record them with the target branch and compared paths. Do not audit an empty working
+diff as evidence about published commits. Do not mix later local edits into that snapshot
+unless requested; identify them separately. Read immutable blobs without switching a busy
+checkout. Recheck the review identity before reporting; changed inputs invalidate affected
+coverage and the independent review. An unresolved base is a scope blocker.
+
+Expand reading along the changed behavior's actual producers, persisted values and consumers:
+API validation, permissions, model/storage limits, admin/client views, snapshots, PDFs,
+invoices and exports where relevant. Bound that trace to the affected behavior rather than
+silently widening to a whole-repo sweep; edits still require approval and assigned ownership.
+
+## Requirements and business rules
+
+Before using code or tests as an oracle, identify the original ticket/specification, latest
+explicit user decisions and approved contract. Cite an authority for each changed behavior;
+a commit message, implementation comment or author-written summary is a claim to verify.
+Resolve conflicting authorities and missing policy with the user/lead. Do not infer money,
+access, lifecycle or stored-data rules from a passing test or a reviewer's suggested remedy.
+
+Use the existing work-note Contract for a compact behavior/check map with stable requirement
+IDs, setup/input, expected result, source/decision and check/evidence (verified, missing or
+blocked). Include Rules preserved and Rules changed, with approval for intentional changes.
+When no note exists, put this small map in the audit brief/report; do not invent a business
+rule or create a permanent note just to satisfy a template. Verify the contract against its
+original authority rather than treating the contract itself as independent proof.
 
 ## Rule sources
 
@@ -75,7 +105,9 @@ argued with or overruled.
 
 Establish the project's actual check results before reporting findings. Reuse accepted
 results when their source snapshot, dependencies, configuration and relevant environment
-match; otherwise run the affected checks. Checks outrank a contradictory code reading.
+match; otherwise run the affected checks. Tests establish what the assertions accept,
+not whether those assertions express the approved requirement. A failing check is evidence
+to investigate; a passing check cannot overrule authoritative behavior or a demonstrated bug.
 
 Find the procedure rather than inventing one — the agent docs usually list it (test
 command, lint, contract check, browser check, log check). Cover what the scope
@@ -118,8 +150,9 @@ never call it clean or classify every returned issue as pre-existing.
 Does the change do what it claims, and do the paths around it hold? Questions, not
 rules; the repo's docs supply the specifics for the ones that are project-shaped.
 
-- **The claim.** Read what the change says it does — commit message, work note,
-  ticket, the handler's own docstring — then check the code actually does that.
+- **Requirement and rule preservation.** Compare each mapped requirement and preserved
+  invariant with the exact changed snapshot, its downstream effects and the test oracle.
+  Record missing or contradictory coverage, including unintended changes to existing rules.
 - **Edge and boundary.** Empty, single and full collections; first and last element;
   zero, negative and maximum values; the exact inclusive-or-exclusive bound on any
   comparison against a limit or a date.
@@ -141,8 +174,14 @@ rules; the repo's docs supply the specifics for the ones that are project-shaped
 - **Soft delete and scoping.** Reads that must filter deleted rows but rely on a
   manager that does not. Queries that must be scoped to a company, tenant or
   permission set and are not.
-- **Test coverage of the new behaviour.** Not coverage percentage: is there a test
-  that fails if this specific change is reverted.
+- **Legacy and transitions.** Check relevant existing/new records, internal/external and
+  admin/client projections, related-object access, saved/current catalogue values, field
+  limits and state changes across time, tab switches or reloads. Choose cases from actual
+  risks and coupled paths; do not generate an exhaustive Cartesian product.
+- **Test oracle and coverage.** Expected values come from requirement authority, not copied
+  implementation logic. Use a case that distinguishes the approved behavior from a plausible
+  wrong implementation, plus preservation controls. Extend existing test modules where useful;
+  a cosmetic change does not require a mirror test. Report unsupported behavior as uncovered.
 
 A finding here names the input and the wrong outcome — "with `valid_to` equal to
 today, the guard refuses" — not a feeling that the code looks risky. If a defect is
@@ -292,7 +331,8 @@ bound met at the end of each pass, or name what was skipped and why.
 | Pass | Done when |
 |---|---|
 | Ground truth | Checks run or valid evidence reused with provenance; configured Sonar coverage/freshness and any skipped, stale or partial results explicitly reported |
-| 1 correctness | Every changed function's claim, edge cases, error paths and state transitions checked; every new behaviour either covered by a test or reported as uncovered |
+| 1 correctness | Each requirement/preserved rule traced through affected paths and independently justified expectations; relevant legacy/transition cases checked or named as uncovered |
+| Independent review | Fresh review of the same scope/snapshot accepted, findings reconciled and unresolved requirements/coverage gaps explicit; no recursive reviewer spawning |
 | 2 laziness | Every file in scope read end to end, and every added function, class, abstraction, dependency and comment either kept for a stated reason or tagged, and every commented-out block and TODO-style note in a touched function reported |
 | 3 performance | Every endpoint, serializer, query and loader the change touches either measured or explicitly skipped with the reason |
 | 4 styleguide | Every rule source that exists was read, and every handler, service, response and error code in scope checked against it — including each code's status |
@@ -331,9 +371,11 @@ A status finding names the code, the status it ships today, the status it should
 ship, and why. A correctness finding names the input and the wrong outcome. "Wrong
 status code" or "looks fragile" with no specifics is not a finding.
 
-Nothing to cut and nothing to fix → `Verified. Ship.` and stop. Never manufacture a
-finding to fill the report, and never bank an early find as a finished pass — a
-report is only as good as the bound behind it.
+End with a bounded verdict: reviewed base/head or dirty snapshot, requirement IDs covered,
+checks run/reused, fresh reviewer result, open decisions and unverified paths. If there are
+no findings, say "No findings within <scope/revision>; <coverage and limitations>". Missing
+requirements, reviewer results or checks make the audit incomplete, not approved to ship.
+Never manufacture findings or claim every possible bug is absent.
 
 ## Severity buckets
 
@@ -384,13 +426,22 @@ A standalone run writes no note of its own. When the audit rides a feature, its
 findings belong in that feature's work note — see the `work-note` skill if the
 project keeps them.
 
+## Escaped review findings
+
+When a later review finds a missed defect, validate it at the cited snapshot against the
+approved rule before accepting the proposed remedy. In the existing feature note's owning
+surface, record the finding, why the requirement/oracle/scope/transition check missed it,
+the approved decision and regression evidence. Prefer the existing test module. If the
+correct behavior is undecided, record the decision blocker instead of encoding a guess.
+A reviewer suggestion alone does not authorize a business-rule change or an automatic fix.
+
 ## Boundaries
 
-**Do not invoke another skill.** A run stays one audit; starting a second review or
-a separate diagnosis is the user's call. Name what you would reach for, and stop.
-The exception is a read-only helper this skill already calls for measurement, such
-as a browser check against a dev server that is already up.
-
+The fresh review is part of this audit, not a second recursive audit. Use the orchestration
+skill for its launch/messages/completion, the work-note procedure when updating an existing
+feature contract, and read-only measurement helpers such as browser-check against an already
+running dev server. Do not launch unrelated reviews, diagnoses or implementation work.
+An explicitly dispatched independent reviewer does not start another reviewer.
 It reads rules, it does not restate them, and it does not touch files outside the
 scope. When a bug needs a signal that does not exist yet — a failing test, a replay
 harness, a log line — describe the loop that would prove it rather than guessing at

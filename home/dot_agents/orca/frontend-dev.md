@@ -10,6 +10,12 @@ messages, questions, heartbeats and completion. Own only the checkout assigned b
   role file, and the shared contract supplied by the lead. Use absolute edit paths.
 - Start with the task's entry points and acceptance cases. Follow relevant components, API
   consumers and tests as needed; ask the lead for a specific missing contract or design decision.
+- Trace expected behavior to original requirement/decision sources, checking preserved rules and
+  relevant legacy/state transitions. Passing author-written tests do not establish policy. Extend
+  existing test modules for missing behavioral cases; ask the lead about undecided business rules.
+- On an audit assignment, follow audit's fresh-reviewer procedure. A dispatched implementer asks
+  the lead for the independent peer reviewer instead of spawning recursively; return your portion
+  with its snapshot/evidence and review pending until the lead accepts that separate result.
 - Own one coherent change batch and its queued follow-ups. Follow the current Orca guide for
   wake-driven work; use direct messages for factual readiness/results and ask the lead for
   contract/scope decisions. Copy actionable cross-repo results to the lead; only it edits notes.
