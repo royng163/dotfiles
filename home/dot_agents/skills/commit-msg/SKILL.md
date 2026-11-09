@@ -2,6 +2,7 @@
 name: commit-msg
 description: >
   Generate a conventional commit message for staged (or unstaged) changes without committing.
+  Include a concise body when the commit covers multiple meaningful parts.
   Follows the Conventional Commits v1.0.0 spec (https://www.conventionalcommits.org/en/v1.0.0/).
   Trigger: "commit message", "write commit", /commit-msg.
 ---
@@ -12,7 +13,7 @@ Generate a conventional commit message. Do NOT commit.
 
 1. Run `git diff --staged` — if empty, run `git diff HEAD` instead.
 2. Run `git status --short`.
-3. Analyse the diff to determine type, optional scope, and description.
+3. Analyse the diff to determine type, optional scope, subject, and meaningful parts for the body.
 
 ## Format
 
@@ -60,22 +61,24 @@ Enforced by `config-conventional` — a message that breaks any of these fails l
 House style (not enforced by the config, kept for quality):
 
 - Description: imperative present tense ("add" not "added"). The subject alone should convey the change.
-- **Default to subject only.** Most commits need no body. Add one only when a reviewer would
-  otherwise lose the WHY, or when the commit bundles genuinely separate changes.
-- Body: at most 3 bullets, imperative, one line each (no wrapped continuation). No prose
+- **Include a short body by default for multi-part commits**, even when the subject is clear.
+  Summarise distinct behavior, rule, compatibility or downstream changes, not the file count.
+  Use subject only for a genuinely single-purpose change whose subject explains it fully.
+  A single-purpose change may also need a body for non-obvious rationale.
+- Body: usually 2-4 concise bullets, imperative, one line each (no wrapped continuation). No prose
   paragraphs, no tables, no measurements, no restating the diff, no bullet per file. A commit
   spanning several areas may group them instead — see Grouped body.
 - Explain WHY only when it is not obvious from the change and would otherwise be lost. One short clause.
-- Whole message under ~60 words. If a bullet only rephrases the subject, delete it.
+- Aim for ~40-80 words when a body is needed. Keep the meaningful parts rather than dropping
+  the body to meet a word target. Delete bullets that only rephrase the subject.
 - No ticket references anywhere: no Jira keys (`ABC-123`) or issue numbers in the subject, scope,
   body or footer, and no `Refs:` / `Closes:` / `Fixes:` section, even when the branch or diff names one.
 - Footer: only for breaking-change detail, as a `BREAKING CHANGE:` trailer. Omit it otherwise.
 
 ## Grouped body
 
-When one commit genuinely spans several parts — a rule and the emails it triggers, a schema
-change and the endpoints reading it — a flat bullet list buries which change belongs where.
-Group the body under plain label lines instead:
+Use a flat short body for ordinary multi-part commits. When several distinct domain areas
+make that list hard to follow, group the body under plain label lines instead:
 
 ```
 feat(booking): require contact details out of hours and notify every party
@@ -91,8 +94,8 @@ Notifications:
 
 Escalate to this form only when it earns its length:
 
-- **Ask first whether these should be separate commits.** Groups that share no reason to land
-  together are two commits wearing one hat. Group only what must ship atomically.
+- Group related parts that need to land together. Respect an explicitly selected commit scope;
+  do not ask to split it merely because the message needs a body.
 - **2-4 groups**, 1-3 bullets each, **10 bullets total** across all groups. One group means a
   flat list; five means the commit is too big.
 - Labels are domain areas, capitalised, ending in a colon on their own line — not layer or
