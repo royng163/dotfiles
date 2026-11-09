@@ -1,6 +1,6 @@
 model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
-service_tier = "fast"
+service_tier = "default"
 model_context_window = 1000000
 plan_mode_reasoning_effort = "xhigh"
 approval_policy = "on-request"
