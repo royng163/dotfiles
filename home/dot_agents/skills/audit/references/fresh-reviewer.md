@@ -2,12 +2,19 @@
 
 ## Coordinator
 
-Every audit effort starts one fresh read-only reviewer before its final verdict. In a
-cross-repo audit, use one reviewer across the declared surfaces; authors may supply their
-per-repo passes, but they do not each create another reviewer. If you are an implementer
-already dispatched by a lead, ask that lead to start the reviewer as a peer Task; do not
-bypass nesting limits or substitute an author self-review. Mark your portion complete with
-independent review pending; the lead cannot declare the whole audit complete yet.
+The first substantive action of every audit effort is starting one fresh read-only reviewer.
+Before launch, do only dispatch preparation: locate repo/scope and requirement/evidence links,
+pin snapshot metadata, load orchestration guidance and check ownership. Sonar history/issues,
+code/requirement analysis, test execution and old audit-report review wait until the start
+receipt confirms a fresh reviewer session is started/ready. Do not wait for its final report
+before beginning normal checks; those can run concurrently after confirmed launch.
+
+In a cross-repo audit, use one reviewer across the declared surfaces; authors do not each
+create another reviewer. A dispatched implementer asks the lead to launch that peer before
+its own audit checks. If launch is blocked or uncertain, report it and stop audit analysis;
+do not bypass nesting limits, substitute self-review or duplicate an uncertain launch.
+Existing implementation evidence can be linked without repeating checks. The final audit
+still requires accepted independent completion and coordinator reconciliation.
 
 Follow the user's orchestration preference. In this setup use the Orca orchestration skill
 and the selected CLI's current guide: reuse the feature Run or create one for a standalone
@@ -37,8 +44,8 @@ Read-only reviewers may share a checkout only while its audited snapshot stays s
 they are not additional editors. Pin immutable blobs or isolate if concurrent edits would
 invalidate the read. Record reviewer repo/terminal and title it `audit-reviewer`.
 
-Start the independent review alongside available author checks, then follow Orca's wake
-procedure; do not poll. Report pending work honestly while waiting. Require accepted completion
+After confirmed reviewer launch, continue available author checks and follow Orca's wake
+procedure when waiting; do not poll. Report pending work honestly while waiting. Require accepted completion
 and reconcile the result with the source/authority, not a summary alone. Preserve stable
 surface finding IDs, deduplicate overlapping findings and route approved fixes to owners.
 After revisions, revalidate affected checks and independent-review coverage; do not reuse an

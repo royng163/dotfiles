@@ -29,6 +29,24 @@ reads them — a copy here would be one more thing to drift. The exceptions are 
 status semantics in pass 4, which no repo owns, and the defect classes in pass 1,
 which are questions rather than rules.
 
+## First action: launch the reviewer
+
+Unless explicitly dispatched as `audit independent reviewer`, the lead must start the fresh
+reviewer before substantive audit work. Only minimal dispatch setup may precede launch:
+identify the repo/scope, pin MR/range/dirty snapshot metadata, locate original requirement
+and existing evidence paths, load the current orchestration guide and check worker ownership.
+Do not inspect Sonar history/issues, evaluate code or test expectations, run checks or review
+old audit reports first. Pass source links to the reviewer instead of pre-investigating them.
+
+Follow [the reviewer procedure](references/fresh-reviewer.md) and obtain a confirmed started/
+ready receipt with the fresh session and Task/Dispatch/terminal identity. Merely planning or
+issuing a launch is insufficient. If launch is blocked or uncertain, report that blocker and
+stop substantive audit work; do not replace the reviewer with self-review or spawn duplicates.
+Once launch is confirmed, normal checks and the five passes may run alongside the reviewer.
+A dispatched implementer asks its lead to satisfy this gate before starting its audit portion.
+An explicitly dispatched independent reviewer skips this launch gate and starts its assigned
+read-only review without spawning anyone.
+
 ## Scope
 
 | Invocation | Scope |
