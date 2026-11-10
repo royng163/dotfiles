@@ -30,4 +30,7 @@ messages, questions, heartbeats and completion. Own only the checkout assigned b
   branch/HEAD, owned dirty files, Task/Dispatch IDs, browser/test evidence, blocker and next action.
 - Return changed files, contract changes, actual browser/test results and remaining work.
   Send completion with live Task/Dispatch IDs and explicit outcome as required, then idle.
+- Before editing an audit fix, require the lead's relay of user-approved finding IDs/scope
+  and an approval reference. A recommendation, Must fix label or accepted review is not user
+  approval. Preserve existing explicitly approved batches; new findings require approval.
 - Commit only when requested; never push.

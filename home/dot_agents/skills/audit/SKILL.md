@@ -7,10 +7,9 @@ description: >
   the edge and error paths hold), laziness (delete / stdlib / native / yagni /
   shrink / docs), performance (N+1 and query slope, payload fields nothing reads,
   request waterfalls, serial loads), backend styleguide including HTTP status and
-  error-code correctness, and frontend design-system compliance. Reads the repo's
-  own rule docs instead of restating them, measures rather than guessing, and runs
-  each pass to a stated bound rather than stopping at the first findings. Reports
-  first, applies on approval.
+  error-code correctness, and frontend design-system compliance. Reads
+  repository rules, measures affected paths, and states review coverage. Reports
+  first, applies only user-approved findings.
   Use when the user says "audit", "audit this", "verify this", "check my work",
   "review before I commit", "perf audit", "check the conventions", "is this
   following the styleguide", "any N+1 here", "any bugs here", "check the design
@@ -22,7 +21,8 @@ description: >
 The verification pass over work that is finished but not yet trusted: does it work,
 what should be deleted, what does it cost, and where does it drift from the house
 rules. Start one fresh read-only reviewer for each audit effort using
-[the reviewer procedure](references/fresh-reviewer.md). Report first, apply on approval.
+[the reviewer procedure](references/fresh-reviewer.md). Report first; new findings require
+explicit user approval before fix dispatch or source edits.
 
 The rules are not in this file. They live in the repo's own docs, and this skill
 reads them — a copy here would be one more thing to drift. The exceptions are HTTP
@@ -32,11 +32,20 @@ which are questions rather than rules.
 ## First action: launch the reviewer
 
 Unless explicitly dispatched as `audit independent reviewer`, the lead must start the fresh
-reviewer before substantive audit work. Only minimal dispatch setup may precede launch:
-identify the repo/scope, pin MR/range/dirty snapshot metadata, locate original requirement
-and existing evidence paths, load the current orchestration guide and check worker ownership.
-Do not inspect Sonar history/issues, evaluate code or test expectations, run checks or review
-old audit reports first. Pass source links to the reviewer instead of pre-investigating them.
+reviewer before substantive audit work. Reuse existing checkout/ref identities, author
+manifests and requirement/evidence links for dispatch. Treat author manifests as declared
+snapshots for the reviewer to verify, not proof the lead must rebuild before launch. If an
+identity is missing, make one batched metadata lookup for only that gap; also load the current
+orchestration guide and check ownership. Do not build a second scope/hash manifest, compare
+author manifests, reread evidence, inspect Sonar history/issues or analyze code/tests first.
+The reviewer validates the declared snapshot as its first action after launch, stopping on
+drift before treating it or its test evidence as verified. Missing manifests are prepared
+by the reviewer after launch; an unresolved target identity is a scope blocker.
+
+Send a concise objective and path list (roughly 150-250 words excluding paths). Link the
+skill, contract, original requirements and existing manifests/logs; do not copy their rules,
+acceptance matrices, results or implementation history into a bespoke review packet.
+Do not spend extra turns polishing dispatch prose or generating preservation reports.
 
 Follow [the reviewer procedure](references/fresh-reviewer.md) and obtain a confirmed started/
 ready receipt with the fresh session and Task/Dispatch/terminal identity. Merely planning or
@@ -403,7 +412,7 @@ forbid:
 - **Bug** — a correctness defect in the change. Reported first, always, whichever
   file it sits in. Fixed only on approval, with a test that fails without the fix.
 - **Must fix** — new code in the change violating a convention that applies to all
-  new code. Auto-applicable.
+  new code. Priority label only; requires user approval before fixing.
 - **Opportunistic** — a pre-existing problem in a file the change already touches.
   Offered, applied only on approval.
 - **Out of scope** — a pre-existing problem in a file the change does not touch, or
@@ -412,9 +421,25 @@ forbid:
 
 ## Apply
 
-Report, then apply the approved subset.
+For new findings, present the complete combined report with stable IDs, evidence and the
+lead's recommendations, then end the turn for the user's decision. Do not create/dispatch
+fix assignments, edit source/tests/docs/config, run formatters or begin remediation while
+waiting. Read-only/isolated evidence gathering and writing the audit report remain allowed.
 
-Safe: add eager loading · count → existence check · colour literal → theme token ·
+Only the user's explicit approval of finding IDs or a clearly bounded reported set authorizes
+fixes. A lead's `My call`, reviewer agreement, accepted worker_done, passing checks, severity
+labels or a general feature/audit request is not that approval. `Must fix` describes priority,
+not permission. This gate applies to every category, including cosmetic/local cleanups.
+
+Prior explicit approval for an identified current fix batch remains valid: do not ask again
+or interrupt that authorized batch. It does not cover newly discovered findings. For each new
+fix assignment, relay the user-approved IDs/scope and approval reference; a worker lacking
+that relay asks the lead before editing. Apply only that approved subset and preserve all
+other work. User approval of fixes does not authorize commits, pushes or rule/scope changes.
+
+Small local fix candidates after user approval:
+
+Add eager loading · count → existence check · colour literal → theme token ·
 bare heading → utility class · float money → decimal with explicit rounding · print
 → logger · concurrent execution over provably independent awaits · delete code with
 no reader.

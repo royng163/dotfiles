@@ -3,11 +3,20 @@
 ## Coordinator
 
 The first substantive action of every audit effort is starting one fresh read-only reviewer.
-Before launch, do only dispatch preparation: locate repo/scope and requirement/evidence links,
-pin snapshot metadata, load orchestration guidance and check ownership. Sonar history/issues,
-code/requirement analysis, test execution and old audit-report review wait until the start
-receipt confirms a fresh reviewer session is started/ready. Do not wait for its final report
-before beginning normal checks; those can run concurrently after confirmed launch.
+Reuse existing checkout/ref identities, author manifests and requirement/evidence links.
+Author manifests are declared inputs, not proof the lead must independently rebuild first.
+Only a missing identity gets one batched metadata lookup, alongside guide/ownership setup.
+Do not create a second scope/hash manifest, compare manifests, reread reports or investigate
+Sonar/code/tests before dispatch. The reviewer verifies snapshot identity first after launch
+and stops on drift; it prepares a missing manifest before substantive review. Do not invent
+or guess an unresolved target identity to get past the gate.
+
+Use a short objective and path list, roughly 150-250 words excluding paths, rather than a
+bespoke review packet. Link existing skill/contract/authority/manifests/logs instead of
+copying their instructions, acceptance matrices, test results or implementation histories.
+Avoid extra preparation turns and preservation reports. Sonar, code/requirement analysis,
+test execution and old-report review wait for a confirmed started/ready receipt; normal
+checks may then run concurrently without waiting for the reviewer's final report.
 
 In a cross-repo audit, use one reviewer across the declared surfaces; authors do not each
 create another reviewer. A dispatched implementer asks the lead to launch that peer before
@@ -47,7 +56,11 @@ invalidate the read. Record reviewer repo/terminal and title it `audit-reviewer`
 After confirmed reviewer launch, continue available author checks and follow Orca's wake
 procedure when waiting; do not poll. Report pending work honestly while waiting. Require accepted completion
 and reconcile the result with the source/authority, not a summary alone. Preserve stable
-surface finding IDs, deduplicate overlapping findings and route approved fixes to owners.
+surface finding IDs and deduplicate overlaps. Present the combined report to the user and
+end the turn before dispatching or applying fixes to new findings. Lead recommendations,
+reviewer agreement and accepted completion do not authorize edits. Relay only the user's
+explicitly approved IDs/scope and approval reference to owners; existing explicit approvals
+for identified current batches stay valid and do not extend to new findings.
 After revisions, revalidate affected checks and independent-review coverage; do not reuse an
 old verdict for a changed snapshot. Clean up the reviewer using the current lifecycle guide.
 
@@ -55,9 +68,11 @@ old verdict for a changed snapshot. Clean up the reviewer using the current life
 
 When explicitly dispatched in that role, perform the requirements/behavior part of this
 same audit and return evidence to its coordinator. Do not invoke a full nested audit or
-start another reviewer. Check the actual target snapshot, requirement authorities, test
-oracles and downstream preserved rules; a green test or author contract is not proof of
-policy correctness. Reuse matching check results and name missing evidence.
+start another reviewer. First validate the declared snapshot against the supplied identities/
+manifests; prepare a missing manifest if necessary and stop on drift before reviewing code
+or accepting old test evidence. Then check requirement authorities, test oracles and downstream
+preserved rules; a green test or author contract is not proof of policy correctness. Reuse
+matching check results and name missing evidence.
 
 The coordinator continues the normal five passes and owns the combined final verdict.
 Review completion does not authorize fixes, MR publication or a blanket shipping guarantee.
