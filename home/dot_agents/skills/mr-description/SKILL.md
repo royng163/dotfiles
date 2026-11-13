@@ -4,7 +4,7 @@ description: >
   Generate MR title + body as a communication artifact: conventional commit title, then
   Summary / Changes / Testing, plus a deployment checklist when needed. Changes grouped by feature with rationale only
   when non-obvious; Testing gives steps with expected outcomes. Emphasis adapts to change
-  type. Diffs against the repo's default branch unless told otherwise. Prints raw
+  type. Diffs against the intended MR target. Prints raw
   markdown in a code block so it is copyable.
   Trigger: "write MR", "PR body", "summarize branch", /mr.
 ---
@@ -17,7 +17,7 @@ cut. A reviewer opens the diff for detail — the body orients, it does not tran
 
 ## Defaults
 
-- Target: the repo's default branch — `git symbolic-ref --short refs/remotes/origin/HEAD`. A project that merges into a long-lived release or variant branch instead will say so in its own docs or a project-level override of this skill; honour that over the default.
+- Target: honour an explicit user target; otherwise use an existing MR's actual target. For a new MR in a multi-ticket session, use the preceding ticket's branch in that repo, as recorded in the work note/session. The first ticket uses the project's release/variant base, falling back to `git symbolic-ref --short refs/remotes/origin/HEAD`. If the preceding branch has merged, verify its work is in the merge target and use that target. Include the verified parent MR under Related MRs for stacked work.
 - Scope: `git log <target>..HEAD --no-merges` + `git diff <target> --stat`.
 - Print the whole body in one fenced code block (``` ``` ```) so it is copyable. No preamble, no file writing.
 - No file/line counts — reviewers see those in the UI.
@@ -109,7 +109,7 @@ Keep the structure above; shift the stress:
 
 ## Workflow
 
-1. Get the branch and resolve the target. Ask if the resolved default looks wrong for this project.
+1. Get the branch and resolve the target using the precedence above. Ask only when the parent or target cannot be resolved from the session, work note or MR.
 2. Enumerate scope with the commands above; exclude merged-in work (`git log --merges` to spot it). When an MR is supplied, use its actual target and head commit. Read the relevant diff and source and verify each reference targets the relevant code through a line or file anchor inside that MR.
 3. Classify the dominant change type to set emphasis; read commit-msg and apply its subject rules to the title.
 4. Draft the title, then Summary / Changes / Testing. Check deployment configuration and work notes for required follow-up and add a Deployment checklist when needed.

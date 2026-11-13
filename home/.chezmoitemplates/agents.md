@@ -26,6 +26,11 @@ Read the task and trace the code it touches first, then stop at the first rung t
 - Run `git add` and `git commit` (including `--amend`) only when the user asks for that commit.
   Otherwise leave changes unstaged, report the state, and stop. Never run `git push`.
 - Branch and worktree creation is fine.
+- For multiple tickets in one session, stack branches and MRs per repository: the first ticket uses
+  the project's base branch; each later ticket branches from the preceding ticket's branch in that
+  repo and targets it in its MR. An explicit user-specified base takes precedence.
+- Record each branch's parent and related MR in the existing work note and worker brief. If the
+  preceding branch has merged, use its merge target after verifying it contains that work.
 
 ## Acceptance and continuity
 - Before changing behavior, define concrete inputs or setup and the expected result. For features, keep these acceptance cases in the existing work-note contract and name how each will be checked.
