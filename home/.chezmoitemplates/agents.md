@@ -26,6 +26,9 @@ Read the task and trace the code it touches first, then stop at the first rung t
 - Run `git add` and `git commit` (including `--amend`) only when the user asks for that commit.
   Otherwise leave changes unstaged, report the state, and stop. Never run `git push`.
 - Branch and worktree creation is fine.
+- Use the repo's primary checkout for new tasks. Create a separate worktree only when existing
+  uncommitted changes from other work need isolation, or the user explicitly requests one.
+  Continue follow-ups on the current task in its existing checkout.
 - For multiple tickets in one session, stack branches and MRs per repository: the first ticket uses
   the project's base branch; each later ticket branches from the preceding ticket's branch in that
   repo and targets it in its MR. An explicit user-specified base takes precedence.
@@ -70,7 +73,7 @@ logic, code review, or general programming concepts.
 ## Orca Codex workers
 - "Use a team", "Team this", "Use Orca teams" and "Orca this" mean supervised Orca Codex workers. Otherwise keep small single-repo work in an ordinary repo session. Native subagents require an explicit request.
 - Load the installed `orchestration` skill's version-matched guide once; it owns launch, messaging, wake, reuse and cleanup procedures. Read conditional references only at their action gate. Start independent work together, then end the turn for Orca to wake the lead; never add polling/watch scripts or terminal-input steering.
-- Use one Run per effort and one editing worker per affected checkout; a fresh read-only audit reviewer may inspect stable snapshots across those checkouts. Before launch, check unique live handles and saved tabs across Runs, preserve other leads' ownership and resolve the exact existing repo workspace. Prefer primary checkouts; isolate only when requested or concurrency requires it. A timeout is not proof of exit.
+- Use one Run per effort and one editing worker per affected checkout; a fresh read-only audit reviewer may inspect stable snapshots across those checkouts. Before launch, check unique live handles and saved tabs across Runs, preserve other leads' ownership and resolve the exact existing repo workspace. Follow Git's primary-checkout and worktree rule. A timeout is not proof of exit.
 - Give each Task one coherent repo change, including known follow-ups, with absolute checkout, portable prompt (`~/.agents/orca/backend-dev.md` or `frontend-dev.md`), project role and shared-note paths, branch/base, exclusive ownership, entry points and acceptance checks. Link authoritative context; do not paste whole histories. Depend only on real prerequisites; split endpoint readiness only when it unblocks another surface.
 - Workers verify default `pwd` and Git root before editing, read their repo instructions/local overrides, then use explicit shell workdirs and absolute edit paths. Batch independent reads/checks and bound tool output; preserve full failure logs on disk. Avoid repeated scans, redundant preservation probes and extra reports without a concrete risk.
 - Workers may exchange factual API readiness, existing contract details, test results and blockers directly through Orca messages, copying the lead on actionable results. Contract/scope decisions still go through the lead's ask/reply; only the lead edits shared notes. Independent UI/tests may proceed against the agreed contract while backend logic runs; live acceptance waits for actual readiness. Coordinate shared-data writes and shared browser contexts.
