@@ -15,8 +15,8 @@ Use a short objective and path list, roughly 150-250 words excluding paths, rath
 bespoke review packet. Link existing skill/contract/authority/manifests/logs instead of
 copying their instructions, acceptance matrices, test results or implementation histories.
 Avoid extra preparation turns and preservation reports. Sonar, code/requirement analysis,
-test execution and old-report review wait for a confirmed started/ready receipt; normal
-checks may then run concurrently without waiting for the reviewer's final report.
+OCR preparation, test execution and old-report review wait for a confirmed started/ready
+receipt. Complementary checks may then run concurrently without waiting for the final report.
 
 In a cross-repo audit, use one reviewer across the declared surfaces; authors do not each
 create another reviewer. A dispatched implementer asks the lead to launch that peer before
@@ -70,9 +70,12 @@ When explicitly dispatched in that role, perform the requirements/behavior part 
 same audit and return evidence to its coordinator. Do not invoke a full nested audit or
 start another reviewer. First validate the declared snapshot against the supplied identities/
 manifests; prepare a missing manifest if necessary and stop on drift before reviewing code
-or accepting old test evidence. Then check requirement authorities, test oracles and downstream
-preserved rules; a green test or author contract is not proof of policy correctness. Reuse
-matching check results and name missing evidence.
+or accepting old test evidence. Run [OCR preparation](ocr.md) once per repo and share the
+inventory, exclusions and grouped rules with the lead. Check original authority and select
+discriminating boundary cases before reviewing implementation/tests; trace downstream consumers,
+persisted values and hidden/lifecycle transitions. A green test or author contract is not proof
+of policy correctness. Reuse matching evidence and name missing checks or policy decisions.
 
-The coordinator continues the normal five passes and owns the combined final verdict.
+The coordinator covers complementary conventions, measurements and runtime-evidence gaps,
+reconciles one report and owns the final verdict; it does not repeat the generic OCR-assisted review.
 Review completion does not authorize fixes, MR publication or a blanket shipping guarantee.
