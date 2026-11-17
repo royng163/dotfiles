@@ -12,7 +12,3 @@ fi
 if [ ! -d "$HOME/.codex/plugins/cache/wakatime/codex-cli-wakatime" ]; then
   codex plugin add codex-cli-wakatime@wakatime
 fi
-if [ "$(uname -s)" = Darwin ] && [ -f "$HOME/Library/LaunchAgents/com.royng.aitime.plist" ]; then
-  launchctl bootout "gui/$(id -u)/com.royng.aitime" 2>/dev/null || :
-  launchctl bootstrap "gui/$(id -u)" "$HOME/Library/LaunchAgents/com.royng.aitime.plist"
-fi

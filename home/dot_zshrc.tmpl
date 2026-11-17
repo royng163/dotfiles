@@ -84,11 +84,10 @@ elif (( $#_nvm_sh )); then
 fi
 unset _f
 
-# Editor for Vue DevTools "open in editor". Vite 4 bundles a launch-editor with no
-# zed entry, and its fallthrough passes the line and column as separate arguments,
-# which Zed opens as extra files named after the numbers. "subl" is in its table and
-# gets a single path:line:column, which the ~/.local/bin/subl wrapper passes to Zed.
-export LAUNCH_EDITOR="$HOME/.local/bin/subl"
+# Vite 4 uses Sublime's location arguments for the local Zed bridge.
+if [ -x "$HOME/.local/bin/subl" ]; then
+  export LAUNCH_EDITOR="$HOME/.local/bin/subl"
+fi
 
 # Prompt. Must load after conda/mamba init, which rewrite PS1.
 _cached_init starship starship init zsh --print-full-init

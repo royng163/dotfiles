@@ -164,7 +164,7 @@
     "allow_data_collection": "no",
   },
   "agent": {
-    "terminal_init_command": "{{ if hasKey . "zedProxy" }}HTTPS_PROXY={{ .zedProxy }} HTTP_PROXY={{ .zedProxy }} {{ end }}codex",
+    "terminal_init_command": "codex",
     "enable_feedback": false,
     "expand_terminal_card": false,
     "max_content_width": 850.0,

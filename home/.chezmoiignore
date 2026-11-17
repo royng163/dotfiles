@@ -3,6 +3,10 @@
      apart from a real Linux desktop. */}}
 {{- $wsl := contains "microsoft" (lower (index .chezmoi.kernel "osrelease" | toString)) }}
 
+.codex/hooks/wakatime-sync.sh
+Library/LaunchAgents/com.royng.aitime.plist
+.local/bin/subl
+
 {{- if eq .chezmoi.os "windows" }}
 {{/* Windows is a daily machine, not a dev box: terminal setup only. */}}
 .zshrc
@@ -27,7 +31,6 @@ Documents
 
 {{- if ne .chezmoi.os "darwin" }}
 Library/LaunchAgents
-.local/bin/subl
 {{- end }}
 
 {{- if ne .chezmoi.os "linux" }}
