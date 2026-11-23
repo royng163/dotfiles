@@ -22,7 +22,7 @@ Generate a conventional commit message. Do NOT commit.
 
 <optional body>
 
-<optional BREAKING CHANGE footer>
+<optional footer>
 ```
 
 ## Types
@@ -73,7 +73,6 @@ House style (not enforced by the config, kept for quality):
   the body to meet a word target. Delete bullets that only rephrase the subject.
 - No ticket references anywhere: no Jira keys (`ABC-123`) or issue numbers in the subject, scope,
   body or footer, and no `Refs:` / `Closes:` / `Fixes:` section, even when the branch or diff names one.
-- Footer: only for breaking-change detail, as a `BREAKING CHANGE:` trailer. Omit it otherwise.
 
 ## Grouped body
 
