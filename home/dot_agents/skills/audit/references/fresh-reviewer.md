@@ -70,12 +70,13 @@ When explicitly dispatched in that role, perform the requirements/behavior part 
 same audit and return evidence to its coordinator. Do not invoke a full nested audit or
 start another reviewer. First validate the declared snapshot against the supplied identities/
 manifests; prepare a missing manifest if necessary and stop on drift before reviewing code
-or accepting old test evidence. Run [OCR preparation](ocr.md) once per repo and share the
-inventory, exclusions and grouped rules with the lead. Check original authority and select
-discriminating boundary cases before reviewing implementation/tests; trace downstream consumers,
+or accepting old test evidence. Run [OCR delegation](ocr.md) once per repo to prepare inventory
+and rules. Review the code in this Codex session and share findings and coverage with the lead.
+Check original authority and select discriminating boundary cases before reviewing implementation
+and tests. Trace downstream consumers,
 persisted values and hidden/lifecycle transitions. A green test or author contract is not proof
 of policy correctness. Reuse matching evidence and name missing checks or policy decisions.
 
 The coordinator covers complementary conventions, measurements and runtime-evidence gaps,
-reconciles one report and owns the final verdict; it does not repeat the generic OCR-assisted review.
+reconciles one report and owns the final verdict. Reuse the independent review evidence.
 Review completion does not authorize fixes, MR publication or a blanket shipping guarantee.

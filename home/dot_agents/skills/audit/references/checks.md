@@ -8,7 +8,8 @@ concurrency/idempotency, access/soft deletes and decimal/time handling directly.
 
 ## Simplicity
 
-Inspect every in-scope file and added function, class, abstraction, dependency and comment.
+Use the OCR inventory and grouped rules in the changed-code simplicity pass. Inspect added
+functions, abstractions, dependencies and comments, including relevant files OCR excluded.
 Tag candidates `delete`, `stdlib`, `native`, `yagni`, `shrink` or `docs` with a concrete reason.
 Check commented-out code and TODO/FIXME/XXX or deferred-phase notes in touched functions:
 resolved, still open (tracker candidate), or stale. A `ponytail:` prefix is a docs finding.

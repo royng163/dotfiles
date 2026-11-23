@@ -2,7 +2,7 @@
 name: audit
 description: >
   Review finished changes against original requirements with a fresh independent reviewer,
-  OCR file/rule preparation, project checks, and correctness, simplicity, performance,
+  OCR delegation, project checks, and correctness, simplicity, performance,
   backend-contract and frontend-design checks. Report coverage and reproducible findings;
   apply only user-approved findings. Use for audit, verify this, check my work,
   review before commit, performance or convention review, and /audit.
@@ -11,7 +11,8 @@ description: >
 # Audit
 
 Establish what the exact change does, what it preserves and what remains unverified.
-OCR prepares scope and language rules; the independent reviewer and project checks establish evidence.
+OCR delegation supplies the changed-file inventory and grouped rules. The fresh Codex reviewer
+uses them to review code, check requirements and verify behavior.
 
 ## 1. Launch first
 
@@ -42,12 +43,10 @@ Record checkout, base/head or dirty-snapshot identity and affected paths. Use im
 committed reviews; current clean diffs and later local edits are not evidence about an MR. An
 unresolved base blocks scope. Recheck identity before reporting; drift invalidates affected evidence.
 
-The reviewer follows [ocr.md](references/ocr.md) once per repo: use OCR delegate preview/rule for
-file inventory, exclusions and language checklists. Account for every in-scope changed `(path, status)`,
-including tests, schemas and migrations. Review default-excluded tests manually; binary, secret or
-explicitly out-of-scope paths get a concrete reason. Report all-changed and reviewed counts, not
-just OCR-selected coverage. A selected-file checklist is not proof each file was reviewed.
-Read each in-scope changed file end to end once; follow unchanged collaborators where behavior requires it.
+The reviewer follows [ocr.md](references/ocr.md) once per repo and uses OCR only in
+delegation mode. Account for every in-scope changed `(path, status)`. Inspect relevant excluded
+tests, schemas, migrations and changed code, plus unchanged collaborators where behavior requires
+it. Record each remaining gap or exclusion. Report coverage against all changed files.
 
 ## 3. Prove behavior against authority
 
@@ -79,10 +78,10 @@ and later decisions may supersede old review suggestions; judge defects at the c
 
 ## 4. Divide work and verify
 
-The fresh reviewer owns requirement/behavior tracing and OCR-assisted code review across surfaces.
-The lead/owners cover complementary project conventions, measurements and check gaps, then reconcile
-one report. Share the inventory, rules, behavior map and matched evidence; do not rerun OCR or do
-another generic whole-diff review just to duplicate the peer. All five areas still need coverage:
+The fresh reviewer uses the delegated inventory and rules to review correctness, simplicity,
+performance candidates and conventions, then verifies requirements, downstream behavior and gaps.
+The lead and owners supply project-specific measurements and checks, then reconcile one report.
+Reuse this evidence across the team. All five areas still need coverage:
 
 | Area | Evidence required |
 |---|---|
@@ -116,7 +115,7 @@ Keep stable b1/b2 backend, c1/c2 client and a1/a2 admin IDs. Each finding names 
 wrong result, file/function/line, requirement or rule source, expected result and evidence. Separate
 verified defects from open policy or coverage gaps. Use Bug, Must fix (new violation), Opportunistic
 (touched pre-existing issue) and Out of scope; security-owned items are flag-and-stop. Deduplicate
-peer/OCR/Sonar overlaps. Mark proposed savings separately; never invent line/query measurements.
+reviewer/Sonar overlaps. Mark proposed savings separately; never invent line/query measurements.
 
 End with a bounded verdict: exact revision, covered requirements, fresh reviewer evidence and limits.
 No findings means only no findings within that scope/coverage; missing checks are not a green result.
