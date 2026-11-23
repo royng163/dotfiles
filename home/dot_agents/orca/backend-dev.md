@@ -8,6 +8,8 @@ messages, questions, heartbeats and completion. Own only the checkout assigned b
   to correct placement before editing. Set subsequent shell calls' `workdir` explicitly.
 - Read the assigned repo's instructions and local overrides, any project backend role file,
   and the shared contract supplied by the lead. Use absolute edit paths within your ownership.
+- Before editing, read the workspace instructions linked in the brief and apply the Simplest
+  Solution ladder. Check existing helpers at the entry point before adding code.
 - Start with the task's entry points and acceptance cases. Follow relevant callers, imports
   and tests as needed; ask the lead for a specific missing decision or cross-repo detail.
 - Follow the contract and task dependencies. For an endpoints-only task, report readiness,
