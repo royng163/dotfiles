@@ -44,9 +44,12 @@ Read the task and trace the code it touches first, then stop at the first rung t
 ## Code comments
 - Comments describe what the code does for a future reader who has no idea a change was ever made. Never narrate the edit or its history.
 - Banned: comparisons to prior/other versions or to the task ("all statuses, not just the dashboard ones", "now also handles X", "changed to", "previously", "as requested", "per ticket"). Strip the contrast and state the present behavior plainly, or omit the comment.
-- Only add a comment when the code is non-obvious; do not annotate self-evident code.
-- Keep comments short: at most 1-2 lines. Prefer fewer comments overall; don't explain how the code works step by step. If a comment needs a paragraph, the code or naming should carry it instead.
-- Fill the line before wrapping: write one line up to the project's print width (prettier `printWidth`, ruff/black `line-length`, else 100). A second line is only for text that genuinely doesn't fit, and then both lines run near-full — never a long first line with a few dangling words under it. Rewrite the sentence shorter rather than spilling into a stub line.
+- Only add an inline comment when the code is non-obvious; do not annotate self-evident code.
+- For non-obvious business-rule branches and early exits, state what triggers the branch and the rule it preserves.
+- Start every function with a one-line docstring.
+- Use inline comments for local details the summary cannot cover. Cap each comment at 1-2 lines and avoid narrating implementation steps.
+- Use a longer docstring when the function's overall contract needs more explanation, with no fixed line limit.
+- Fill inline comment lines up to the project's print width (prettier `printWidth`, ruff/black `line-length`, else 100). Use a second line only when needed and avoid a short trailing fragment.
 
 ## Current documentation
 Do not answer from training data alone when the question is about a library,
