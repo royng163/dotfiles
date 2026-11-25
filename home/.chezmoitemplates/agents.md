@@ -45,6 +45,7 @@ Read the task and trace the code it touches first, then stop at the first rung t
 - Comments describe what the code does for a future reader who has no idea a change was ever made. Never narrate the edit or its history.
 - Banned: comparisons to prior/other versions or to the task ("all statuses, not just the dashboard ones", "now also handles X", "changed to", "previously", "as requested", "per ticket"). Strip the contrast and state the present behavior plainly, or omit the comment.
 - Only add an inline comment when the code is non-obvious; do not annotate self-evident code.
+- When a UI template groups multiple controls in a shared row or wrapper, add a short template comment immediately above each control's block using its label or purpose, such as `<!-- Payment Term -->`.
 - For non-obvious business-rule branches and early exits, state what triggers the branch and the rule it preserves.
 - Start every function with a one-line docstring.
 - Use inline comments for local details the summary cannot cover. Cap each comment at 1-2 lines and avoid narrating implementation steps.
