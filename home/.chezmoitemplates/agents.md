@@ -23,6 +23,7 @@ Read the task and trace the code it touches first, then stop at the first rung t
   API contract or user flow.
 
 ## Git
+- Never include ticket references in branch names. Describe the change, for example `feat/sbs-autopay`.
 - Run `git add` and `git commit` (including `--amend`) only when the user asks for that commit.
   Otherwise leave changes unstaged, report the state, and stop. Never run `git push`.
 - Branch and worktree creation is fine.
