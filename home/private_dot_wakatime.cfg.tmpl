@@ -3,6 +3,7 @@ api_key = {{ .wakatimeApiKey }}
 # Agent scratch files, plans and session entries are not project work.
 exclude =
     /\.notes/
+    ^{{ .chezmoi.workingTree | regexQuoteMeta }}/
 {{- if hasKey . "wakatimeExclude" }}{{ range .wakatimeExclude }}
     {{ . }}
 {{- end }}{{ end }}
